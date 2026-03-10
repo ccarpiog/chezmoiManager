@@ -87,12 +87,37 @@ echo "[3/6] Creating ZIP artifact"
 ditto -c -k --keepParent "$APP_PATH" "$ZIP_PATH"
 
 echo "[4/6] Creating DMG artifact"
+DMG_STAGING="$BUILD_DIR/dmg-staging"
+TEMP_DMG_PATH="$BUILD_DIR/${SCHEME}-temp.dmg"
+DMG_MOUNT="$BUILD_DIR/dmg-mount"
+APP_ICON_ICNS="$APP_PATH/Contents/Resources/AppIcon.icns"
+rm -rf "$DMG_STAGING" "$TEMP_DMG_PATH" "$DMG_MOUNT"
+mkdir -p "$DMG_STAGING"
+cp -R "$APP_PATH" "$DMG_STAGING/"
+ln -s /Applications "$DMG_STAGING/Applications"
+
 hdiutil create \
   -volname "$APP_NAME" \
-  -srcfolder "$APP_PATH" \
+  -srcfolder "$DMG_STAGING" \
   -ov \
-  -format UDZO \
-  "$DMG_PATH" >/dev/null
+  -format UDRW \
+  "$TEMP_DMG_PATH" >/dev/null
+
+if [[ -f "$APP_ICON_ICNS" ]] && command -v SetFile >/dev/null 2>&1; then
+  mkdir -p "$DMG_MOUNT"
+  ATTACH_OUTPUT="$(hdiutil attach "$TEMP_DMG_PATH" -readwrite -noverify -noautoopen -mountpoint "$DMG_MOUNT")"
+  DMG_DEVICE="$(echo "$ATTACH_OUTPUT" | awk 'NR==1 {print $1}')"
+
+  cp "$APP_ICON_ICNS" "$DMG_MOUNT/.VolumeIcon.icns"
+  SetFile -a V "$DMG_MOUNT/.VolumeIcon.icns"
+  SetFile -a C "$DMG_MOUNT"
+  hdiutil detach "$DMG_DEVICE" >/dev/null
+else
+  echo "Warning: App icon or SetFile not found; DMG will use default volume icon." >&2
+fi
+
+hdiutil convert "$TEMP_DMG_PATH" -format UDZO -o "$DMG_PATH" -ov >/dev/null
+rm -rf "$DMG_STAGING" "$TEMP_DMG_PATH" "$DMG_MOUNT"
 
 echo "[5/6] Submitting DMG for notarization"
 xcrun notarytool submit "$DMG_PATH" --keychain-profile "$NOTARY_PROFILE" --wait

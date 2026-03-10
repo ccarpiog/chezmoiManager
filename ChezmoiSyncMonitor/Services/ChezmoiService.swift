@@ -183,4 +183,21 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
             arguments: ["git", "--", "push"]
         )
     } // End of func commitAndPush(message:)
+
+    /// Returns the chezmoi source-state file path for a given target path.
+    /// - Parameter path: The relative target file path (e.g., `.bashrc`).
+    /// - Returns: The absolute path to the corresponding file in the chezmoi source directory.
+    /// - Throws: `AppError` if the chezmoi command fails.
+    func sourcePath(for path: String) async throws -> String {
+        let resolvedPath = path.hasPrefix("/") ? path : "~/\(path)"
+        let result = try await ProcessRunner.run(
+            command: chezmoiBinary,
+            arguments: ["source-path", resolvedPath]
+        )
+        let output = result.stdout.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !output.isEmpty else {
+            throw AppError.parseFailure("chezmoi source-path returned empty output for \(path)")
+        }
+        return output
+    } // End of func sourcePath(for:)
 } // End of class ChezmoiService

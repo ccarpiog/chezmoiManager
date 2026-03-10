@@ -31,6 +31,12 @@ protocol ChezmoiServiceProtocol: Sendable {
     /// - Parameter message: The commit message.
     /// - Throws: `AppError` if any git step fails.
     func commitAndPush(message: String) async throws
+
+    /// Returns the chezmoi source-state file path for a given target path.
+    /// - Parameter path: The relative target file path (e.g., `.bashrc`).
+    /// - Returns: The absolute path to the corresponding file in the chezmoi source directory.
+    /// - Throws: `AppError` if the chezmoi command fails.
+    func sourcePath(for path: String) async throws -> String
 } // End of protocol ChezmoiServiceProtocol
 
 /// Protocol for interacting with git in the chezmoi source repository.

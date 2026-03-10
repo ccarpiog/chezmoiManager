@@ -218,25 +218,29 @@ struct PreferencesView: View {
             }
 
             Section("External Tools") {
-                TextField("Preferred editor:", text: Binding(
-                    get: { prefs.preferredEditor ?? "" },
-                    set: { newValue in
-                        prefs.preferredEditor = newValue.isEmpty ? nil : newValue
-                        savePreferences()
-                    }
-                ))
-                .textFieldStyle(.roundedBorder)
-                .help("e.g., code, vim, nano")
+                ExternalToolPicker(
+                    label: "Preferred editor:",
+                    selection: Binding(
+                        get: { prefs.preferredEditor ?? "" },
+                        set: { newValue in
+                            prefs.preferredEditor = newValue.isEmpty ? nil : newValue
+                            savePreferences()
+                        }
+                    ),
+                    options: ExternalToolPicker.commonEditors
+                )
 
-                TextField("Preferred merge tool:", text: Binding(
-                    get: { prefs.preferredMergeTool ?? "" },
-                    set: { newValue in
-                        prefs.preferredMergeTool = newValue.isEmpty ? nil : newValue
-                        savePreferences()
-                    }
-                ))
-                .textFieldStyle(.roundedBorder)
-                .help("e.g., opendiff, vimdiff")
+                ExternalToolPicker(
+                    label: "Preferred merge tool:",
+                    selection: Binding(
+                        get: { prefs.preferredMergeTool ?? "" },
+                        set: { newValue in
+                            prefs.preferredMergeTool = newValue.isEmpty ? nil : newValue
+                            savePreferences()
+                        }
+                    ),
+                    options: ExternalToolPicker.commonMergeTools
+                )
             }
         }
         .formStyle(.grouped)

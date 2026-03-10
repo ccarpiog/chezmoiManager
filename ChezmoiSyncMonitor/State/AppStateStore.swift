@@ -382,6 +382,103 @@ final class AppStateStore {
         }
     } // End of func commitAndPush()
 
+    /// Opens a file in the user's preferred editor.
+    ///
+    /// If `preferredEditor` is set, launches the editor with the file path.
+    /// Otherwise, opens the file with the default macOS application via `open`.
+    /// The external process is launched fire-and-forget (not awaited) so interactive
+    /// editors like vim or long-running GUI editors are not killed by a timeout.
+    /// - Parameter path: The relative file path to open.
+    func openInEditor(path: String) {
+        let homePath = NSHomeDirectory()
+        let absolutePath = path.hasPrefix("/") ? path : "\(homePath)/\(path)"
+
+        do {
+            if let editor = preferences.preferredEditor, !editor.isEmpty {
+                let editorPath = PATHResolver.findExecutable(editor) ?? editor
+                try launchProcess(command: editorPath, arguments: [absolutePath])
+            } else {
+                try launchProcess(command: "/usr/bin/open", arguments: [absolutePath])
+            }
+            appendEvent(ActivityEvent(
+                eventType: .refresh,
+                message: "Opened \(path) in editor",
+                relatedFilePath: path
+            ))
+        } catch {
+            appendEvent(ActivityEvent(
+                eventType: .error,
+                message: "Failed to open \(path) in editor: \(error.localizedDescription)",
+                relatedFilePath: path
+            ))
+        }
+    } // End of func openInEditor(path:)
+
+    /// Opens a file in the user's preferred merge tool with both local and source versions.
+    ///
+    /// Resolves the chezmoi source path for the file and launches the merge tool
+    /// with both paths. Falls back to `opendiff` (macOS FileMerge) if no merge tool is set.
+    /// The external process is launched fire-and-forget (not awaited).
+    /// - Parameter path: The relative file path to merge.
+    func openInMergeTool(path: String) async {
+        let homePath = NSHomeDirectory()
+        let localPath = path.hasPrefix("/") ? path : "\(homePath)/\(path)"
+
+        do {
+            let sourceFilePath = try await chezmoiService.sourcePath(for: path)
+            let tool = preferences.preferredMergeTool?.isEmpty == false
+                ? preferences.preferredMergeTool!
+                : "opendiff"
+            let toolPath = PATHResolver.findExecutable(tool) ?? tool
+            var args = mergeToolExtraArgs(for: tool)
+            args.append(contentsOf: [localPath, sourceFilePath])
+            try launchProcess(command: toolPath, arguments: args)
+            appendEvent(ActivityEvent(
+                eventType: .refresh,
+                message: "Opened \(path) in merge tool",
+                relatedFilePath: path
+            ))
+        } catch {
+            appendEvent(ActivityEvent(
+                eventType: .error,
+                message: "Failed to open \(path) in merge tool: \(error.localizedDescription)",
+                relatedFilePath: path
+            ))
+        }
+    } // End of func openInMergeTool(path:)
+
+    /// Returns extra arguments needed for specific merge tools.
+    ///
+    /// Some tools require flags to enter diff/merge mode (e.g., VS Code needs `--diff`).
+    /// - Parameter tool: The tool command name or path.
+    /// - Returns: An array of extra arguments to prepend before the file paths.
+    private func mergeToolExtraArgs(for tool: String) -> [String] {
+        let base = URL(fileURLWithPath: tool).lastPathComponent
+        switch base {
+        case "code", "cursor":
+            return ["--diff", "--wait"]
+        case "nvim":
+            return ["-d"]
+        default:
+            return []
+        }
+    } // End of func mergeToolExtraArgs(for:)
+
+    /// Launches an external process without waiting for it to finish.
+    ///
+    /// Used for editor and merge tool launches where the process may stay open
+    /// indefinitely while the user works.
+    /// - Parameters:
+    ///   - command: The path to the executable.
+    ///   - arguments: The arguments to pass.
+    /// - Throws: If the process cannot be launched.
+    private func launchProcess(command: String, arguments: [String]) throws {
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: command)
+        process.arguments = arguments
+        try process.run()
+    } // End of func launchProcess(command:arguments:)
+
     /// Loads the diff text for a specific file path into `currentDiff`.
     /// - Parameter path: The relative file path to diff.
     func loadDiff(for path: String) async {

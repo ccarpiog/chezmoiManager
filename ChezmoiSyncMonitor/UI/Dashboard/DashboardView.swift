@@ -316,11 +316,11 @@ struct DashboardView: View {
                                         showingDiff = true
                                     }
                                 },
-                                onEdit: { _ in
-                                    // Placeholder: open in editor
+                                onEdit: { path in
+                                    appState.openInEditor(path: path)
                                 },
-                                onMerge: { _ in
-                                    // Placeholder: open merge tool
+                                onMerge: { path in
+                                    Task { await appState.openInMergeTool(path: path) }
                                 }
                             )
 

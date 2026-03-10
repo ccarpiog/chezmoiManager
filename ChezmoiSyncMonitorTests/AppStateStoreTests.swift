@@ -47,6 +47,14 @@ final class MockChezmoiService: ChezmoiServiceProtocol, @unchecked Sendable {
         commitAndPushCallCount += 1
         if let error = commitAndPushError { throw error }
     }
+
+    var sourcePathResult: String = "/mock/source/path"
+    var sourcePathError: Error?
+
+    func sourcePath(for path: String) async throws -> String {
+        if let error = sourcePathError { throw error }
+        return sourcePathResult
+    }
 } // End of class MockChezmoiService
 
 /// Mock implementation of GitServiceProtocol for testing.

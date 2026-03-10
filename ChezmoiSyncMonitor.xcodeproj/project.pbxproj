@@ -19,6 +19,7 @@
 		54E3A665B3A34BD26D67E448 /* ChezmoiSyncMonitorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B56C1D5D00407E3DA42F87 /* ChezmoiSyncMonitorApp.swift */; };
 		58DC54FA0AC1941DF82CEBB3 /* PreferencesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D4733780605B5A09BF6DED /* PreferencesStore.swift */; };
 		5A7627AD09498C8793449712 /* GitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1AB8082A1BBC7BC6D4B8B4 /* GitService.swift */; };
+		5EDB965E7C8D34E7A41C5A71 /* ExternalToolPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A96FE88805D93EE777667E /* ExternalToolPicker.swift */; };
 		657607E51448237E04B1A1B4 /* ActivityLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D88B737F6A7D06A98FF6B6 /* ActivityLogView.swift */; };
 		6A69F9E5D4230BE67DE8FB69 /* FileListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE8B8BDE5AAA3D5C822023F /* FileListItemView.swift */; };
 		717D59F58E14EC44A028DED7 /* MenuBarIconRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B382F1FB04C481064F73C977 /* MenuBarIconRenderer.swift */; };
@@ -105,6 +106,7 @@
 		CE83FD2D87B50A69B26A3A42 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		D9277E0B18DCCA77AFBFE418 /* RefreshCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshCoordinator.swift; sourceTree = "<group>"; };
 		E4698ECED924374CF7B29A15 /* ChezmoiSyncMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChezmoiSyncMonitorTests.swift; sourceTree = "<group>"; };
+		E6A96FE88805D93EE777667E /* ExternalToolPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalToolPicker.swift; sourceTree = "<group>"; };
 		F3D88B737F6A7D06A98FF6B6 /* ActivityLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogView.swift; sourceTree = "<group>"; };
 		FA5361D5620AFB23948A681F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FF09B6049FA09981291A8165 /* ActivityEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityEvent.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 		EA38E2E9F22A2C6D199F50BB /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
+				E6A96FE88805D93EE777667E /* ExternalToolPicker.swift */,
 				077A3FB74AEAF515B7D332F3 /* PreferencesView.swift */,
 			);
 			path = Preferences;
@@ -390,6 +393,7 @@
 				C9A6CEBAE96AB6950295F013 /* ConfigFileStore.swift in Sources */,
 				7D009CD66378474CB7A45B36 /* DashboardView.swift in Sources */,
 				AD27156C1B2CFB6382BA3E08 /* DiffViewerView.swift in Sources */,
+				5EDB965E7C8D34E7A41C5A71 /* ExternalToolPicker.swift in Sources */,
 				6A69F9E5D4230BE67DE8FB69 /* FileListItemView.swift in Sources */,
 				8E3932AD07818452D806152F /* FileStateEngine.swift in Sources */,
 				DAFBFCE4CA966643779DCBB9 /* FileStatus.swift in Sources */,
@@ -530,7 +534,7 @@
 				CODE_SIGN_ENTITLEMENTS = ChezmoiSyncMonitor/Resources/ChezmoiSyncMonitor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -540,7 +544,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cc.carpio.ChezmoiSyncMonitor;
 				PRODUCT_MODULE_NAME = ChezmoiSyncMonitor;
 				PRODUCT_NAME = "Chezmoi Sync Monitor";
@@ -637,7 +641,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_TESTABILITY = NO;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -647,7 +651,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = cc.carpio.ChezmoiSyncMonitor;
 				PRODUCT_MODULE_NAME = ChezmoiSyncMonitor;
 				PRODUCT_NAME = "Chezmoi Sync Monitor";
