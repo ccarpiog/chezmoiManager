@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="22"
+   height="22"
+   viewBox="0 0 22 22"
+   fill="none"
+   version="1.1"
+   id="svg3"
+   sodipodi:docname="icono-chezmoi-menubar.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="37.818182"
+     inkscape:cx="10.986779"
+     inkscape:cy="10.986779"
+     inkscape:window-width="2088"
+     inkscape:window-height="1186"
+     inkscape:window-x="0"
+     inkscape:window-y="1025"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3" />
+  <path
+     d="M18.5 11C18.5 6.85786 15.1421 3.5 11 3.5C6.85786 3.5 3.5 6.85786 3.5 11C3.5 15.1421 6.85786 18.5 11 18.5C12.7 18.5 14.2 17.9 15.4 17"
+     stroke="currentColor"
+     stroke-width="2"
+     stroke-linecap="round"
+     id="path1" />
+  <path
+     d="M14.5 19L16 17L14 15.5"
+     stroke="currentColor"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path2" />
+  <path
+     d="m 10.894231,6.0192308 -4.0000002,3.5 V 14.019231 H 14.894231 V 9.5192308 Z"
+     fill="currentColor"
+     id="path3" />
+</svg>

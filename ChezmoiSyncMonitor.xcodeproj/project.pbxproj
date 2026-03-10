@@ -1,0 +1,696 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07C7F1D01E037E175B6ADC25 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A016019CB29FF197F28FC3F8 /* ModelTests.swift */; };
+		0B1ED7899466E3644FE9400C /* CommandResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6FD1B609EFE891EEAE0FAE /* CommandResult.swift */; };
+		28F920DEC0785870E2963266 /* AppStateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95BAA83B167676C318A3519 /* AppStateStoreTests.swift */; };
+		2DDEB632D687C00E39E8B818 /* ChezmoiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB1D941E8DE33E08014314C /* ChezmoiService.swift */; };
+		3A736CB59DF239C61CC385E8 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA98A2BC745121FA54ACE5F3 /* Protocols.swift */; };
+		3FFA0F150545D0749C08F5CA /* SyncSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE6FAA8AADA5F583F0D481E /* SyncSnapshot.swift */; };
+		4D7FC007AEA2A080419C7704 /* RefreshState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C17BAF6AFD26BB2E735FC4D /* RefreshState.swift */; };
+		4E1DD88B66FBE33F62253934 /* FileStateEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005819FA96E5AFE10B651F6F /* FileStateEngineTests.swift */; };
+		53A908DA0B828827CF059A01 /* RelativeTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A571F838AEFB88C2486BFCA5 /* RelativeTimeFormatter.swift */; };
+		54E3A665B3A34BD26D67E448 /* ChezmoiSyncMonitorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B56C1D5D00407E3DA42F87 /* ChezmoiSyncMonitorApp.swift */; };
+		58DC54FA0AC1941DF82CEBB3 /* PreferencesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D4733780605B5A09BF6DED /* PreferencesStore.swift */; };
+		5A7627AD09498C8793449712 /* GitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1AB8082A1BBC7BC6D4B8B4 /* GitService.swift */; };
+		657607E51448237E04B1A1B4 /* ActivityLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D88B737F6A7D06A98FF6B6 /* ActivityLogView.swift */; };
+		6A69F9E5D4230BE67DE8FB69 /* FileListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE8B8BDE5AAA3D5C822023F /* FileListItemView.swift */; };
+		717D59F58E14EC44A028DED7 /* MenuBarIconRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B382F1FB04C481064F73C977 /* MenuBarIconRenderer.swift */; };
+		7808B6A0D3CC42EE091FFAA7 /* RefreshCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9277E0B18DCCA77AFBFE418 /* RefreshCoordinator.swift */; };
+		7D009CD66378474CB7A45B36 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9286DE2A50F1DB548945C510 /* DashboardView.swift */; };
+		8090C31099FBE51D54D4C083 /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BF142468D4F7AA9FE31E03 /* AppPreferences.swift */; };
+		82D6D65136829E82AF44D50D /* ActivityEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF09B6049FA09981291A8165 /* ActivityEvent.swift */; };
+		897AE7709FAD7CA43A055D75 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8962E0DC59BB48F8E94745C /* NotificationService.swift */; };
+		8E3932AD07818452D806152F /* FileStateEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509916EC269F3AFD7D33A8FA /* FileStateEngine.swift */; };
+		9122DB11EA6813DCBE4B5278 /* FileSyncState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC61597CF07DDA044D32EBD /* FileSyncState.swift */; };
+		9A511E379B8C2ADB9E36533B /* WatcherNotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522C630E65EEB8C00D095C1 /* WatcherNotificationTests.swift */; };
+		9AE6693802A0653FDED3E687 /* StatusIconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3645FC997820145C23A0DE /* StatusIconProvider.swift */; };
+		9D4B861A9C3BC11733CFA468 /* PATHResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959218145E9096AB201526F3 /* PATHResolver.swift */; };
+		A20627406F4974917919F104 /* OverviewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81604EF43B5792DC590A2AD /* OverviewCardView.swift */; };
+		AD27156C1B2CFB6382BA3E08 /* DiffViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922C9AB9D8F672CA382551E1 /* DiffViewerView.swift */; };
+		AF2F288217914319F5A93D6E /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077A3FB74AEAF515B7D332F3 /* PreferencesView.swift */; };
+		B19C04E85AF187496C1DB653 /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB23FBBEBB8645B71C338A6 /* ProcessRunner.swift */; };
+		BC51C7021D933AB35CB15948 /* AppStateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C55487411780583D81904 /* AppStateStore.swift */; };
+		BD2A00686A28D4DFF5C87705 /* ActivityLogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7F03492A63F15C51860A7E /* ActivityLogStore.swift */; };
+		BE29D6CF38B506C8F9DF0E61 /* ChezmoiSyncMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4698ECED924374CF7B29A15 /* ChezmoiSyncMonitorTests.swift */; };
+		C1EB2800835684A73CF26D16 /* HardeningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794862E9826A1580D348960F /* HardeningTests.swift */; };
+		C9A6CEBAE96AB6950295F013 /* ConfigFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7614ED9EFD60389C594962 /* ConfigFileStore.swift */; };
+		D3BC9A180CABF9454A4802AD /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCAFDDA98866AA395DBB35EC /* MenuBarView.swift */; };
+		DAFBFCE4CA966643779DCBB9 /* FileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9B1ED98510CC78F028491A /* FileStatus.swift */; };
+		E5B7DEB37B0E17F337B81547 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 45385C66D3443FF30CBE6B37 /* Localizable.strings */; };
+		E86FBF00C98112BB6763AB1E /* WatcherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33BD179B34ECE74D2FF262E /* WatcherService.swift */; };
+		EE8057719D77BCEB2E1D3E9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA5361D5620AFB23948A681F /* Assets.xcassets */; };
+		F31D213814B4A7292E71E97B /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693493BEF19E7D4B317322E6 /* AppError.swift */; };
+		F823168F45D045F9826A0046 /* ServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE7CA32AE76E9BBA7BAA68A /* ServiceTests.swift */; };
+		FDC194E0526D4AE546B43B36 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE83FD2D87B50A69B26A3A42 /* OnboardingView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		745CDE1A06FF2C222CC751D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 221FFDEA7B5CE35040CB14E0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE6AA3E706108673E688C694;
+			remoteInfo = ChezmoiSyncMonitor;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		005819FA96E5AFE10B651F6F /* FileStateEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStateEngineTests.swift; sourceTree = "<group>"; };
+		0522C630E65EEB8C00D095C1 /* WatcherNotificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatcherNotificationTests.swift; sourceTree = "<group>"; };
+		077A3FB74AEAF515B7D332F3 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		0E12C1650B24394CFA7E4092 /* ChezmoiSyncMonitorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChezmoiSyncMonitorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0EC61597CF07DDA044D32EBD /* FileSyncState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSyncState.swift; sourceTree = "<group>"; };
+		18D4733780605B5A09BF6DED /* PreferencesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesStore.swift; sourceTree = "<group>"; };
+		1956C395A39E660AA91AE77F /* ChezmoiSyncMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChezmoiSyncMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C3645FC997820145C23A0DE /* StatusIconProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIconProvider.swift; sourceTree = "<group>"; };
+		1E6FD1B609EFE891EEAE0FAE /* CommandResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandResult.swift; sourceTree = "<group>"; };
+		28750EAF247273B768EE2A76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2C17BAF6AFD26BB2E735FC4D /* RefreshState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshState.swift; sourceTree = "<group>"; };
+		2D7614ED9EFD60389C594962 /* ConfigFileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFileStore.swift; sourceTree = "<group>"; };
+		2D7C55487411780583D81904 /* AppStateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateStore.swift; sourceTree = "<group>"; };
+		2EE8B8BDE5AAA3D5C822023F /* FileListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListItemView.swift; sourceTree = "<group>"; };
+		3CE6FAA8AADA5F583F0D481E /* SyncSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSnapshot.swift; sourceTree = "<group>"; };
+		3F7F03492A63F15C51860A7E /* ActivityLogStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogStore.swift; sourceTree = "<group>"; };
+		45385C66D3443FF30CBE6B37 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		509916EC269F3AFD7D33A8FA /* FileStateEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStateEngine.swift; sourceTree = "<group>"; };
+		62BF142468D4F7AA9FE31E03 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		693493BEF19E7D4B317322E6 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
+		6D1AB8082A1BBC7BC6D4B8B4 /* GitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitService.swift; sourceTree = "<group>"; };
+		794862E9826A1580D348960F /* HardeningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardeningTests.swift; sourceTree = "<group>"; };
+		88B56C1D5D00407E3DA42F87 /* ChezmoiSyncMonitorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChezmoiSyncMonitorApp.swift; sourceTree = "<group>"; };
+		8BB1D941E8DE33E08014314C /* ChezmoiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChezmoiService.swift; sourceTree = "<group>"; };
+		8CB23FBBEBB8645B71C338A6 /* ProcessRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
+		922C9AB9D8F672CA382551E1 /* DiffViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffViewerView.swift; sourceTree = "<group>"; };
+		9286DE2A50F1DB548945C510 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		959218145E9096AB201526F3 /* PATHResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PATHResolver.swift; sourceTree = "<group>"; };
+		9BE7CA32AE76E9BBA7BAA68A /* ServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTests.swift; sourceTree = "<group>"; };
+		9E9B1ED98510CC78F028491A /* FileStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStatus.swift; sourceTree = "<group>"; };
+		A016019CB29FF197F28FC3F8 /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
+		A571F838AEFB88C2486BFCA5 /* RelativeTimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelativeTimeFormatter.swift; sourceTree = "<group>"; };
+		B33BD179B34ECE74D2FF262E /* WatcherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatcherService.swift; sourceTree = "<group>"; };
+		B382F1FB04C481064F73C977 /* MenuBarIconRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarIconRenderer.swift; sourceTree = "<group>"; };
+		B8962E0DC59BB48F8E94745C /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		B95BAA83B167676C318A3519 /* AppStateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateStoreTests.swift; sourceTree = "<group>"; };
+		BCAFDDA98866AA395DBB35EC /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		C715A3FDEB63092636BAC7F3 /* ChezmoiSyncMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChezmoiSyncMonitor.entitlements; sourceTree = "<group>"; };
+		C81604EF43B5792DC590A2AD /* OverviewCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewCardView.swift; sourceTree = "<group>"; };
+		CA98A2BC745121FA54ACE5F3 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		CE83FD2D87B50A69B26A3A42 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		D9277E0B18DCCA77AFBFE418 /* RefreshCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshCoordinator.swift; sourceTree = "<group>"; };
+		E4698ECED924374CF7B29A15 /* ChezmoiSyncMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChezmoiSyncMonitorTests.swift; sourceTree = "<group>"; };
+		F3D88B737F6A7D06A98FF6B6 /* ActivityLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogView.swift; sourceTree = "<group>"; };
+		FA5361D5620AFB23948A681F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FF09B6049FA09981291A8165 /* ActivityEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityEvent.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		086708E50C19BDFCC58A713C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FA5361D5620AFB23948A681F /* Assets.xcassets */,
+				C715A3FDEB63092636BAC7F3 /* ChezmoiSyncMonitor.entitlements */,
+				28750EAF247273B768EE2A76 /* Info.plist */,
+				45385C66D3443FF30CBE6B37 /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		12C179133D51979E30B43275 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				959218145E9096AB201526F3 /* PATHResolver.swift */,
+				8CB23FBBEBB8645B71C338A6 /* ProcessRunner.swift */,
+				D9277E0B18DCCA77AFBFE418 /* RefreshCoordinator.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		3D99E4A1576AE49C5DE13A81 = {
+			isa = PBXGroup;
+			children = (
+				55A68E92774EB2E4EE6962FF /* ChezmoiSyncMonitor */,
+				4E530B92B4D3BF966DF569B1 /* ChezmoiSyncMonitorTests */,
+				FD60E874E2E58EE077E35D30 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3FE407FCF5B700AE75DE8686 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				CE83FD2D87B50A69B26A3A42 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		4E530B92B4D3BF966DF569B1 /* ChezmoiSyncMonitorTests */ = {
+			isa = PBXGroup;
+			children = (
+				B95BAA83B167676C318A3519 /* AppStateStoreTests.swift */,
+				E4698ECED924374CF7B29A15 /* ChezmoiSyncMonitorTests.swift */,
+				005819FA96E5AFE10B651F6F /* FileStateEngineTests.swift */,
+				794862E9826A1580D348960F /* HardeningTests.swift */,
+				A016019CB29FF197F28FC3F8 /* ModelTests.swift */,
+				9BE7CA32AE76E9BBA7BAA68A /* ServiceTests.swift */,
+				0522C630E65EEB8C00D095C1 /* WatcherNotificationTests.swift */,
+			);
+			path = ChezmoiSyncMonitorTests;
+			sourceTree = "<group>";
+		};
+		55A68E92774EB2E4EE6962FF /* ChezmoiSyncMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				C9AE5ADC90FFA15B1D05F90F /* App */,
+				12C179133D51979E30B43275 /* Core */,
+				E0F89E5964537227E593D51D /* Models */,
+				FB848627BFE6781F51936063 /* Persistence */,
+				086708E50C19BDFCC58A713C /* Resources */,
+				AC1155D5EE72115272468665 /* Services */,
+				AC8AE7CDE43EF84D6E8C1E40 /* State */,
+				ACDBBFF3D3E19306BCF3F04A /* UI */,
+				5C135ED79D2EFA86735EF230 /* Utilities */,
+			);
+			path = ChezmoiSyncMonitor;
+			sourceTree = "<group>";
+		};
+		5C135ED79D2EFA86735EF230 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				B382F1FB04C481064F73C977 /* MenuBarIconRenderer.swift */,
+				A571F838AEFB88C2486BFCA5 /* RelativeTimeFormatter.swift */,
+				1C3645FC997820145C23A0DE /* StatusIconProvider.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		7C4D5DA2AC192E12FAE4E3E1 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				F3D88B737F6A7D06A98FF6B6 /* ActivityLogView.swift */,
+				9286DE2A50F1DB548945C510 /* DashboardView.swift */,
+				922C9AB9D8F672CA382551E1 /* DiffViewerView.swift */,
+				2EE8B8BDE5AAA3D5C822023F /* FileListItemView.swift */,
+				C81604EF43B5792DC590A2AD /* OverviewCardView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		AC1155D5EE72115272468665 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				8BB1D941E8DE33E08014314C /* ChezmoiService.swift */,
+				509916EC269F3AFD7D33A8FA /* FileStateEngine.swift */,
+				6D1AB8082A1BBC7BC6D4B8B4 /* GitService.swift */,
+				B8962E0DC59BB48F8E94745C /* NotificationService.swift */,
+				CA98A2BC745121FA54ACE5F3 /* Protocols.swift */,
+				B33BD179B34ECE74D2FF262E /* WatcherService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		AC8AE7CDE43EF84D6E8C1E40 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				2D7C55487411780583D81904 /* AppStateStore.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		ACDBBFF3D3E19306BCF3F04A /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				7C4D5DA2AC192E12FAE4E3E1 /* Dashboard */,
+				AF666FD34C82D091209C66A1 /* MenuBar */,
+				3FE407FCF5B700AE75DE8686 /* Onboarding */,
+				EA38E2E9F22A2C6D199F50BB /* Preferences */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		AF666FD34C82D091209C66A1 /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				BCAFDDA98866AA395DBB35EC /* MenuBarView.swift */,
+			);
+			path = MenuBar;
+			sourceTree = "<group>";
+		};
+		C9AE5ADC90FFA15B1D05F90F /* App */ = {
+			isa = PBXGroup;
+			children = (
+				88B56C1D5D00407E3DA42F87 /* ChezmoiSyncMonitorApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		E0F89E5964537227E593D51D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FF09B6049FA09981291A8165 /* ActivityEvent.swift */,
+				693493BEF19E7D4B317322E6 /* AppError.swift */,
+				62BF142468D4F7AA9FE31E03 /* AppPreferences.swift */,
+				1E6FD1B609EFE891EEAE0FAE /* CommandResult.swift */,
+				9E9B1ED98510CC78F028491A /* FileStatus.swift */,
+				0EC61597CF07DDA044D32EBD /* FileSyncState.swift */,
+				2C17BAF6AFD26BB2E735FC4D /* RefreshState.swift */,
+				3CE6FAA8AADA5F583F0D481E /* SyncSnapshot.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EA38E2E9F22A2C6D199F50BB /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				077A3FB74AEAF515B7D332F3 /* PreferencesView.swift */,
+			);
+			path = Preferences;
+			sourceTree = "<group>";
+		};
+		FB848627BFE6781F51936063 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				3F7F03492A63F15C51860A7E /* ActivityLogStore.swift */,
+				2D7614ED9EFD60389C594962 /* ConfigFileStore.swift */,
+				18D4733780605B5A09BF6DED /* PreferencesStore.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		FD60E874E2E58EE077E35D30 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1956C395A39E660AA91AE77F /* ChezmoiSyncMonitor.app */,
+				0E12C1650B24394CFA7E4092 /* ChezmoiSyncMonitorTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		742DA2F0CEB200549AB8D67C /* ChezmoiSyncMonitorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D662D20A48BCBA9C55A1A3C1 /* Build configuration list for PBXNativeTarget "ChezmoiSyncMonitorTests" */;
+			buildPhases = (
+				6FE88BD695626BA704206301 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				50F13536A839701CE36D1796 /* PBXTargetDependency */,
+			);
+			name = ChezmoiSyncMonitorTests;
+			packageProductDependencies = (
+			);
+			productName = ChezmoiSyncMonitorTests;
+			productReference = 0E12C1650B24394CFA7E4092 /* ChezmoiSyncMonitorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CE6AA3E706108673E688C694 /* ChezmoiSyncMonitor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A4ACD840490B75A41FDBCB9A /* Build configuration list for PBXNativeTarget "ChezmoiSyncMonitor" */;
+			buildPhases = (
+				30905283B2F4DBD9CF15D15E /* Sources */,
+				450CA9D569DA79688E97E686 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChezmoiSyncMonitor;
+			packageProductDependencies = (
+			);
+			productName = ChezmoiSyncMonitor;
+			productReference = 1956C395A39E660AA91AE77F /* ChezmoiSyncMonitor.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		221FFDEA7B5CE35040CB14E0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 9C3C6AA61A2F2EBC5F88CB25 /* Build configuration list for PBXProject "ChezmoiSyncMonitor" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 3D99E4A1576AE49C5DE13A81;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = FD60E874E2E58EE077E35D30 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CE6AA3E706108673E688C694 /* ChezmoiSyncMonitor */,
+				742DA2F0CEB200549AB8D67C /* ChezmoiSyncMonitorTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		450CA9D569DA79688E97E686 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE8057719D77BCEB2E1D3E9D /* Assets.xcassets in Resources */,
+				E5B7DEB37B0E17F337B81547 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		30905283B2F4DBD9CF15D15E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82D6D65136829E82AF44D50D /* ActivityEvent.swift in Sources */,
+				BD2A00686A28D4DFF5C87705 /* ActivityLogStore.swift in Sources */,
+				657607E51448237E04B1A1B4 /* ActivityLogView.swift in Sources */,
+				F31D213814B4A7292E71E97B /* AppError.swift in Sources */,
+				8090C31099FBE51D54D4C083 /* AppPreferences.swift in Sources */,
+				BC51C7021D933AB35CB15948 /* AppStateStore.swift in Sources */,
+				2DDEB632D687C00E39E8B818 /* ChezmoiService.swift in Sources */,
+				54E3A665B3A34BD26D67E448 /* ChezmoiSyncMonitorApp.swift in Sources */,
+				0B1ED7899466E3644FE9400C /* CommandResult.swift in Sources */,
+				C9A6CEBAE96AB6950295F013 /* ConfigFileStore.swift in Sources */,
+				7D009CD66378474CB7A45B36 /* DashboardView.swift in Sources */,
+				AD27156C1B2CFB6382BA3E08 /* DiffViewerView.swift in Sources */,
+				6A69F9E5D4230BE67DE8FB69 /* FileListItemView.swift in Sources */,
+				8E3932AD07818452D806152F /* FileStateEngine.swift in Sources */,
+				DAFBFCE4CA966643779DCBB9 /* FileStatus.swift in Sources */,
+				9122DB11EA6813DCBE4B5278 /* FileSyncState.swift in Sources */,
+				5A7627AD09498C8793449712 /* GitService.swift in Sources */,
+				717D59F58E14EC44A028DED7 /* MenuBarIconRenderer.swift in Sources */,
+				D3BC9A180CABF9454A4802AD /* MenuBarView.swift in Sources */,
+				897AE7709FAD7CA43A055D75 /* NotificationService.swift in Sources */,
+				FDC194E0526D4AE546B43B36 /* OnboardingView.swift in Sources */,
+				A20627406F4974917919F104 /* OverviewCardView.swift in Sources */,
+				9D4B861A9C3BC11733CFA468 /* PATHResolver.swift in Sources */,
+				58DC54FA0AC1941DF82CEBB3 /* PreferencesStore.swift in Sources */,
+				AF2F288217914319F5A93D6E /* PreferencesView.swift in Sources */,
+				B19C04E85AF187496C1DB653 /* ProcessRunner.swift in Sources */,
+				3A736CB59DF239C61CC385E8 /* Protocols.swift in Sources */,
+				7808B6A0D3CC42EE091FFAA7 /* RefreshCoordinator.swift in Sources */,
+				4D7FC007AEA2A080419C7704 /* RefreshState.swift in Sources */,
+				53A908DA0B828827CF059A01 /* RelativeTimeFormatter.swift in Sources */,
+				9AE6693802A0653FDED3E687 /* StatusIconProvider.swift in Sources */,
+				3FFA0F150545D0749C08F5CA /* SyncSnapshot.swift in Sources */,
+				E86FBF00C98112BB6763AB1E /* WatcherService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6FE88BD695626BA704206301 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28F920DEC0785870E2963266 /* AppStateStoreTests.swift in Sources */,
+				BE29D6CF38B506C8F9DF0E61 /* ChezmoiSyncMonitorTests.swift in Sources */,
+				4E1DD88B66FBE33F62253934 /* FileStateEngineTests.swift in Sources */,
+				C1EB2800835684A73CF26D16 /* HardeningTests.swift in Sources */,
+				07C7F1D01E037E175B6ADC25 /* ModelTests.swift in Sources */,
+				F823168F45D045F9826A0046 /* ServiceTests.swift in Sources */,
+				9A511E379B8C2ADB9E36533B /* WatcherNotificationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		50F13536A839701CE36D1796 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE6AA3E706108673E688C694 /* ChezmoiSyncMonitor */;
+			targetProxy = 745CDE1A06FF2C222CC751D6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0BBC652A2890755C95602233 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cc.carpio.ChezmoiSyncMonitorTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chezmoi Sync Monitor.app/Contents/MacOS/Chezmoi Sync Monitor";
+			};
+			name = Debug;
+		};
+		1C67145AE725AE1F4F87CBAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		984AFD0A93EB71143E74DC80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ChezmoiSyncMonitor/Resources/ChezmoiSyncMonitor.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ChezmoiSyncMonitor/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cc.carpio.ChezmoiSyncMonitor;
+				PRODUCT_MODULE_NAME = ChezmoiSyncMonitor;
+				PRODUCT_NAME = "Chezmoi Sync Monitor";
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		B0606E1FAC47C229658BD10E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cc.carpio.ChezmoiSyncMonitorTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chezmoi Sync Monitor.app/Contents/MacOS/Chezmoi Sync Monitor";
+			};
+			name = Release;
+		};
+		EA6F64497DDD1FE08186FA4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		F6AF254DD6BBC6706514DFE6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ChezmoiSyncMonitor/Resources/ChezmoiSyncMonitor.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_TESTABILITY = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ChezmoiSyncMonitor/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cc.carpio.ChezmoiSyncMonitor;
+				PRODUCT_MODULE_NAME = ChezmoiSyncMonitor;
+				PRODUCT_NAME = "Chezmoi Sync Monitor";
+				SDKROOT = macosx;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9C3C6AA61A2F2EBC5F88CB25 /* Build configuration list for PBXProject "ChezmoiSyncMonitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C67145AE725AE1F4F87CBAF /* Debug */,
+				EA6F64497DDD1FE08186FA4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A4ACD840490B75A41FDBCB9A /* Build configuration list for PBXNativeTarget "ChezmoiSyncMonitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				984AFD0A93EB71143E74DC80 /* Debug */,
+				F6AF254DD6BBC6706514DFE6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D662D20A48BCBA9C55A1A3C1 /* Build configuration list for PBXNativeTarget "ChezmoiSyncMonitorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0BBC652A2890755C95602233 /* Debug */,
+				B0606E1FAC47C229658BD10E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 221FFDEA7B5CE35040CB14E0 /* Project object */;
+}

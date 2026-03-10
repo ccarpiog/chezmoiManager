@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   fill="none"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="icono-chezmoi.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.625"
+     inkscape:cx="255.69231"
+     inkscape:cy="255.69231"
+     inkscape:window-width="1672"
+     inkscape:window-height="1186"
+     inkscape:window-x="0"
+     inkscape:window-y="1025"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg6" />
+  <rect
+     width="512"
+     height="512"
+     rx="1.0769231"
+     fill="#1a1b1e"
+     id="rect1"
+     x="0"
+     y="0" />
+  <path
+     d="M430 256C430 159.902 352.098 82 256 82C159.902 82 82 159.902 82 256C82 352.098 159.902 430 256 430C295.539 430 331.95 416.793 361 394.5"
+     stroke="url(#paint0_linear)"
+     stroke-width="28"
+     stroke-linecap="round"
+     id="path1" />
+  <path
+     d="M350 435L375 395L335 370"
+     stroke="url(#paint0_linear)"
+     stroke-width="28"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path2" />
+  <path
+     d="m 251.69231,140.30769 -96,80 v 130 h 192 v -130 z"
+     fill="#9daaf2"
+     id="path3" />
+  <path
+     d="M315 185V160H290"
+     stroke="#9DAAF2"
+     stroke-width="20"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path4" />
+  <path
+     d="m 200.76923,246.46154 35,35 -35,35"
+     stroke="#ff9e7d"
+     stroke-width="18"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path5" />
+  <line
+     x1="250.76923"
+     y1="316.46155"
+     x2="290.76923"
+     y2="316.46155"
+     stroke="#ff9e7d"
+     stroke-width="18"
+     stroke-linecap="round"
+     id="line5" />
+  <defs
+     id="defs6">
+    <linearGradient
+       id="paint0_linear"
+       x1="82"
+       y1="82"
+       x2="430"
+       y2="430"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#70E1D5"
+         id="stop5" />
+      <stop
+         offset="1"
+         stop-color="#54D06F"
+         id="stop6" />
+    </linearGradient>
+  </defs>
+</svg>

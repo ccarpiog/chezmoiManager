@@ -1,0 +1,99 @@
+2026-03-10 23:00:58 +0000 [MT] Initial pipeline context: <IDEDistributionProcessingPipelineContext: 0x8484a9200; archive(resolved)="<IDEArchive: 0x84a5138e0>", distributionTask(resolved)="2", distributionDestination(resolved)="1", distributionMethod(resolved)="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team(resolved)="<IDEProvisioningBasicTeam: 0x8485d6a60; teamID='CXVKS8ZNCD', teamName='(null)'>">
+	Chain (12, self inclusive):
+	<IDEDistributionProcessingPipelineContext: 0x8484a9200; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team="<IDEProvisioningBasicTeam: 0x8485d6a60; teamID='CXVKS8ZNCD', teamName='(null)'>">
+	<IDEDistributionProcessingPipelineContext: 0x8484a8f00; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team="<IDEProvisioningBasicTeam: 0x8485d6a60; teamID='CXVKS8ZNCD', teamName='(null)'>">
+	<IDEDistributionContext: 0x84a756080; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team="<IDEProvisioningBasicTeam: 0x8485d6a60; teamID='CXVKS8ZNCD', teamName='(null)'>">
+	<IDEDistributionContext: 0x84a755b80; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team="<IDEProvisioningBasicTeam: 0x8485d6a60; teamID='CXVKS8ZNCD', teamName='(null)'>">
+	<IDEDistributionContext: 0x84a755900; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team="<IDEProvisioningBasicTeam: 0x8485d6a60; teamID='CXVKS8ZNCD', teamName='(null)'>">
+	<IDEDistributionContext: 0x84a755680; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team="<IDEProvisioningBasicTeam: 0x8485d6a60; teamID='CXVKS8ZNCD', teamName='(null)'>">
+	<IDEDistributionContext: 0x84a754780; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team="<IDEProvisioningBasicTeam: 0x8485d6a60; teamID='CXVKS8ZNCD', teamName='(null)'>">
+	<IDEDistributionContext: 0x84a754500; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team="<IDEProvisioningBasicTeam: 0x8485d6a60; teamID='CXVKS8ZNCD', teamName='(null)'>">
+	<IDEDistributionContext: 0x84a754280; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team="<IDEProvisioningBasicTeam: 0x8485d6a60; teamID='CXVKS8ZNCD', teamName='(null)'>">
+	<IDEDistributionContext: 0x84a754000; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team="(null)">
+	<IDEDistributionContext: 0x10301bef0; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x84859c3e0>", team="(null)">
+	<IDEDistributionContext: 0x102fe6810; archive = "<IDEArchive: 0x84a5138e0>", distributionMethod="(null)", team="(null)">
+</IDEDistributionProcessingPipelineContext: 0x8484a9200>
+2026-03-10 23:00:58 +0000 [MT] Processing step: IDEDistributionCreateDestRootStep
+2026-03-10 23:00:58 +0000 [MT] Processing step: IDEDistributionCopyItemStep
+2026-03-10 23:00:58 +0000 [MT] Running /usr/bin/ditto '-V' '/Users/ccarpio/Developer/chezmoiManager/build/release/ChezmoiSyncMonitor.xcarchive/Products/Applications/Chezmoi Sync Monitor.app' '/var/folders/wl/7pb6bhd910bcjflz4nw1sc_40000gn/T/XcodeDistPipeline.~~~alrqYs/Root/Applications/Chezmoi Sync Monitor.app'
+2026-03-10 23:00:58 +0000  >>> Copying /Users/ccarpio/Developer/chezmoiManager/build/release/ChezmoiSyncMonitor.xcarchive/Products/Applications/Chezmoi Sync Monitor.app 
+2026-03-10 23:00:58 +0000  copying file ./Contents/_CodeSignature/CodeResources ... 
+2026-03-10 23:00:58 +0000  2916 bytes for ./Contents/_CodeSignature/CodeResources
+2026-03-10 23:00:58 +0000  copying file ./Contents/MacOS/Chezmoi Sync Monitor ... 
+2026-03-10 23:00:58 +0000  1374752 bytes for ./Contents/MacOS/Chezmoi Sync Monitor
+2026-03-10 23:00:58 +0000  copying file ./Contents/Resources/AppIcon.icns ... 
+2026-03-10 23:00:58 +0000  32412 bytes for ./Contents/Resources/AppIcon.icns
+2026-03-10 23:00:58 +0000  copying file ./Contents/Resources/Localizable.strings ... 
+2026-03-10 23:00:58 +0000  1512 bytes for ./Contents/Resources/Localizable.strings
+2026-03-10 23:00:58 +0000  copying file ./Contents/Resources/Assets.car ... 
+2026-03-10 23:00:58 +0000  168040 bytes for ./Contents/Resources/Assets.car
+2026-03-10 23:00:58 +0000  copying file ./Contents/Info.plist ... 
+2026-03-10 23:00:58 +0000  1544 bytes for ./Contents/Info.plist
+2026-03-10 23:00:58 +0000  copying file ./Contents/PkgInfo ... 
+2026-03-10 23:00:58 +0000  8 bytes for ./Contents/PkgInfo
+2026-03-10 23:00:58 +0000 [MT] /usr/bin/ditto exited with 0
+2026-03-10 23:00:58 +0000 [MT] Processing step: IDEDistributionEmbedProfileStep
+2026-03-10 23:00:58 +0000 [MT] Skipping profile for item: <IDEDistributionItem: 0x8484e1aa0; bundleID='cc.carpio.ChezmoiSyncMonitor', path='<DVTFilePath:0x848ca5e00:'/Users/ccarpio/Developer/chezmoiManager/build/release/ChezmoiSyncMonitor.xcarchive/Products/Applications/Chezmoi Sync Monitor.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x8484e16e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x84a4bedc0; name='Developer ID Application: Carlos Carpio García (CXVKS8ZNCD)', hash='7C016121C0689CB514FB3AC55D74C1199CE7D750', serialNumber='6486D647AA5D480C', certificateKinds='(
+    "1.2.840.113635.100.6.1.13"
+), issueDate='2026-03-10 22:44:37 +0000''>', entitlements='{
+    "com.apple.security.app-sandbox" = 0;
+}', teamID='CXVKS8ZNCD', identifier='cc.carpio.ChezmoiSyncMonitor', executablePath='<DVTFilePath:0x8484e7a00:'/Users/ccarpio/Developer/chezmoiManager/build/release/ChezmoiSyncMonitor.xcarchive/Products/Applications/Chezmoi Sync Monitor.app/Contents/MacOS/Chezmoi Sync Monitor'>', hardenedRuntime='1'>'>
+2026-03-10 23:00:58 +0000 [MT] Processing step: IDEDistributionInfoPlistStep
+2026-03-10 23:00:58 +0000 [MT] Skipping step: IDEDistributionInfoPlistStep because it said so
+2026-03-10 23:00:58 +0000 [MT] Processing step: IDEDistributionAppThinningPlistStep
+2026-03-10 23:00:58 +0000 [MT] Processing step: IDEDistributionSymbolsStep
+2026-03-10 23:00:58 +0000 [MT] Skipping step: IDEDistributionSymbolsStep because it said so
+2026-03-10 23:00:58 +0000 [MT] Processing step: IDEDistributionAppThinningStep
+2026-03-10 23:00:58 +0000 [MT] Skipping step: IDEDistributionAppThinningStep because it said so
+2026-03-10 23:00:58 +0000 [MT] Processing step: IDEDistributionArchThinningStep
+2026-03-10 23:00:58 +0000 [MT] Archs to thin for item /Users/ccarpio/Developer/chezmoiManager/build/release/ChezmoiSyncMonitor.xcarchive/Products/Applications/Chezmoi Sync Monitor.app are []
+2026-03-10 23:00:58 +0000 [MT] Processing step: IDEDistributionODRStep
+2026-03-10 23:00:58 +0000 [MT] Processing step: IDEDistributionStripXattrsStep
+2026-03-10 23:00:58 +0000 [MT] Skipping stripping extended attributes because the codesign step will strip them.
+2026-03-10 23:00:58 +0000 [MT] Processing step: IDEDistributionCodesignStep
+2026-03-10 23:00:58 +0000 [MT] Entitlements for <IDEDistributionItem: 0x8484e1aa0; bundleID='cc.carpio.ChezmoiSyncMonitor', path='<DVTFilePath:0x848ca5e00:'/Users/ccarpio/Developer/chezmoiManager/build/release/ChezmoiSyncMonitor.xcarchive/Products/Applications/Chezmoi Sync Monitor.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x8484e16e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x84a4bedc0; name='Developer ID Application: Carlos Carpio García (CXVKS8ZNCD)', hash='7C016121C0689CB514FB3AC55D74C1199CE7D750', serialNumber='6486D647AA5D480C', certificateKinds='(
+    "1.2.840.113635.100.6.1.13"
+), issueDate='2026-03-10 22:44:37 +0000''>', entitlements='{
+    "com.apple.security.app-sandbox" = 0;
+}', teamID='CXVKS8ZNCD', identifier='cc.carpio.ChezmoiSyncMonitor', executablePath='<DVTFilePath:0x8484e7a00:'/Users/ccarpio/Developer/chezmoiManager/build/release/ChezmoiSyncMonitor.xcarchive/Products/Applications/Chezmoi Sync Monitor.app/Contents/MacOS/Chezmoi Sync Monitor'>', hardenedRuntime='1'>'>: {
+    "com.apple.security.app-sandbox" = 0;
+}
+2026-03-10 23:00:58 +0000 [MT] Associated App Clip Identifiers Filter: Skipping because "com.apple.developer.associated-appclip-app-identifiers" is not present
+2026-03-10 23:00:58 +0000 [MT] Entitlements for <IDEDistributionItem: 0x8484e1aa0; bundleID='cc.carpio.ChezmoiSyncMonitor', path='<DVTFilePath:0x848ca5e00:'/Users/ccarpio/Developer/chezmoiManager/build/release/ChezmoiSyncMonitor.xcarchive/Products/Applications/Chezmoi Sync Monitor.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x8484e16e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x84a4bf540; name='Developer ID Application: Carlos Carpio García (CXVKS8ZNCD)', hash='7C016121C0689CB514FB3AC55D74C1199CE7D750', serialNumber='6486D647AA5D480C', certificateKinds='(
+    "1.2.840.113635.100.6.1.13"
+), issueDate='2026-03-10 22:44:37 +0000''>', entitlements='{
+    "com.apple.security.app-sandbox" = 0;
+}', teamID='CXVKS8ZNCD', identifier='cc.carpio.ChezmoiSyncMonitor', executablePath='<DVTFilePath:0x8484e7a00:'/Users/ccarpio/Developer/chezmoiManager/build/release/ChezmoiSyncMonitor.xcarchive/Products/Applications/Chezmoi Sync Monitor.app/Contents/MacOS/Chezmoi Sync Monitor'>', hardenedRuntime='1'>'> are: {
+    "com.apple.security.app-sandbox" = 0;
+}
+2026-03-10 23:00:58 +0000 [MT] Writing entitlements for <IDEDistributionItem: 0x8484e1aa0; bundleID='cc.carpio.ChezmoiSyncMonitor', path='<DVTFilePath:0x848ca5e00:'/Users/ccarpio/Developer/chezmoiManager/build/release/ChezmoiSyncMonitor.xcarchive/Products/Applications/Chezmoi Sync Monitor.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x8484e16e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x84a4bf540; name='Developer ID Application: Carlos Carpio García (CXVKS8ZNCD)', hash='7C016121C0689CB514FB3AC55D74C1199CE7D750', serialNumber='6486D647AA5D480C', certificateKinds='(
+    "1.2.840.113635.100.6.1.13"
+), issueDate='2026-03-10 22:44:37 +0000''>', entitlements='{
+    "com.apple.security.app-sandbox" = 0;
+}', teamID='CXVKS8ZNCD', identifier='cc.carpio.ChezmoiSyncMonitor', executablePath='<DVTFilePath:0x8484e7a00:'/Users/ccarpio/Developer/chezmoiManager/build/release/ChezmoiSyncMonitor.xcarchive/Products/Applications/Chezmoi Sync Monitor.app/Contents/MacOS/Chezmoi Sync Monitor'>', hardenedRuntime='1'>'> to: /var/folders/wl/7pb6bhd910bcjflz4nw1sc_40000gn/T/XcodeDistPipeline.~~~alrqYs/entitlements~~~iyjTTB
+2026-03-10 23:00:58 +0000 [MT] invoking codesign: <NSConcreteTask: 0x84870eb70; launchPath='/usr/bin/codesign', arguments='(
+    "-f",
+    "-s",
+    7C016121C0689CB514FB3AC55D74C1199CE7D750,
+    "--entitlements",
+    "/var/folders/wl/7pb6bhd910bcjflz4nw1sc_40000gn/T/XcodeDistPipeline.~~~alrqYs/entitlements~~~iyjTTB",
+    "--requirements",
+    "=designated => anchor apple generic  and identifier \"$self.identifier\" and ((cert leaf[field.1.2.840.113635.100.6.1.9] exists) or ( certificate 1[field.1.2.840.113635.100.6.2.6] exists and certificate leaf[field.1.2.840.113635.100.6.1.13] exists  and certificate leaf[subject.OU] = \"CXVKS8ZNCD\" ))",
+    "--preserve-metadata=identifier,flags,runtime,launch-constraints,library-constraints",
+    "--generate-entitlement-der",
+    "--strip-disallowed-xattrs",
+    "-vvv",
+    "/var/folders/wl/7pb6bhd910bcjflz4nw1sc_40000gn/T/XcodeDistPipeline.~~~alrqYs/Root/Applications/Chezmoi Sync Monitor.app"
+)'>
+2026-03-10 23:00:59 +0000 [MT] codesign output: /var/folders/wl/7pb6bhd910bcjflz4nw1sc_40000gn/T/XcodeDistPipeline.~~~alrqYs/Root/Applications/Chezmoi Sync Monitor.app: replacing existing signature
+/var/folders/wl/7pb6bhd910bcjflz4nw1sc_40000gn/T/XcodeDistPipeline.~~~alrqYs/Root/Applications/Chezmoi Sync Monitor.app: signed app bundle with Mach-O universal (x86_64 arm64) [cc.carpio.ChezmoiSyncMonitor]
+2026-03-10 23:00:59 +0000 [MT] Processing step: IDEDistributionZipODRItemStep
+2026-03-10 23:00:59 +0000 [MT] Skipping step: IDEDistributionZipODRItemStep because it said so
+2026-03-10 23:00:59 +0000 [MT] Processing step: IDEDistributionSkipPackagingStep
+2026-03-10 23:00:59 +0000 [MT] Processing step: IDEDistributionAppStoreInformationStep
+2026-03-10 23:00:59 +0000 [MT] Skipping step: IDEDistributionAppStoreInformationStep because it said so
+2026-03-10 23:00:59 +0000 [MT] Processing step: IDEDistributionGenerateProcessedDistributionItems
+2026-03-10 23:00:59 +0000 [MT] IDEDistributionItem init <DVTFilePath:0x848ce9040:'/var/folders/wl/7pb6bhd910bcjflz4nw1sc_40000gn/T/XcodeDistPipeline.~~~alrqYs/Root/Applications/Chezmoi Sync Monitor.app'>
+2026-03-10 23:00:59 +0000 [MT] [OPTIONAL] Didn't find embedded provisioning profile for <DVTFilePath:0x848ce9040:'/var/folders/wl/7pb6bhd910bcjflz4nw1sc_40000gn/T/XcodeDistPipeline.~~~alrqYs/Root/Applications/Chezmoi Sync Monitor.app'>: Error Domain=NSCocoaErrorDomain Code=4 "No file at <DVTFilePath:0x84aeb80e0:'/var/folders/wl/7pb6bhd910bcjflz4nw1sc_40000gn/T/XcodeDistPipeline.~~~alrqYs/Root/Applications/Chezmoi Sync Monitor.app/Contents/embedded.provisionprofile'>" UserInfo={NSLocalizedDescription=No file at <DVTFilePath:0x84aeb80e0:'/var/folders/wl/7pb6bhd910bcjflz4nw1sc_40000gn/T/XcodeDistPipeline.~~~alrqYs/Root/Applications/Chezmoi Sync Monitor.app/Contents/embedded.provisionprofile'>}
+2026-03-10 23:00:59 +0000 [MT] Processing step: IDEDistributionCreateManifestStep
+2026-03-10 23:00:59 +0000 [MT] Skipping step: IDEDistributionCreateManifestStep because it said so

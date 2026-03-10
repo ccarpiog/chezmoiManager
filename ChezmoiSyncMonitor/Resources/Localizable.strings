@@ -1,0 +1,22 @@
+/* Localizable.strings — English (base) */
+
+/* File sync state display names */
+"state.clean" = "Clean";
+"state.localDrift" = "Local Drift";
+"state.remoteDrift" = "Remote Drift";
+"state.dualDrift" = "Dual Drift";
+"state.error" = "Error";
+
+/* File action labels */
+"action.syncLocal" = "Sync Local Changes";
+"action.applyRemote" = "Apply Remote Changes";
+"action.viewDiff" = "View Diff";
+"action.openEditor" = "Open in Editor";
+"action.openMergeTool" = "Open Merge Tool";
+
+/* Error messages */
+"error.cliFailure" = "Command '%@' failed with exit code %d: %@";
+"error.authError" = "Authentication error: %@";
+"error.repoUnreachable" = "Repository unreachable: %@";
+"error.parseFailure" = "Failed to parse output: %@";
+"error.unknown" = "Unknown error: %@";

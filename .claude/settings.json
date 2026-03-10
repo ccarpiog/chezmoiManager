@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Bash(mkdir *)",
+      "Bash(ls *)",
+      "Bash(swift build*)",
+      "Bash(swift test*)",
+      "Bash(swift package*)",
+      "Bash(xcodebuild*)",
+      "Bash(which *)",
+      "Bash(open *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git -C *)",
+      "Bash(git commit:*)",
+      "Read(//Users/ccarpio/Library/Developer/Xcode/DerivedData/**)"
+    ],
+    "additionalDirectories": [
+      "/Users/ccarpio/Developer/chezmoiManager"
+    ]
+  }
+}

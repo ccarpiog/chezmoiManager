@@ -1,0 +1,156 @@
+import Foundation
+
+/// Engine that classifies per-file sync states by combining chezmoi local status
+/// with git remote information.
+///
+/// The classification truth table:
+/// - No local drift, no remote drift → `clean`
+/// - Local drift only → `localDrift`
+/// - Remote drift only → `remoteDrift`
+/// - Both local and remote drift → `dualDrift`
+///
+/// Files already in `error` state are preserved as-is.
+final class FileStateEngine: FileStateEngineProtocol, Sendable {
+
+    /// Converts a chezmoi source-repo file path to a destination-style path.
+    ///
+    /// Chezmoi source repos use naming conventions like `dot_bashrc` for `.bashrc`,
+    /// `private_dot_ssh` for `.ssh`, etc. Git diff returns these source-style paths.
+    /// This method normalizes them for comparison with chezmoi status output.
+    ///
+    /// - Parameter sourcePath: A path from the chezmoi source repo (e.g., `dot_bashrc`).
+    /// - Returns: The normalized destination-style path (e.g., `.bashrc`).
+    static func normalizeSourcePath(_ sourcePath: String) -> String {
+        var components = sourcePath.split(separator: "/", omittingEmptySubsequences: false).map(String.init)
+        for i in 0..<components.count {
+            var part = components[i]
+            // Remove chezmoi attribute prefixes (may be stacked, e.g., private_executable_dot_)
+            let prefixes = ["private_", "readonly_", "exact_", "empty_", "executable_"]
+            var changed = true
+            while changed {
+                changed = false
+                for prefix in prefixes {
+                    if part.hasPrefix(prefix) {
+                        part = String(part.dropFirst(prefix.count))
+                        changed = true
+                    }
+                }
+            } // End of loop removing attribute prefixes
+            // Replace dot_ with .
+            if part.hasPrefix("dot_") {
+                part = "." + String(part.dropFirst(4))
+            }
+            // Remove .tmpl suffix
+            if part.hasSuffix(".tmpl") {
+                part = String(part.dropLast(5))
+            }
+            components[i] = part
+        } // End of loop normalizing path components
+        return components.joined(separator: "/")
+    } // End of static func normalizeSourcePath(_:)
+
+    /// Classifies file statuses using only the remote behind count.
+    ///
+    /// This is a simplified overload that treats all files as potentially
+    /// remote-drifted when `remoteBehind > 0`, but without per-file granularity.
+    /// Prefer the overload that accepts `remoteChangedFiles` for accurate results.
+    ///
+    /// - Parameters:
+    ///   - localFiles: The file statuses from chezmoi.
+    ///   - remoteBehind: How many commits the local branch is behind the remote.
+    /// - Returns: Updated file statuses with classified sync states.
+    func classify(localFiles: [FileStatus], remoteBehind: Int) -> [FileStatus] {
+        // Without per-file remote info, we can only return localFiles as-is
+        // since we don't know which specific files changed remotely
+        return classify(localFiles: localFiles, remoteBehind: remoteBehind, remoteChangedFiles: [])
+    } // End of func classify(localFiles:remoteBehind:)
+
+    /// Classifies file statuses by combining local chezmoi status with remote
+    /// change information for per-file granularity.
+    ///
+    /// Files present in chezmoi status have local drift. Files present in
+    /// `remoteChangedFiles` have remote drift. Files in both have dual drift.
+    /// Files already in error state retain that state.
+    ///
+    /// - Parameters:
+    ///   - localFiles: The file statuses from chezmoi (all currently marked `localDrift`).
+    ///   - remoteBehind: How many commits the local branch is behind the remote.
+    ///   - remoteChangedFiles: The set of file paths that changed in remote commits.
+    /// - Returns: Updated file statuses with classified sync states and actions.
+    func classify(localFiles: [FileStatus], remoteBehind: Int, remoteChangedFiles: Set<String>) -> [FileStatus] {
+        let localPaths = Set(localFiles.map(\.path))
+
+        // Normalize remote source-repo paths to destination-style paths for comparison
+        let normalizedRemotePaths = Set(remoteChangedFiles.map { FileStateEngine.normalizeSourcePath($0) })
+
+        // Determine which remote files also have local drift
+        let remoteOnlyFiles = normalizedRemotePaths.subtracting(localPaths)
+
+        var result: [FileStatus] = []
+
+        // Process local files: they might be localDrift or dualDrift
+        for file in localFiles {
+            if file.state == .error {
+                // Preserve error state
+                result.append(file)
+                continue
+            }
+
+            let hasRemoteDrift = normalizedRemotePaths.contains(file.path)
+            if hasRemoteDrift {
+                result.append(FileStatus(
+                    path: file.path,
+                    state: .dualDrift,
+                    lastModified: file.lastModified,
+                    availableActions: FileStateEngine.actions(for: .dualDrift),
+                    errorMessage: file.errorMessage
+                ))
+            } else {
+                result.append(FileStatus(
+                    path: file.path,
+                    state: .localDrift,
+                    lastModified: file.lastModified,
+                    availableActions: FileStateEngine.actions(for: .localDrift),
+                    errorMessage: file.errorMessage
+                ))
+            }
+        } // End of loop processing local files
+
+        // Add remote-only files as remoteDrift
+        for path in remoteOnlyFiles.sorted() {
+            result.append(FileStatus(
+                path: path,
+                state: .remoteDrift,
+                availableActions: FileStateEngine.actions(for: .remoteDrift)
+            ))
+        } // End of loop processing remote-only files
+
+        return result
+    } // End of func classify(localFiles:remoteBehind:remoteChangedFiles:)
+
+    /// Returns the set of available actions for a given sync state.
+    ///
+    /// Action derivation per state:
+    /// - `clean`: `viewDiff`
+    /// - `localDrift`: `syncLocal`, `viewDiff`, `openEditor`
+    /// - `remoteDrift`: `applyRemote`, `viewDiff`
+    /// - `dualDrift`: `viewDiff`, `openEditor`, `openMergeTool` (no syncLocal/applyRemote per PRD — conflict risk)
+    /// - `error`: `viewDiff`
+    ///
+    /// - Parameter state: The file sync state.
+    /// - Returns: An array of actions available for that state.
+    static func actions(for state: FileSyncState) -> [FileAction] {
+        switch state {
+        case .clean:
+            return [.viewDiff]
+        case .localDrift:
+            return [.syncLocal, .viewDiff, .openEditor]
+        case .remoteDrift:
+            return [.applyRemote, .viewDiff]
+        case .dualDrift:
+            return [.viewDiff, .openEditor, .openMergeTool]
+        case .error:
+            return [.viewDiff]
+        }
+    } // End of static func actions(for:)
+} // End of class FileStateEngine

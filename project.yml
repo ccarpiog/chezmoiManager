@@ -1,0 +1,94 @@
+name: ChezmoiSyncMonitor
+options:
+  bundleIdPrefix: cc.carpio
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "16.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    ENABLE_HARDENED_RUNTIME: YES
+    CODE_SIGN_IDENTITY: "-"
+
+configs:
+  Debug: debug
+  Release: release
+
+targets:
+  ChezmoiSyncMonitor:
+    type: application
+    platform: macOS
+    sources:
+      - path: ChezmoiSyncMonitor
+        excludes:
+          - "**/.DS_Store"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: cc.carpio.ChezmoiSyncMonitor
+        INFOPLIST_FILE: ChezmoiSyncMonitor/Resources/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: false
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        SWIFT_VERSION: "6.0"
+        SWIFT_STRICT_CONCURRENCY: minimal
+        CODE_SIGN_STYLE: Automatic
+        PRODUCT_NAME: "Chezmoi Sync Monitor"
+        PRODUCT_MODULE_NAME: ChezmoiSyncMonitor
+        COMBINE_HIDPI_IMAGES: true
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        DEAD_CODE_STRIPPING: YES
+      configs:
+        Release:
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: "Developer ID Application"
+          SWIFT_OPTIMIZATION_LEVEL: -O
+          STRIP_INSTALLED_PRODUCT: YES
+          COPY_PHASE_STRIP: YES
+          DEAD_CODE_STRIPPING: YES
+          ENABLE_TESTABILITY: NO
+          SWIFT_COMPILATION_MODE: wholemodule
+        Debug:
+          SWIFT_OPTIMIZATION_LEVEL: -Onone
+          ENABLE_TESTABILITY: YES
+    entitlements:
+      path: ChezmoiSyncMonitor/Resources/ChezmoiSyncMonitor.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+
+  ChezmoiSyncMonitorTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: ChezmoiSyncMonitorTests
+    dependencies:
+      - target: ChezmoiSyncMonitor
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: cc.carpio.ChezmoiSyncMonitorTests
+        GENERATE_INFOPLIST_FILE: true
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        SWIFT_VERSION: "6.0"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Chezmoi Sync Monitor.app/Contents/MacOS/Chezmoi Sync Monitor"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
+schemes:
+  ChezmoiSyncMonitor:
+    build:
+      targets:
+        ChezmoiSyncMonitor: all
+        ChezmoiSyncMonitorTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - ChezmoiSyncMonitorTests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
