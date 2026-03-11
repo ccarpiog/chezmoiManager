@@ -7,6 +7,8 @@ enum FileAction: String, Sendable, Codable {
     case viewDiff
     case openEditor
     case openMergeTool
+    case revertLocal
+    case forgetFile
 
     /// A human-readable label for this action (English).
     var displayName: String {
@@ -21,6 +23,10 @@ enum FileAction: String, Sendable, Codable {
             return String(localized: "action.openEditor", defaultValue: "Open in Editor")
         case .openMergeTool:
             return String(localized: "action.openMergeTool", defaultValue: "Open Merge Tool")
+        case .revertLocal:
+            return String(localized: "action.revertLocal", defaultValue: "Revert to Tracked Version")
+        case .forgetFile:
+            return String(localized: "action.forgetFile", defaultValue: "Forget File")
         }
     } // End of computed property displayName
 } // End of enum FileAction

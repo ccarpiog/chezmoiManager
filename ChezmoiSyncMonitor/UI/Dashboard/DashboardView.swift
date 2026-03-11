@@ -2,6 +2,7 @@ import SwiftUI
 
 /// Represents the filter options available in the file list dropdown.
 private enum FileFilter: CaseIterable {
+    case needsAttention
     case all
     case localDrift
     case remoteDrift
@@ -12,6 +13,7 @@ private enum FileFilter: CaseIterable {
     /// The localized display name for the filter option.
     var displayName: String {
         switch self {
+        case .needsAttention: return Strings.filters.needsAttention
         case .all: return Strings.filters.all
         case .localDrift: return Strings.filters.localDrift
         case .remoteDrift: return Strings.filters.remoteDrift
@@ -24,6 +26,7 @@ private enum FileFilter: CaseIterable {
     /// Maps the filter to the corresponding FileSyncState, if any.
     var syncState: FileSyncState? {
         switch self {
+        case .needsAttention: return nil  // special handling in filteredFiles
         case .all: return nil
         case .localDrift: return .localDrift
         case .remoteDrift: return .remoteDrift
@@ -44,7 +47,7 @@ struct DashboardView: View {
     let appState: AppStateStore
 
     /// The currently selected filter for the file list.
-    @State private var selectedFilter: FileFilter = .all
+    @State private var selectedFilter: FileFilter = .needsAttention
 
     /// The search text for filtering files by path.
     @State private var searchText = ""
@@ -60,6 +63,27 @@ struct DashboardView: View {
 
     /// Whether the apply confirmation dialog is shown.
     @State private var showingApplyConfirmation = false
+
+    /// The file path pending a destructive revert confirmation.
+    @State private var revertConfirmationPath: String?
+
+    /// Whether the revert confirmation dialog is shown.
+    @State private var showingRevertConfirmation = false
+
+    /// The file path pending forget step 1 confirmation.
+    @State private var forgetStep1Path: String?
+
+    /// Whether the forget step 1 alert is shown.
+    @State private var showingForgetStep1 = false
+
+    /// The file path pending forget step 2 (typed gate) confirmation.
+    @State private var forgetStep2Path: String?
+
+    /// Whether the forget step 2 sheet is shown.
+    @State private var showingForgetStep2 = false
+
+    /// The text the user types to confirm the forget action.
+    @State private var forgetConfirmationText = ""
 
     var body: some View {
         VStack(spacing: 0) {
@@ -86,6 +110,49 @@ struct DashboardView: View {
                 .padding(.horizontal, 20)
 
             Spacer(minLength: 8)
+                .sheet(isPresented: $showingForgetStep2) {
+                    VStack(spacing: 16) {
+                        Text(Strings.confirmations.forgetConfirmTitle)
+                            .font(.headline)
+
+                        Text(Strings.confirmations.forgetConfirmMessage("FORGET"))
+                            .foregroundStyle(.secondary)
+
+                        TextField(Strings.confirmations.forgetConfirmPlaceholder, text: $forgetConfirmationText)
+                            .textFieldStyle(.roundedBorder)
+                            .frame(width: 300)
+
+                        if !forgetConfirmationText.isEmpty && forgetConfirmationText != "FORGET" {
+                            Text(Strings.confirmations.forgetConfirmMismatch)
+                                .font(.caption)
+                                .foregroundStyle(.red)
+                        }
+
+                        HStack(spacing: 12) {
+                            Button(Strings.navigation.cancel) {
+                                showingForgetStep2 = false
+                                forgetStep2Path = nil
+                                forgetConfirmationText = ""
+                            }
+                            .keyboardShortcut(.escape, modifiers: [])
+
+                            Button(Strings.confirmations.forgetConfirmButton) {
+                                if let path = forgetStep2Path {
+                                    showingForgetStep2 = false
+                                    forgetConfirmationText = ""
+                                    Task {
+                                        await appState.forgetSingle(path: path)
+                                    }
+                                }
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.red)
+                            .disabled(forgetConfirmationText != "FORGET")
+                        } // End of HStack for forget step 2 buttons
+                    } // End of VStack for forget step 2 sheet content
+                    .padding(24)
+                    .frame(minWidth: 400)
+                } // End of forget step 2 sheet
 
             // Activity log
             ActivityLogView(events: appState.activityLog)
@@ -129,6 +196,39 @@ struct DashboardView: View {
         } message: {
             Text(Strings.dashboard.applyWarning)
         }
+        .confirmationDialog(
+            Strings.confirmations.revertTitle,
+            isPresented: $showingRevertConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button(Strings.confirmations.revertButton, role: .destructive) {
+                if let path = revertConfirmationPath {
+                    Task {
+                        await appState.revertLocal(path: path)
+                    }
+                }
+            }
+            Button(Strings.navigation.cancel, role: .cancel) {
+                revertConfirmationPath = nil
+            }
+        } message: {
+            Text(Strings.confirmations.revertMessage)
+        } // End of revert confirmation dialog
+        .alert(
+            Strings.confirmations.forgetTitle,
+            isPresented: $showingForgetStep1
+        ) {
+            Button(Strings.confirmations.forgetContinue) {
+                forgetStep2Path = forgetStep1Path
+                forgetConfirmationText = ""
+                showingForgetStep2 = true
+            }
+            Button(Strings.navigation.cancel, role: .cancel) {
+                forgetStep1Path = nil
+            }
+        } message: {
+            Text(Strings.confirmations.forgetMessage)
+        } // End of forget step 1 alert
     } // End of body
 
     // MARK: - Header Section
@@ -247,11 +347,11 @@ struct DashboardView: View {
         } // End of HStack for overview cards
     } // End of overviewCards
 
-    /// Toggles a filter on or off; clicking an already-selected filter resets to "All".
+    /// Toggles a filter on or off; clicking an already-selected filter resets to "Needs Attention".
     /// - Parameter filter: The filter to toggle.
     private func toggleFilter(_ filter: FileFilter) {
         if selectedFilter == filter {
-            selectedFilter = .all
+            selectedFilter = .needsAttention
         } else {
             selectedFilter = filter
         }
@@ -332,6 +432,14 @@ struct DashboardView: View {
                                 },
                                 onMerge: { path in
                                     Task { await appState.openInMergeTool(path: path) }
+                                },
+                                onRevert: { path in
+                                    revertConfirmationPath = path
+                                    showingRevertConfirmation = true
+                                },
+                                onForget: { path in
+                                    forgetStep1Path = path
+                                    showingForgetStep1 = true
                                 }
                             )
 
@@ -373,7 +481,7 @@ struct DashboardView: View {
                 Text(Strings.dashboard.noFilesMatchFilter)
                     .foregroundStyle(.secondary)
                 Button(Strings.dashboard.clearFilters) {
-                    selectedFilter = .all
+                    selectedFilter = .needsAttention
                     searchText = ""
                 }
                 .buttonStyle(.bordered)
@@ -389,9 +497,22 @@ struct DashboardView: View {
         var files = appState.snapshot.files
 
         // Apply state filter
-        if let state = selectedFilter.syncState {
-            files = files.filter { $0.state == state }
-        }
+        switch selectedFilter {
+        case .all:
+            break  // show everything including clean
+        case .needsAttention:
+            files = files.filter { $0.state != .clean }
+        case .localDrift:
+            files = files.filter { $0.state == .localDrift }
+        case .remoteDrift:
+            files = files.filter { $0.state == .remoteDrift }
+        case .dualDrift:
+            files = files.filter { $0.state == .dualDrift }
+        case .error:
+            files = files.filter { $0.state == .error }
+        case .clean:
+            files = files.filter { $0.state == .clean }
+        } // End of switch selectedFilter
 
         // Apply search filter
         if !searchText.isEmpty {

@@ -77,6 +77,26 @@ final class MockChezmoiService: ChezmoiServiceProtocol, @unchecked Sendable {
         if let error = sourcePathError { throw error }
         return sourcePathResult
     }
+
+    var trackedFilesResult: Set<String> = []
+    var trackedFilesError: Error?
+
+    func trackedFiles() async throws -> Set<String> {
+        if let error = trackedFilesError { throw error }
+        return trackedFilesResult
+    }
+
+    var forgetResult: CommandResult = CommandResult(exitCode: 0, stdout: "", stderr: "", duration: 0, command: "chezmoi forget")
+    var forgetError: Error?
+
+    /// Tracks paths passed to forget().
+    var forgottenPaths: [String] = []
+
+    func forget(path: String) async throws -> CommandResult {
+        forgottenPaths.append(path)
+        if let error = forgetError { throw error }
+        return forgetResult
+    }
 } // End of class MockChezmoiService
 
 /// Mock implementation of GitServiceProtocol for testing.
@@ -115,6 +135,10 @@ final class MockFileStateEngine: FileStateEngineProtocol, @unchecked Sendable {
     }
 
     func classify(localFiles: [FileStatus], remoteBehind: Int, remoteChangedFiles: Set<String>) -> [FileStatus] {
+        return classifyResult ?? localFiles
+    }
+
+    func classify(localFiles: [FileStatus], remoteBehind: Int, remoteChangedFiles: Set<String>, trackedFiles: Set<String>) -> [FileStatus] {
         return classifyResult ?? localFiles
     }
 } // End of class MockFileStateEngine
@@ -420,6 +444,95 @@ final class AppStateStoreTests: XCTestCase {
 
         XCTAssertGreaterThan(mockChezmoi.statusCallCount, 0, "Should force-refresh even after failures")
     } // End of func testUpdateSafeAlwaysRefreshes()
+
+    // MARK: - Revert local tests
+
+    /// revertLocal succeeds: pulls source, applies file, force-refreshes.
+    @MainActor
+    func testRevertLocalSuccess() async {
+        mockChezmoi.statusResult = []
+
+        let store = makeStore()
+        store.snapshot = SyncSnapshot(
+            lastRefreshAt: Date(),
+            files: [FileStatus(path: ".bashrc", state: .localDrift, availableActions: [.revertLocal])]
+        )
+
+        await store.revertLocal(path: ".bashrc")
+
+        XCTAssertEqual(mockChezmoi.pullSourceCallCount, 1, "Should pull source before applying")
+        XCTAssertTrue(mockChezmoi.appliedPaths.contains(".bashrc"), "Should apply the reverted file")
+    } // End of func testRevertLocalSuccess()
+
+    /// revertLocal aborted when file is not in localDrift state.
+    @MainActor
+    func testRevertLocalAbortsOnWrongState() async {
+        mockChezmoi.statusResult = []
+
+        let store = makeStore()
+        store.snapshot = SyncSnapshot(
+            lastRefreshAt: Date(),
+            files: [FileStatus(path: ".bashrc", state: .clean, availableActions: [.viewDiff])]
+        )
+
+        await store.revertLocal(path: ".bashrc")
+
+        XCTAssertTrue(mockChezmoi.appliedPaths.isEmpty, "Should not apply when state is not localDrift")
+        let errorEvents = store.activityLog.filter { $0.eventType == .error }
+        XCTAssertTrue(errorEvents.contains { $0.message.contains("Revert aborted") })
+    } // End of func testRevertLocalAbortsOnWrongState()
+
+    /// revertLocal aborts if pullSource fails.
+    @MainActor
+    func testRevertLocalAbortsOnPullFailure() async {
+        mockChezmoi.pullSourceError = AppError.unknown("network error")
+        mockChezmoi.statusResult = []
+
+        let store = makeStore()
+        store.snapshot = SyncSnapshot(
+            lastRefreshAt: Date(),
+            files: [FileStatus(path: ".bashrc", state: .localDrift, availableActions: [.revertLocal])]
+        )
+
+        await store.revertLocal(path: ".bashrc")
+
+        XCTAssertTrue(mockChezmoi.appliedPaths.isEmpty, "Should not attempt apply if pull failed")
+        let errorEvents = store.activityLog.filter { $0.eventType == .error }
+        XCTAssertTrue(errorEvents.contains { $0.message.contains("pull source") })
+    } // End of func testRevertLocalAbortsOnPullFailure()
+
+    // MARK: - Forget single tests
+
+    /// forgetSingle succeeds: calls forget, force-refreshes.
+    @MainActor
+    func testForgetSingleSuccess() async {
+        mockChezmoi.statusResult = []
+
+        let store = makeStore()
+
+        await store.forgetSingle(path: ".bashrc")
+
+        XCTAssertTrue(mockChezmoi.forgottenPaths.contains(".bashrc"), "Should call forget with the path")
+        // Should have logged a success event
+        let updateEvents = store.activityLog.filter { $0.eventType == .update }
+        XCTAssertTrue(updateEvents.contains { $0.message.contains("Removed .bashrc") })
+    } // End of func testForgetSingleSuccess()
+
+    /// forgetSingle handles errors gracefully.
+    @MainActor
+    func testForgetSingleFailure() async {
+        mockChezmoi.forgetError = AppError.unknown("permission denied")
+        mockChezmoi.statusResult = []
+
+        let store = makeStore()
+
+        await store.forgetSingle(path: ".bashrc")
+
+        // Should have logged an error event
+        XCTAssertTrue(store.activityLog.contains { $0.eventType == .error })
+        let errorEvents = store.activityLog.filter { $0.eventType == .error }
+        XCTAssertTrue(errorEvents.contains { $0.message.contains("Forget failed") })
+    } // End of func testForgetSingleFailure()
 
     // MARK: - Activity log bounds
 

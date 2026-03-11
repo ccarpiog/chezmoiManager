@@ -187,6 +187,11 @@ enum Strings {
 
     /// Display names for file filter dropdown options.
     enum filters {
+        /// Display name for the "Needs Attention" filter (excludes clean files).
+        static var needsAttention: String {
+            String(localized: "filter.needsAttention",
+                   defaultValue: "Needs Attention")
+        }
         static var all: String {
             String(localized: "filter.all",
                    defaultValue: "All")
@@ -259,7 +264,100 @@ enum Strings {
             String(localized: "fileAction.merge",
                    defaultValue: "Merge")
         }
+        static var revert: String {
+            String(localized: "fileAction.revert",
+                   defaultValue: "Revert")
+        }
+        static var forget: String {
+            String(localized: "fileAction.forget",
+                   defaultValue: "Forget")
+        }
+
+        // Tooltip hints
+        static var addHint: String {
+            String(localized: "fileAction.addHint",
+                   defaultValue: "Save your local version as the tracked version in chezmoi")
+        }
+        static var applyHint: String {
+            String(localized: "fileAction.applyHint",
+                   defaultValue: "Overwrite local file with the remote tracked version")
+        }
+        static var diffHint: String {
+            String(localized: "fileAction.diffHint",
+                   defaultValue: "Show differences between local file and tracked version")
+        }
+        static var editHint: String {
+            String(localized: "fileAction.editHint",
+                   defaultValue: "Open the local file in your preferred editor")
+        }
+        static var mergeHint: String {
+            String(localized: "fileAction.mergeHint",
+                   defaultValue: "Open both versions side-by-side in a merge tool")
+        }
+        static var revertHint: String {
+            String(localized: "fileAction.revertHint",
+                   defaultValue: "Discard local changes and restore the tracked version")
+        }
+        static var forgetHint: String {
+            String(localized: "fileAction.forgetHint",
+                   defaultValue: "Stop tracking this file — affects all machines sharing this chezmoi repository")
+        }
     } // End of enum fileActions
+
+    // MARK: - Confirmations
+
+    /// Strings for destructive-action confirmation dialogs.
+    enum confirmations {
+        // Revert confirmation
+        static var revertTitle: String {
+            String(localized: "confirmation.revertTitle",
+                   defaultValue: "Revert local changes?")
+        }
+        static var revertMessage: String {
+            String(localized: "confirmation.revertMessage",
+                   defaultValue: "This will overwrite your local file with the tracked version. This cannot be undone.")
+        }
+        static var revertButton: String {
+            String(localized: "confirmation.revertButton",
+                   defaultValue: "Revert")
+        }
+
+        // Forget confirmation - step 1
+        static var forgetTitle: String {
+            String(localized: "confirmation.forgetTitle",
+                   defaultValue: "Stop tracking this file?")
+        }
+        static var forgetMessage: String {
+            String(localized: "confirmation.forgetMessage",
+                   defaultValue: "This removes the file from chezmoi tracking. Future sync operations will ignore it.")
+        }
+        static var forgetContinue: String {
+            String(localized: "confirmation.forgetContinue",
+                   defaultValue: "Continue")
+        }
+
+        // Forget confirmation - step 2 (typed gate)
+        static var forgetConfirmTitle: String {
+            String(localized: "confirmation.forgetConfirmTitle",
+                   defaultValue: "Confirm forget")
+        }
+        /// Returns the confirmation prompt with the token the user must type.
+        static func forgetConfirmMessage(_ token: String) -> String {
+            String(format: NSLocalizedString("confirmation.forgetConfirmMessage", value: "Type %@ to confirm:", comment: ""), token)
+        }
+        static var forgetConfirmPlaceholder: String {
+            String(localized: "confirmation.forgetConfirmPlaceholder",
+                   defaultValue: "Type FORGET to confirm")
+        }
+        static var forgetConfirmButton: String {
+            String(localized: "confirmation.forgetConfirmButton",
+                   defaultValue: "Forget File")
+        }
+        static var forgetConfirmMismatch: String {
+            String(localized: "confirmation.forgetConfirmMismatch",
+                   defaultValue: "Text does not match. Please type FORGET exactly.")
+        }
+    } // End of enum confirmations
 
     // MARK: - Activity Log
 

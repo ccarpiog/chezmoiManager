@@ -78,6 +78,25 @@ final class FileStateEngine: FileStateEngineProtocol, Sendable {
     ///   - remoteChangedFiles: The set of file paths that changed in remote commits.
     /// - Returns: Updated file statuses with classified sync states and actions.
     func classify(localFiles: [FileStatus], remoteBehind: Int, remoteChangedFiles: Set<String>) -> [FileStatus] {
+        return classify(localFiles: localFiles, remoteBehind: remoteBehind, remoteChangedFiles: remoteChangedFiles, trackedFiles: [])
+    } // End of func classify(localFiles:remoteBehind:remoteChangedFiles:)
+
+    /// Classifies file statuses by combining local chezmoi status, remote change
+    /// information, and the full set of tracked files for per-file granularity.
+    ///
+    /// Files present in chezmoi status have local drift. Files present in
+    /// `remoteChangedFiles` have remote drift. Files in both have dual drift.
+    /// Tracked files not in either set are added as `clean`.
+    /// Files already in error state retain that state.
+    /// Results are sorted by path for stable ordering.
+    ///
+    /// - Parameters:
+    ///   - localFiles: The file statuses from chezmoi (all currently marked `localDrift`).
+    ///   - remoteBehind: How many commits the local branch is behind the remote.
+    ///   - remoteChangedFiles: The set of file paths that changed in remote commits.
+    ///   - trackedFiles: The full set of chezmoi-managed file paths.
+    /// - Returns: Updated file statuses with classified sync states and actions, including clean files.
+    func classify(localFiles: [FileStatus], remoteBehind: Int, remoteChangedFiles: Set<String>, trackedFiles: Set<String>) -> [FileStatus] {
         let localPaths = Set(localFiles.map(\.path))
 
         // Normalize remote source-repo paths to destination-style paths for comparison
@@ -125,16 +144,27 @@ final class FileStateEngine: FileStateEngineProtocol, Sendable {
             ))
         } // End of loop processing remote-only files
 
-        return result
-    } // End of func classify(localFiles:remoteBehind:remoteChangedFiles:)
+        // Add tracked files that have no drift as clean entries
+        let classifiedPaths = Set(result.map(\.path))
+        for path in trackedFiles.sorted() where !classifiedPaths.contains(path) {
+            result.append(FileStatus(
+                path: path,
+                state: .clean,
+                availableActions: FileStateEngine.actions(for: .clean)
+            ))
+        } // End of loop adding clean tracked files
+
+        // Sort by path for stable ordering
+        return result.sorted { $0.path < $1.path }
+    } // End of func classify(localFiles:remoteBehind:remoteChangedFiles:trackedFiles:)
 
     /// Returns the set of available actions for a given sync state.
     ///
     /// Action derivation per state:
-    /// - `clean`: `viewDiff`
-    /// - `localDrift`: `syncLocal`, `viewDiff`, `openEditor`
-    /// - `remoteDrift`: `applyRemote`, `viewDiff`
-    /// - `dualDrift`: `viewDiff`, `openEditor`, `openMergeTool` (no syncLocal/applyRemote per PRD — conflict risk)
+    /// - `clean`: `viewDiff`, `forgetFile`
+    /// - `localDrift`: `syncLocal`, `revertLocal`, `viewDiff`, `openEditor`, `forgetFile`
+    /// - `remoteDrift`: `applyRemote`, `viewDiff`, `forgetFile`
+    /// - `dualDrift`: `viewDiff`, `openEditor`, `openMergeTool`, `forgetFile`
     /// - `error`: `viewDiff`
     ///
     /// - Parameter state: The file sync state.
@@ -142,13 +172,13 @@ final class FileStateEngine: FileStateEngineProtocol, Sendable {
     static func actions(for state: FileSyncState) -> [FileAction] {
         switch state {
         case .clean:
-            return [.viewDiff]
+            return [.viewDiff, .forgetFile]
         case .localDrift:
-            return [.syncLocal, .viewDiff, .openEditor]
+            return [.syncLocal, .revertLocal, .viewDiff, .openEditor, .forgetFile]
         case .remoteDrift:
-            return [.applyRemote, .viewDiff]
+            return [.applyRemote, .viewDiff, .forgetFile]
         case .dualDrift:
-            return [.viewDiff, .openEditor, .openMergeTool]
+            return [.viewDiff, .openEditor, .openMergeTool, .forgetFile]
         case .error:
             return [.viewDiff]
         }

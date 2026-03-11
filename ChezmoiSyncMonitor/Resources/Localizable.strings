@@ -17,6 +17,8 @@
 "action.viewDiff" = "View Diff";
 "action.openEditor" = "Open in Editor";
 "action.openMergeTool" = "Open Merge Tool";
+"action.revertLocal" = "Revert to Tracked Version";
+"action.forgetFile" = "Forget File";
 
 /* ============================================================
    Error messages
@@ -81,6 +83,7 @@
 /* ============================================================
    Dashboard filters
    ============================================================ */
+"filter.needsAttention" = "Needs Attention";
 "filter.all" = "All";
 "filter.localDrift" = "Local Drift";
 "filter.remoteDrift" = "Remote Drift";
@@ -104,6 +107,32 @@
 "fileAction.diff" = "Diff";
 "fileAction.edit" = "Edit";
 "fileAction.merge" = "Merge";
+"fileAction.revert" = "Revert";
+"fileAction.forget" = "Forget";
+
+/* Button tooltip hints */
+"fileAction.addHint" = "Save your local version as the tracked version in chezmoi";
+"fileAction.applyHint" = "Overwrite local file with the remote tracked version";
+"fileAction.diffHint" = "Show differences between local file and tracked version";
+"fileAction.editHint" = "Open the local file in your preferred editor";
+"fileAction.mergeHint" = "Open both versions side-by-side in a merge tool";
+"fileAction.revertHint" = "Discard local changes and restore the tracked version";
+"fileAction.forgetHint" = "Stop tracking this file — affects all machines sharing this chezmoi repository";
+
+/* ============================================================
+   Confirmation dialogs
+   ============================================================ */
+"confirmation.revertTitle" = "Revert local changes?";
+"confirmation.revertMessage" = "This will overwrite your local file with the tracked version. This cannot be undone.";
+"confirmation.revertButton" = "Revert";
+"confirmation.forgetTitle" = "Stop tracking this file?";
+"confirmation.forgetMessage" = "This removes the file from chezmoi tracking. Future sync operations will ignore it.";
+"confirmation.forgetContinue" = "Continue";
+"confirmation.forgetConfirmTitle" = "Confirm forget";
+"confirmation.forgetConfirmMessage" = "Type %@ to confirm:";
+"confirmation.forgetConfirmPlaceholder" = "Type FORGET to confirm";
+"confirmation.forgetConfirmButton" = "Forget File";
+"confirmation.forgetConfirmMismatch" = "Text does not match. Please type FORGET exactly.";
 
 /* ============================================================
    Diff viewer

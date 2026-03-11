@@ -21,11 +21,21 @@ Chezmoi Sync Monitor keeps this visible from the menu bar and gives you safe act
   - `Remote Drift`
   - `Dual Drift`
   - `Error`
-- One-click actions for safe operations (`Add`, `Apply`, `Diff`, `Open in Editor`, `Merge Tool`)
+- File actions:
+  - `Add` (save local changes to source state)
+  - `Apply` (apply tracked/remote state to local file)
+  - `Revert` (discard local changes and restore tracked version)
+  - `Forget` (stop tracking a file in chezmoi, with strong confirmation)
+  - `Diff`, `Edit`, `Merge Tool`
 - Dashboard window with filtering, search, and activity log
+  - Default filter: `Needs Attention` (non-clean files)
+  - `All` filter: shows all tracked files, including clean files
 - Background refresh triggers (launch, wake, connectivity change, polling)
 - Optional notifications for drift/conflicts
 - Preferences with auto-detect for chezmoi/git paths
+- Preferred editor support:
+  - GUI editors can be selected by command or `.app` path
+  - Terminal editors (`nano`, `vim`, `nvim`, etc.) are launched in Terminal.app
 - Config file support for chezmoi-managed app settings:
   - `~/.config/chezmoiSyncMonitor/config.json`
 

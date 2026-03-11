@@ -50,6 +50,17 @@ protocol ChezmoiServiceProtocol: Sendable {
     /// - Returns: The absolute path to the corresponding file in the chezmoi source directory.
     /// - Throws: `AppError` if the chezmoi command fails.
     func sourcePath(for path: String) async throws -> String
+
+    /// Returns the set of all chezmoi-managed file paths (relative to home).
+    /// - Returns: A set of relative file paths managed by chezmoi.
+    /// - Throws: `AppError` if the chezmoi command fails.
+    func trackedFiles() async throws -> Set<String>
+
+    /// Removes a file from chezmoi tracking (source state only; destination kept).
+    /// - Parameter path: The relative file path to forget.
+    /// - Returns: The result of the forget command.
+    /// - Throws: `AppError` if the chezmoi command fails.
+    func forget(path: String) async throws -> CommandResult
 } // End of protocol ChezmoiServiceProtocol
 
 /// Protocol for interacting with git in the chezmoi source repository.
@@ -92,6 +103,19 @@ protocol FileStateEngineProtocol: Sendable {
     ///   - remoteChangedFiles: The set of file paths that changed in remote commits.
     /// - Returns: Updated file statuses with classified sync states and actions.
     func classify(localFiles: [FileStatus], remoteBehind: Int, remoteChangedFiles: Set<String>) -> [FileStatus]
+
+    /// Classifies file statuses by combining local chezmoi status, remote change
+    /// information, and the full set of tracked files for per-file granularity.
+    ///
+    /// Tracked files that have no drift (neither local nor remote) are included
+    /// in the result as `clean` entries, giving a complete picture of all managed files.
+    /// - Parameters:
+    ///   - localFiles: The file statuses from chezmoi (files with drift).
+    ///   - remoteBehind: How many commits the local branch is behind the remote.
+    ///   - remoteChangedFiles: The set of file paths that changed in remote commits.
+    ///   - trackedFiles: The full set of chezmoi-managed file paths.
+    /// - Returns: Updated file statuses with classified sync states and actions, including clean files.
+    func classify(localFiles: [FileStatus], remoteBehind: Int, remoteChangedFiles: Set<String>, trackedFiles: Set<String>) -> [FileStatus]
 } // End of protocol FileStateEngineProtocol
 
 /// Protocol for the background watcher that triggers periodic refreshes.

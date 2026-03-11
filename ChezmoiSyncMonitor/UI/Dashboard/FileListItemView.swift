@@ -24,6 +24,12 @@ struct FileListItemView: View {
     /// Callback invoked when the user taps the "Merge" button (openMergeTool action).
     let onMerge: (String) -> Void
 
+    /// Callback invoked when the user taps the "Revert" button (revertLocal action).
+    let onRevert: (String) -> Void
+
+    /// Callback invoked when the user taps the "Forget" button (forgetFile action).
+    let onForget: (String) -> Void
+
     var body: some View {
         HStack(spacing: 10) {
             // Status color indicator
@@ -68,6 +74,7 @@ struct FileListItemView: View {
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
+                .toolTip(Strings.fileActions.addHint)
             }
 
             if file.availableActions.contains(.applyRemote) {
@@ -76,6 +83,7 @@ struct FileListItemView: View {
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
+                .toolTip(Strings.fileActions.applyHint)
             }
 
             if file.availableActions.contains(.viewDiff) {
@@ -84,6 +92,7 @@ struct FileListItemView: View {
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
+                .toolTip(Strings.fileActions.diffHint)
             }
 
             if file.availableActions.contains(.openEditor) {
@@ -92,6 +101,7 @@ struct FileListItemView: View {
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
+                .toolTip(Strings.fileActions.editHint)
             }
 
             if file.availableActions.contains(.openMergeTool) {
@@ -100,6 +110,26 @@ struct FileListItemView: View {
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
+                .toolTip(Strings.fileActions.mergeHint)
+            }
+
+            if file.availableActions.contains(.revertLocal) {
+                Button(Strings.fileActions.revert) {
+                    onRevert(file.path)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .toolTip(Strings.fileActions.revertHint)
+            }
+
+            if file.availableActions.contains(.forgetFile) {
+                Button(Strings.fileActions.forget) {
+                    onForget(file.path)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .foregroundStyle(.red)
+                .toolTip(Strings.fileActions.forgetHint)
             }
         } // End of HStack for action buttons
     } // End of actionButtons

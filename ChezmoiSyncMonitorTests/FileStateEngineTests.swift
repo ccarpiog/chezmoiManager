@@ -145,38 +145,42 @@ final class FileStateEngineTests: XCTestCase {
 
     // MARK: - Action Set Verification
 
-    /// Clean state actions: viewDiff only.
+    /// Clean state actions: viewDiff, forgetFile.
     func testActionsForClean() {
         let actions = FileStateEngine.actions(for: .clean)
-        XCTAssertEqual(actions, [.viewDiff])
+        XCTAssertEqual(actions, [.viewDiff, .forgetFile])
     }
 
-    /// Local drift actions: syncLocal, viewDiff, openEditor.
+    /// Local drift actions: syncLocal, revertLocal, viewDiff, openEditor, forgetFile.
     func testActionsForLocalDrift() {
         let actions = FileStateEngine.actions(for: .localDrift)
         XCTAssertTrue(actions.contains(.syncLocal))
+        XCTAssertTrue(actions.contains(.revertLocal))
         XCTAssertTrue(actions.contains(.viewDiff))
         XCTAssertTrue(actions.contains(.openEditor))
-        XCTAssertEqual(actions.count, 3)
+        XCTAssertTrue(actions.contains(.forgetFile))
+        XCTAssertEqual(actions.count, 5)
     }
 
-    /// Remote drift actions: applyRemote, viewDiff.
+    /// Remote drift actions: applyRemote, viewDiff, forgetFile.
     func testActionsForRemoteDrift() {
         let actions = FileStateEngine.actions(for: .remoteDrift)
         XCTAssertTrue(actions.contains(.applyRemote))
         XCTAssertTrue(actions.contains(.viewDiff))
-        XCTAssertEqual(actions.count, 2)
+        XCTAssertTrue(actions.contains(.forgetFile))
+        XCTAssertEqual(actions.count, 3)
     }
 
-    /// Dual drift actions: viewDiff, openEditor, openMergeTool only (per PRD conflict-risk).
+    /// Dual drift actions: viewDiff, openEditor, openMergeTool, forgetFile (no syncLocal/applyRemote per PRD conflict-risk).
     func testActionsForDualDrift() {
         let actions = FileStateEngine.actions(for: .dualDrift)
         XCTAssertTrue(actions.contains(.viewDiff))
         XCTAssertTrue(actions.contains(.openEditor))
         XCTAssertTrue(actions.contains(.openMergeTool))
+        XCTAssertTrue(actions.contains(.forgetFile))
         XCTAssertFalse(actions.contains(.syncLocal))
         XCTAssertFalse(actions.contains(.applyRemote))
-        XCTAssertEqual(actions.count, 3)
+        XCTAssertEqual(actions.count, 4)
     } // End of func testActionsForDualDrift()
 
     /// Error state actions: viewDiff only.
@@ -200,16 +204,16 @@ final class FileStateEngineTests: XCTestCase {
         let byPath = Dictionary(uniqueKeysWithValues: result.map { ($0.path, $0) })
 
         // .bashrc is localDrift
-        XCTAssertEqual(byPath[".bashrc"]?.availableActions, [.syncLocal, .viewDiff, .openEditor])
+        XCTAssertEqual(byPath[".bashrc"]?.availableActions, [.syncLocal, .revertLocal, .viewDiff, .openEditor, .forgetFile])
 
         // .vimrc is dualDrift (conflict-risk: no syncLocal/applyRemote per PRD)
         XCTAssertEqual(
             byPath[".vimrc"]?.availableActions,
-            [.viewDiff, .openEditor, .openMergeTool]
+            [.viewDiff, .openEditor, .openMergeTool, .forgetFile]
         )
 
         // .zshrc is remoteDrift
-        XCTAssertEqual(byPath[".zshrc"]?.availableActions, [.applyRemote, .viewDiff])
+        XCTAssertEqual(byPath[".zshrc"]?.availableActions, [.applyRemote, .viewDiff, .forgetFile])
     } // End of func testClassifiedFilesHaveCorrectActions()
 
     // MARK: - GitService Remote Changed Files Parser Tests
@@ -299,4 +303,83 @@ final class FileStateEngineTests: XCTestCase {
 
         XCTAssertEqual(result[0].lastModified, date)
     }
+    // MARK: - Tracked Files Classification Tests
+
+    /// Tracked files not in drift appear as clean in the classify output.
+    func testTrackedFilesAppearAsClean() {
+        let localFiles = [
+            FileStatus(path: ".bashrc", state: .localDrift),
+        ]
+        let trackedFiles: Set<String> = [".bashrc", ".zshrc", ".vimrc"]
+        let result = engine.classify(
+            localFiles: localFiles,
+            remoteBehind: 0,
+            remoteChangedFiles: [],
+            trackedFiles: trackedFiles
+        )
+
+        let byPath = Dictionary(uniqueKeysWithValues: result.map { ($0.path, $0) })
+
+        // .bashrc has local drift
+        XCTAssertEqual(byPath[".bashrc"]?.state, .localDrift)
+        // .zshrc and .vimrc are clean tracked files
+        XCTAssertEqual(byPath[".zshrc"]?.state, .clean)
+        XCTAssertEqual(byPath[".vimrc"]?.state, .clean)
+        // Clean files have forgetFile action
+        XCTAssertTrue(byPath[".zshrc"]?.availableActions.contains(.forgetFile) ?? false)
+    } // End of func testTrackedFilesAppearAsClean()
+
+    /// Non-tracked paths are excluded from classify output.
+    func testNonTrackedPathsExcluded() {
+        let localFiles: [FileStatus] = []
+        let trackedFiles: Set<String> = [".bashrc"]
+        let result = engine.classify(
+            localFiles: localFiles,
+            remoteBehind: 0,
+            remoteChangedFiles: [],
+            trackedFiles: trackedFiles
+        )
+
+        XCTAssertEqual(result.count, 1)
+        XCTAssertEqual(result.first?.path, ".bashrc")
+        XCTAssertEqual(result.first?.state, .clean)
+    } // End of func testNonTrackedPathsExcluded()
+
+    /// Tracked + local drift = localDrift; tracked + remote drift = remoteDrift; tracked + both = dualDrift.
+    func testTrackedFilesClassificationMatrix() {
+        let localFiles = [
+            FileStatus(path: ".bashrc", state: .localDrift),
+            FileStatus(path: ".vimrc", state: .localDrift),
+        ]
+        let trackedFiles: Set<String> = [".bashrc", ".vimrc", ".zshrc", ".profile"]
+        let result = engine.classify(
+            localFiles: localFiles,
+            remoteBehind: 1,
+            remoteChangedFiles: [".vimrc", ".zshrc"],
+            trackedFiles: trackedFiles
+        )
+
+        let byPath = Dictionary(uniqueKeysWithValues: result.map { ($0.path, $0) })
+
+        XCTAssertEqual(byPath[".bashrc"]?.state, .localDrift)   // tracked + local only
+        XCTAssertEqual(byPath[".vimrc"]?.state, .dualDrift)     // tracked + local + remote
+        XCTAssertEqual(byPath[".zshrc"]?.state, .remoteDrift)   // tracked + remote only
+        XCTAssertEqual(byPath[".profile"]?.state, .clean)       // tracked + no drift
+    } // End of func testTrackedFilesClassificationMatrix()
+
+    /// Empty tracked files set = existing drift-only behavior.
+    func testEmptyTrackedFilesFallback() {
+        let localFiles = [
+            FileStatus(path: ".bashrc", state: .localDrift),
+        ]
+        let result = engine.classify(
+            localFiles: localFiles,
+            remoteBehind: 0,
+            remoteChangedFiles: [],
+            trackedFiles: []
+        )
+
+        XCTAssertEqual(result.count, 1)
+        XCTAssertEqual(result.first?.state, .localDrift)
+    } // End of func testEmptyTrackedFilesFallback()
 } // End of class FileStateEngineTests

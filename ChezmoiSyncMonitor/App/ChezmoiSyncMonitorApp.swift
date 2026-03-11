@@ -165,6 +165,16 @@ private struct StubChezmoiService: ChezmoiServiceProtocol {
     func sourcePath(for path: String) async throws -> String {
         throw AppError.unknown("chezmoi binary not found. Configure the path in Preferences.")
     }
+
+    /// Always throws an error indicating chezmoi is not configured.
+    func trackedFiles() async throws -> Set<String> {
+        throw AppError.unknown("chezmoi binary not found. Configure the path in Preferences.")
+    }
+
+    /// Always throws an error indicating chezmoi is not configured.
+    func forget(path: String) async throws -> CommandResult {
+        throw AppError.unknown("chezmoi binary not found. Configure the path in Preferences.")
+    }
 } // End of struct StubChezmoiService
 
 /// A stub GitService that always fails, used when the git binary is not found.

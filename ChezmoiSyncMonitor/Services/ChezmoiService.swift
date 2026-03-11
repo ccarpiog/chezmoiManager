@@ -321,6 +321,41 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
         return output
     } // End of func sourcePath(for:)
 
+    /// Returns the set of all chezmoi-managed file paths (relative to home).
+    ///
+    /// Runs `chezmoi managed --include=files -p relative` and collects the output
+    /// into a set of path strings.
+    ///
+    /// - Returns: A set of relative file paths managed by chezmoi.
+    /// - Throws: `AppError` if the chezmoi command fails.
+    func trackedFiles() async throws -> Set<String> {
+        let result = try await ProcessRunner.run(
+            command: chezmoiBinary,
+            arguments: ["managed", "--include=files", "-p", "relative"]
+        )
+        let paths = result.stdout
+            .components(separatedBy: .newlines)
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+        return Set(paths)
+    } // End of func trackedFiles()
+
+    /// Removes a file from chezmoi tracking (source state only; destination kept).
+    ///
+    /// The local file on disk is not deleted — only the chezmoi source-state entry
+    /// is removed, so future sync operations will ignore this file.
+    ///
+    /// - Parameter path: The relative file path to forget.
+    /// - Returns: The `CommandResult` of the forget command.
+    /// - Throws: `AppError` if the chezmoi command fails.
+    func forget(path: String) async throws -> CommandResult {
+        let resolvedPath = Self.resolveChezmoiTargetPath(path)
+        return try await ProcessRunner.run(
+            command: chezmoiBinary,
+            arguments: ["forget", "--force", "--", resolvedPath]
+        )
+    } // End of func forget(path:)
+
     /// Normalizes a UI/status path into the format expected by chezmoi CLI path args.
     ///
     /// Accepted inputs:
