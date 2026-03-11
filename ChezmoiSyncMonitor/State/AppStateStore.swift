@@ -68,6 +68,15 @@ final class AppStateStore {
     /// Maximum duration (in seconds) for a single refresh pipeline before timing out.
     private static let refreshTimeoutSeconds: TimeInterval = 60
 
+    /// Remote-changed files from the last fetch that have not yet been applied.
+    ///
+    /// After `pullSource()`, `behind` drops to 0 so `remoteChangedFiles()` returns
+    /// empty. Without this sticky set, the refresh pipeline would reclassify
+    /// unapplied remote files as `localDrift`, making destructive "Add" available.
+    /// Entries are removed once they no longer appear in `chezmoi status` (i.e.,
+    /// the apply succeeded and the file is clean).
+    private var pendingRemoteFiles: Set<String> = []
+
     // MARK: - Initialization
 
     /// Creates a new AppStateStore with the given service dependencies.
@@ -246,14 +255,38 @@ final class AppStateStore {
         try Task.checkCancellation()
 
         // Step 5: Get remote changed files if behind > 0
-        let remoteChanged: Set<String>
+        var remoteChanged: Set<String>
         if behind > 0 {
             remoteChanged = try await gitService.remoteChangedFiles()
+            // Store fresh remote set so it survives the post-pull behind=0 window
+            pendingRemoteFiles = remoteChanged
         } else {
             remoteChanged = []
         }
 
         try Task.checkCancellation()
+
+        // Merge in sticky pending remote files that haven't been applied yet.
+        // Only prune the pending set when behind == 0 (post-pull window).
+        // While still behind, keep the full pending set to avoid dropping
+        // remote files that only appear in chezmoi status after pull.
+        if behind == 0, !pendingRemoteFiles.isEmpty {
+            let localPaths = Set(localFiles.map(\.path))
+            let normalizedPending = Set(pendingRemoteFiles.map { FileStateEngine.normalizeSourcePath($0) })
+            let stillPending = normalizedPending.intersection(localPaths)
+            if !stillPending.isEmpty {
+                // Keep pending entries whose normalized form still shows drift
+                let resolvedPending = pendingRemoteFiles.filter { stillPending.contains(FileStateEngine.normalizeSourcePath($0)) }
+                remoteChanged = remoteChanged.union(resolvedPending)
+                pendingRemoteFiles = resolvedPending
+            } else {
+                // All pending files are now clean — clear the sticky set
+                pendingRemoteFiles = []
+            }
+        } else if behind > 0 {
+            // While still behind, merge full pending set into remote changed
+            remoteChanged = remoteChanged.union(pendingRemoteFiles)
+        }
 
         // Step 6: Classify files
         let classifiedFiles = fileStateEngine.classify(
@@ -339,10 +372,27 @@ final class AppStateStore {
 
     /// Applies remote changes for a single file.
     ///
+    /// Revalidates that the file is still in an apply-safe state (`remoteDrift`
+    /// or `dualDrift`) before executing. This prevents stale UI state from
+    /// overwriting local edits that appeared between confirmation and execution.
+    ///
     /// Pulls the source repo first (to sync remote changes locally), then
     /// applies only the specified file to the target state.
     /// - Parameter path: The relative file path to apply.
     func updateSingle(path: String) async {
+        // Revalidate: ensure the file is still in an apply-safe state
+        guard let currentFile = snapshot.files.first(where: { $0.path == path }),
+              currentFile.state == .remoteDrift || currentFile.state == .dualDrift else {
+            let reason = snapshot.files.first(where: { $0.path == path })?.state.displayName ?? "not found in snapshot"
+            appendEvent(ActivityEvent(
+                eventType: .error,
+                message: "Apply aborted for \(path): file state is \(reason) since confirmation",
+                relatedFilePath: path
+            ))
+            await forceRefresh()
+            return
+        }
+
         appendEvent(ActivityEvent(
             eventType: .update,
             message: "Applying remote changes for \(path)",
@@ -381,9 +431,10 @@ final class AppStateStore {
 
     /// Applies remote changes for safe files (remoteDrift only) using per-file apply.
     ///
-    /// Iterates over each remoteDrift file independently so that a failure in one
-    /// file does not block the others.
+    /// Revalidates each file's state before applying. Iterates over each remoteDrift
+    /// file independently so that a failure in one file does not block the others.
     func updateSafe() async {
+        // Snapshot the files now and revalidate: only apply files still in remoteDrift
         let remoteFiles = snapshot.files.filter { $0.state == .remoteDrift }
 
         guard !remoteFiles.isEmpty else { return }
@@ -407,7 +458,15 @@ final class AppStateStore {
 
         var succeeded = 0
         var failed = 0
+        var skipped = 0
         for file in remoteFiles {
+            // Revalidate: re-check current snapshot state before each apply
+            if let current = snapshot.files.first(where: { $0.path == file.path }),
+               current.state != .remoteDrift {
+                skipped += 1
+                continue
+            }
+
             do {
                 _ = try await chezmoiService.apply(path: file.path)
                 succeeded += 1
@@ -421,10 +480,14 @@ final class AppStateStore {
             }
         } // End of loop applying remote files
 
-        if succeeded > 0 || failed > 0 {
+        var summary = "Batch apply complete: \(succeeded) succeeded, \(failed) failed"
+        if skipped > 0 {
+            summary += ", \(skipped) skipped (state changed)"
+        }
+        if succeeded > 0 || failed > 0 || skipped > 0 {
             appendEvent(ActivityEvent(
                 eventType: .update,
-                message: "Batch apply complete: \(succeeded) succeeded, \(failed) failed"
+                message: summary
             ))
         }
 

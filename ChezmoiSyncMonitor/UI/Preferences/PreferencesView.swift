@@ -215,6 +215,12 @@ struct PreferencesView: View {
                 }
             }
 
+            Section {
+                Text(Strings.prefs.pathChangeRequiresRestart)
+                    .font(.caption)
+                    .foregroundStyle(.orange)
+            }
+
             Section(Strings.prefs.externalTools) {
                 ExternalToolPicker(
                     label: Strings.prefs.preferredEditor,

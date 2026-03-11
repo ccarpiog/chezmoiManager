@@ -184,6 +184,7 @@
 "prefs.pollMinutes" = "%d min";
 "prefs.detected" = "Detected: %@";
 "prefs.startupError" = "Last startup toggle error: %@";
+"prefs.pathChangeRequiresRestart" = "Path changes take effect after restarting the app.";
 
 /* ============================================================
    External tool picker

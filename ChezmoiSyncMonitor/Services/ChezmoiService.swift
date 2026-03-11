@@ -172,13 +172,28 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
 
     /// Ensures the chezmoi source repo is on an attached local branch.
     ///
-    /// If HEAD is detached, attempts to re-attach to the default remote branch
-    /// (`origin/HEAD`) by switching to the matching local branch or creating it.
+    /// If HEAD is detached, first preserves the current commit as a safety branch
+    /// (`detached-backup-<short-sha>`) so it is not lost to garbage collection,
+    /// then attempts to re-attach to the default remote branch (`origin/HEAD`)
+    /// by switching to the matching local branch or creating it.
     /// - Throws: `AppError` if the repo cannot be re-attached safely.
     private func ensureAttachedHeadForSourceRepo() async throws {
         let headResult = try await runSourceGit(arguments: ["rev-parse", "--abbrev-ref", "HEAD"])
         let headRef = headResult.stdout.trimmingCharacters(in: .whitespacesAndNewlines)
         guard headRef == "HEAD" else { return }
+
+        // Preserve detached HEAD commit as a safety branch before switching
+        let shaResult = try await runSourceGit(
+            arguments: ["rev-parse", "--short", "HEAD"],
+            throwOnFailure: false
+        )
+        let shortSha = shaResult.stdout.trimmingCharacters(in: .whitespacesAndNewlines)
+        if shaResult.exitCode == 0, !shortSha.isEmpty {
+            _ = try await runSourceGit(
+                arguments: ["branch", "detached-backup-\(shortSha)", "HEAD"],
+                throwOnFailure: false
+            )
+        }
 
         let remoteHeadResult = try await runSourceGit(
             arguments: ["symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD"],
@@ -253,6 +268,9 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
     /// - Parameter message: The commit message.
     /// - Throws: `AppError` if staging or pushing fails.
     func commitAndPush(message: String) async throws {
+        // Abort early if HEAD is detached — commits would be unreachable after push fails
+        try await ensureAttachedHeadForSourceRepo()
+
         // Stage all changes
         _ = try await ProcessRunner.run(
             command: chezmoiBinary,

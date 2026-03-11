@@ -257,12 +257,21 @@ final class AppStateStoreTests: XCTestCase {
 
     // MARK: - Single-file apply tests
 
+    /// Helper to set up the snapshot with a remoteDrift file for updateSingle tests.
+    @MainActor
+    private func setUpRemoteDriftSnapshot(store: AppStateStore, path: String) {
+        store.snapshot = SyncSnapshot(lastRefreshAt: Date(), files: [
+            FileStatus(path: path, state: .remoteDrift)
+        ])
+    } // End of func setUpRemoteDriftSnapshot(store:path:)
+
     /// Tests that updateSingle pulls source and then applies the specific file.
     @MainActor
     func testUpdateSinglePullsThenApplies() async {
         mockChezmoi.statusResult = []
 
         let store = makeStore()
+        setUpRemoteDriftSnapshot(store: store, path: ".bashrc")
         await store.updateSingle(path: ".bashrc")
 
         XCTAssertEqual(mockChezmoi.pullSourceCallCount, 1, "Should pull source once")
@@ -275,6 +284,7 @@ final class AppStateStoreTests: XCTestCase {
         mockChezmoi.statusResult = []
 
         let store = makeStore()
+        setUpRemoteDriftSnapshot(store: store, path: ".bashrc")
         await store.updateSingle(path: ".bashrc")
 
         let updateEvents = store.activityLog.filter { $0.eventType == .update }
@@ -288,6 +298,7 @@ final class AppStateStoreTests: XCTestCase {
         mockChezmoi.statusResult = []
 
         let store = makeStore()
+        setUpRemoteDriftSnapshot(store: store, path: ".bashrc")
         await store.updateSingle(path: ".bashrc")
 
         let errorEvents = store.activityLog.filter { $0.eventType == .error }
@@ -303,12 +314,30 @@ final class AppStateStoreTests: XCTestCase {
         mockChezmoi.statusResult = []
 
         let store = makeStore()
+        setUpRemoteDriftSnapshot(store: store, path: ".bashrc")
         await store.updateSingle(path: ".bashrc")
 
         XCTAssertTrue(mockChezmoi.appliedPaths.isEmpty, "Should not attempt apply if pull failed")
         let errorEvents = store.activityLog.filter { $0.eventType == .error }
         XCTAssertTrue(errorEvents.contains { $0.message.contains("pull source") })
     } // End of func testUpdateSingleAbortsOnPullFailure()
+
+    /// Tests that updateSingle aborts if file state changed since confirmation.
+    @MainActor
+    func testUpdateSingleAbortsOnStateChange() async {
+        mockChezmoi.statusResult = []
+
+        let store = makeStore()
+        // Set up snapshot with localDrift (not remoteDrift) — should be rejected
+        store.snapshot = SyncSnapshot(lastRefreshAt: Date(), files: [
+            FileStatus(path: ".bashrc", state: .localDrift)
+        ])
+        await store.updateSingle(path: ".bashrc")
+
+        XCTAssertTrue(mockChezmoi.appliedPaths.isEmpty, "Should not apply when state is not remoteDrift/dualDrift")
+        let errorEvents = store.activityLog.filter { $0.eventType == .error }
+        XCTAssertTrue(errorEvents.contains { $0.message.contains("Apply aborted") })
+    } // End of func testUpdateSingleAbortsOnStateChange()
 
     // MARK: - Batch apply tests
 

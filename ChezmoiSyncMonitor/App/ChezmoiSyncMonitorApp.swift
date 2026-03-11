@@ -41,12 +41,20 @@ struct ChezmoiSyncMonitorApp: App {
 
     /// Creates the AppStateStore, falling back to a stub store if binaries are missing.
     ///
+    /// Reads saved preferences to honor user-configured tool path overrides.
     /// Logs the error and records it for UI display rather than crashing.
     /// - Returns: An `AppStateStore` instance (functional or stub-based).
     private static func createAppState() -> AppStateStore {
+        let savedPrefs = PreferencesStore().load()
+
         do {
-            let chezmoi = try ChezmoiService()
-            let git = try GitService()
+            let chezmoiPath = savedPrefs.chezmoiPathOverride?.isEmpty == false
+                ? savedPrefs.chezmoiPathOverride : nil
+            let gitPath = savedPrefs.gitPathOverride?.isEmpty == false
+                ? savedPrefs.gitPathOverride : nil
+
+            let chezmoi = try ChezmoiService(binaryPath: chezmoiPath)
+            let git = try GitService(gitPath: gitPath, chezmoiPath: chezmoiPath)
             let engine = FileStateEngine()
             return AppStateStore(
                 chezmoiService: chezmoi,

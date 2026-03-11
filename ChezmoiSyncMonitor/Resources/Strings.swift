@@ -540,6 +540,11 @@ enum Strings {
             String(format: NSLocalizedString("prefs.startupError", value: "Last startup toggle error: %@", comment: ""), message)
         }
 
+        static var pathChangeRequiresRestart: String {
+            String(localized: "prefs.pathChangeRequiresRestart",
+                   defaultValue: "Path changes take effect after restarting the app.")
+        }
+
         // Poll interval labels
         static var manualOnly: String {
             String(localized: "prefs.manualOnly",
