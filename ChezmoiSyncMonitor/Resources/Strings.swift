@@ -419,7 +419,7 @@ enum Strings {
         }
         static var batchSafeSyncHelp: String {
             String(localized: "prefs.batchSafeSyncHelp",
-                   defaultValue: "Enable \"Add All Safe\" to include batch operations")
+                   defaultValue: "Show batch \"Apply Safe Remote\" action in the menu bar")
         }
         static var notifications: String {
             String(localized: "prefs.notifications",

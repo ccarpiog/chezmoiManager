@@ -143,6 +143,35 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
         )
     } // End of func update()
 
+    /// Pulls remote changes into the chezmoi source state without applying them.
+    ///
+    /// Uses `chezmoi update --apply=false` to sync the source repo from remote
+    /// without modifying any local target files.
+    ///
+    /// - Returns: The `CommandResult` of the pull command.
+    /// - Throws: `AppError` if the chezmoi command fails.
+    func pullSource() async throws -> CommandResult {
+        return try await ProcessRunner.run(
+            command: chezmoiBinary,
+            arguments: ["update", "--no-tty", "--apply=false"]
+        )
+    } // End of func pullSource()
+
+    /// Applies the chezmoi source state for a single file to the local machine.
+    ///
+    /// Does NOT pull from remote — call `pullSource()` first for remoteDrift files.
+    ///
+    /// - Parameter path: The relative file path to apply.
+    /// - Returns: The `CommandResult` of the apply command.
+    /// - Throws: `AppError` if the chezmoi command fails.
+    func apply(path: String) async throws -> CommandResult {
+        let resolvedPath = path.hasPrefix("/") ? path : "~/\(path)"
+        return try await ProcessRunner.run(
+            command: chezmoiBinary,
+            arguments: ["apply", "--no-tty", "--", resolvedPath]
+        )
+    } // End of func apply(path:)
+
     /// Stages, commits, and pushes all changes in the chezmoi source repo.
     ///
     /// Uses `chezmoi git` to run git commands in the correct source directory.

@@ -337,27 +337,98 @@ final class AppStateStore {
         await forceRefresh()
     } // End of func addAllSafe()
 
-    /// Applies remote changes for safe files (remoteDrift only).
+    /// Applies remote changes for a single file.
     ///
-    /// Only triggers update when there are remoteDrift files present.
+    /// Pulls the source repo first (to sync remote changes locally), then
+    /// applies only the specified file to the target state.
+    /// - Parameter path: The relative file path to apply.
+    func updateSingle(path: String) async {
+        appendEvent(ActivityEvent(
+            eventType: .update,
+            message: "Applying remote changes for \(path)",
+            relatedFilePath: path
+        ))
+
+        do {
+            _ = try await chezmoiService.pullSource()
+        } catch {
+            appendEvent(ActivityEvent(
+                eventType: .error,
+                message: "Failed to pull source before applying \(path): \(error.localizedDescription)",
+                relatedFilePath: path
+            ))
+            await forceRefresh()
+            return
+        }
+
+        do {
+            _ = try await chezmoiService.apply(path: path)
+            appendEvent(ActivityEvent(
+                eventType: .update,
+                message: "Applied remote changes for \(path)",
+                relatedFilePath: path
+            ))
+        } catch {
+            appendEvent(ActivityEvent(
+                eventType: .error,
+                message: "Apply failed for \(path): \(error.localizedDescription)",
+                relatedFilePath: path
+            ))
+        }
+
+        await forceRefresh()
+    } // End of func updateSingle(path:)
+
+    /// Applies remote changes for safe files (remoteDrift only) using per-file apply.
+    ///
+    /// Iterates over each remoteDrift file independently so that a failure in one
+    /// file does not block the others.
     func updateSafe() async {
         let remoteFiles = snapshot.files.filter { $0.state == .remoteDrift }
 
         guard !remoteFiles.isEmpty else { return }
 
+        appendEvent(ActivityEvent(
+            eventType: .update,
+            message: "Applying remote changes for \(remoteFiles.count) file(s)"
+        ))
+
+        // Pull source repo first so apply sees latest remote state
         do {
-            _ = try await chezmoiService.update()
-            appendEvent(ActivityEvent(
-                eventType: .update,
-                message: "Applied remote changes (\(remoteFiles.count) file(s))"
-            ))
-            await forceRefresh()
+            _ = try await chezmoiService.pullSource()
         } catch {
             appendEvent(ActivityEvent(
                 eventType: .error,
-                message: "Failed to apply remote changes: \(error.localizedDescription)"
+                message: "Failed to pull source before batch apply: \(error.localizedDescription)"
+            ))
+            await forceRefresh()
+            return
+        }
+
+        var succeeded = 0
+        var failed = 0
+        for file in remoteFiles {
+            do {
+                _ = try await chezmoiService.apply(path: file.path)
+                succeeded += 1
+            } catch {
+                failed += 1
+                appendEvent(ActivityEvent(
+                    eventType: .error,
+                    message: "Apply failed for \(file.path): \(error.localizedDescription)",
+                    relatedFilePath: file.path
+                ))
+            }
+        } // End of loop applying remote files
+
+        if succeeded > 0 || failed > 0 {
+            appendEvent(ActivityEvent(
+                eventType: .update,
+                message: "Batch apply complete: \(succeeded) succeeded, \(failed) failed"
             ))
         }
+
+        await forceRefresh()
     } // End of func updateSafe()
 
     /// Commits and pushes all changes in the chezmoi source repo to the remote.

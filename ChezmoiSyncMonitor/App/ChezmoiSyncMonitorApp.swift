@@ -139,6 +139,16 @@ private struct StubChezmoiService: ChezmoiServiceProtocol {
     }
 
     /// Always throws an error indicating chezmoi is not configured.
+    func pullSource() async throws -> CommandResult {
+        throw AppError.unknown("chezmoi binary not found. Configure the path in Preferences.")
+    }
+
+    /// Always throws an error indicating chezmoi is not configured.
+    func apply(path: String) async throws -> CommandResult {
+        throw AppError.unknown("chezmoi binary not found. Configure the path in Preferences.")
+    }
+
+    /// Always throws an error indicating chezmoi is not configured.
     func commitAndPush(message: String) async throws {
         throw AppError.unknown("chezmoi binary not found. Configure the path in Preferences.")
     }

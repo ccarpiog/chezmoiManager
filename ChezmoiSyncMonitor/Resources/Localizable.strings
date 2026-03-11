@@ -153,7 +153,7 @@
 "prefs.behavior" = "Behavior";
 "prefs.autoFetch" = "Auto-fetch on refresh";
 "prefs.batchSafeSync" = "Batch safe sync";
-"prefs.batchSafeSyncHelp" = "Enable \"Add All Safe\" to include batch operations";
+"prefs.batchSafeSyncHelp" = "Show batch \"Apply Safe Remote\" action in the menu bar";
 "prefs.notifications" = "Notifications";
 "prefs.enableNotifications" = "Enable notifications";
 "prefs.chezmoi" = "Chezmoi";

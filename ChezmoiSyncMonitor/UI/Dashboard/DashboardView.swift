@@ -119,8 +119,7 @@ struct DashboardView: View {
             Button(Strings.dashboard.apply, role: .destructive) {
                 if let path = applyConfirmationPath {
                     Task {
-                        await appState.updateSafe()
-                        _ = path // updateSafe applies all remote changes
+                        await appState.updateSingle(path: path)
                     }
                 }
             }

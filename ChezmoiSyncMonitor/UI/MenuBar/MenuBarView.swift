@@ -223,12 +223,14 @@ struct MenuBarView: View {
                 Task { await appState.commitAndPush() }
             }
 
-            menuButton(
-                Strings.menu.applySafeRemote,
-                icon: "arrow.down.circle",
-                disabled: appState.snapshot.remoteDriftCount == 0 || isRefreshing
-            ) {
-                Task { await appState.updateSafe() }
+            if appState.preferences.batchSafeSyncEnabled {
+                menuButton(
+                    Strings.menu.applySafeRemote,
+                    icon: "arrow.down.circle",
+                    disabled: appState.snapshot.remoteDriftCount == 0 || isRefreshing
+                ) {
+                    Task { await appState.updateSafe() }
+                }
             }
         }
     } // End of computed property actionsSection

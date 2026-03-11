@@ -102,8 +102,12 @@ This plan addresses the issues observed when clicking `Apply` on a single remote
 5. Existing add/diff behavior remains unchanged.
 
 ## Suggested Execution Order
-1. Phase 1 + Phase 2 (correctness for row apply first).
-2. Phase 4 + Phase 5 (observability and trust).
-3. Phase 3 (batch robustness).
-4. Phase 6 (preference wiring and UX consistency).
-5. Tests and manual validation sweep.
+1. ~~Phase 1 + Phase 2 (correctness for row apply first).~~ DONE
+2. ~~Phase 4 + Phase 5 (observability and trust).~~ DONE (inline with Phase 1+2)
+3. ~~Phase 3 (batch robustness).~~ DONE (inline with Phase 1+2)
+4. ~~Phase 6 (preference wiring and UX consistency).~~ DONE
+5. ~~Tests and manual validation sweep.~~ DONE (8 new tests, all passing)
+
+## Implementation Notes
+- `chezmoi apply` only applies from local source state (does NOT pull). Added `pullSource()` (`chezmoi update --apply=false`) before every apply operation.
+- Known limitation: after `pullSource()`, `behind=0`, so unapplied remote files may be temporarily reclassified as `localDrift` by the classification engine. This is a pre-existing architectural constraint (FileStateEngine relies on `git behind > 0` for remoteDrift detection) and not a regression.

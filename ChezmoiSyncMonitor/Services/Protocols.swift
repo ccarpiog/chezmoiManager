@@ -27,6 +27,19 @@ protocol ChezmoiServiceProtocol: Sendable {
     /// - Throws: `AppError` if the chezmoi command fails.
     func update() async throws -> CommandResult
 
+    /// Pulls remote changes into the chezmoi source state without applying them.
+    /// Equivalent to `chezmoi update --apply=false`.
+    /// - Returns: The result of the pull command.
+    /// - Throws: `AppError` if the chezmoi command fails.
+    func pullSource() async throws -> CommandResult
+
+    /// Applies the chezmoi source state for a single file to the local machine.
+    /// Does NOT pull from remote — call `pullSource()` first if needed.
+    /// - Parameter path: The relative file path to apply.
+    /// - Returns: The result of the apply command.
+    /// - Throws: `AppError` if the chezmoi command fails.
+    func apply(path: String) async throws -> CommandResult
+
     /// Stages, commits, and pushes changes in the chezmoi source repo via `chezmoi git`.
     /// - Parameter message: The commit message.
     /// - Throws: `AppError` if any git step fails.
