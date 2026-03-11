@@ -22,7 +22,8 @@
       "Bash(git log*)",
       "Bash(git -C *)",
       "Bash(git commit:*)",
-      "Read(//Users/ccarpio/Library/Developer/Xcode/DerivedData/**)"
+      "Read(//Users/ccarpio/Library/Developer/Xcode/DerivedData/**)",
+      "Bash(xcodegen generate:*)"
     ],
     "additionalDirectories": [
       "/Users/ccarpio/Developer/chezmoiManager"

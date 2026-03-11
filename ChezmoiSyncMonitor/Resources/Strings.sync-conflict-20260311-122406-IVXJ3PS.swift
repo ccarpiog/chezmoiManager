@@ -1,0 +1,642 @@
+import Foundation
+
+/// Centralized namespace for all user-facing localized strings.
+///
+/// All UI text lives here so translators only need to update this file
+/// and `Localizable.strings`. Each nested enum groups strings by feature area.
+///
+/// Usage: `Strings.onboarding.welcome` returns the localized string for the
+/// "onboarding.welcome" key from `Localizable.strings`.
+enum Strings {
+
+    // MARK: - Onboarding
+
+    /// Strings for the onboarding wizard shown on first launch.
+    enum onboarding {
+        static var welcome: String {
+            String(localized: "onboarding.welcome",
+                   defaultValue: "Welcome to Chezmoi Sync Monitor")
+        }
+        static var welcomeDescription: String {
+            String(localized: "onboarding.welcomeDescription",
+                   defaultValue: "A lightweight menu bar utility that monitors your chezmoi-managed dotfiles for sync state across machines. It detects local drift, remote drift, and conflict risks, providing contextual actions to resolve them.")
+        }
+        static var checkDependencies: String {
+            String(localized: "onboarding.checkDependencies",
+                   defaultValue: "Check Dependencies")
+        }
+        static var dependenciesDescription: String {
+            String(localized: "onboarding.dependenciesDescription",
+                   defaultValue: "The app needs chezmoi and git to be installed on your system.")
+        }
+        static var detect: String {
+            String(localized: "onboarding.detect",
+                   defaultValue: "Detect")
+        }
+        static var redetect: String {
+            String(localized: "onboarding.redetect",
+                   defaultValue: "Re-detect")
+        }
+        static var notifications: String {
+            String(localized: "onboarding.notifications",
+                   defaultValue: "Notifications")
+        }
+        static var notificationsDescription: String {
+            String(localized: "onboarding.notificationsDescription",
+                   defaultValue: "The app can notify you when drift or conflicts are detected in your dotfiles. This helps you stay aware of changes that need attention.")
+        }
+        static var notificationsEnabled: String {
+            String(localized: "onboarding.notificationsEnabled",
+                   defaultValue: "Notifications enabled")
+        }
+        static var enableNotifications: String {
+            String(localized: "onboarding.enableNotifications",
+                   defaultValue: "Enable Notifications")
+        }
+        static var allSet: String {
+            String(localized: "onboarding.allSet",
+                   defaultValue: "You're All Set")
+        }
+        static var installInstructions: String {
+            String(localized: "onboarding.installInstructions",
+                   defaultValue: "Install instructions")
+        }
+        static var sourceRepoNotFound: String {
+            String(localized: "onboarding.sourceRepoNotFound",
+                   defaultValue: "Not found — run 'chezmoi init' first")
+        }
+        static var notFound: String {
+            String(localized: "onboarding.notFound",
+                   defaultValue: "Not found")
+        }
+        static var enabled: String {
+            String(localized: "onboarding.enabled",
+                   defaultValue: "Enabled")
+        }
+        static var disabled: String {
+            String(localized: "onboarding.disabled",
+                   defaultValue: "Disabled")
+        }
+        static var sourceRepo: String {
+            String(localized: "onboarding.sourceRepo",
+                   defaultValue: "Source repo")
+        }
+    } // End of enum onboarding
+
+    // MARK: - Navigation
+
+    /// Strings for common navigation buttons.
+    enum navigation {
+        static var back: String {
+            String(localized: "navigation.back",
+                   defaultValue: "Back")
+        }
+        static var next: String {
+            String(localized: "navigation.next",
+                   defaultValue: "Next")
+        }
+        static var close: String {
+            String(localized: "navigation.close",
+                   defaultValue: "Close")
+        }
+        static var cancel: String {
+            String(localized: "navigation.cancel",
+                   defaultValue: "Cancel")
+        }
+        static var startMonitoring: String {
+            String(localized: "navigation.startMonitoring",
+                   defaultValue: "Start Monitoring")
+        }
+    } // End of enum navigation
+
+    // MARK: - Dashboard
+
+    /// Strings for the main dashboard window.
+    enum dashboard {
+        static var title: String {
+            String(localized: "dashboard.title",
+                   defaultValue: "Chezmoi Sync Monitor")
+        }
+        static var notRefreshedYet: String {
+            String(localized: "dashboard.notRefreshedYet",
+                   defaultValue: "Not refreshed yet")
+        }
+        static var refreshing: String {
+            String(localized: "dashboard.refreshing",
+                   defaultValue: "Refreshing...")
+        }
+        static var dataIsStale: String {
+            String(localized: "dashboard.dataIsStale",
+                   defaultValue: "Data is stale")
+        }
+        static var filter: String {
+            String(localized: "dashboard.filter",
+                   defaultValue: "Filter:")
+        }
+        static var search: String {
+            String(localized: "dashboard.search",
+                   defaultValue: "Search:")
+        }
+        static var filterByPath: String {
+            String(localized: "dashboard.filterByPath",
+                   defaultValue: "Filter by path...")
+        }
+        static var managedFiles: String {
+            String(localized: "dashboard.managedFiles",
+                   defaultValue: "Managed Files")
+        }
+        static var noManagedFiles: String {
+            String(localized: "dashboard.noManagedFiles",
+                   defaultValue: "No managed files found.")
+        }
+        static var clickRefresh: String {
+            String(localized: "dashboard.clickRefresh",
+                   defaultValue: "Click the refresh button to scan for changes.")
+        }
+        static var noFilesMatchFilter: String {
+            String(localized: "dashboard.noFilesMatchFilter",
+                   defaultValue: "No files match the current filter.")
+        }
+        static var clearFilters: String {
+            String(localized: "dashboard.clearFilters",
+                   defaultValue: "Clear Filters")
+        }
+        static var diffLoadError: String {
+            String(localized: "dashboard.diffLoadError",
+                   defaultValue: "Could not load diff. The file may be binary or not managed by chezmoi.")
+        }
+        static var applyRemoteChanges: String {
+            String(localized: "dashboard.applyRemoteChanges",
+                   defaultValue: "Apply Remote Changes")
+        }
+        static var apply: String {
+            String(localized: "dashboard.apply",
+                   defaultValue: "Apply")
+        }
+        static var applyWarning: String {
+            String(localized: "dashboard.applyWarning",
+                   defaultValue: "This will overwrite your local file with the remote version. This action cannot be undone.")
+        }
+        /// Returns the localized last-refresh label with an interpolated relative time.
+        static func lastRefresh(_ time: String) -> String {
+            String(localized: "dashboard.lastRefresh \(time)",
+                   defaultValue: "Last refresh: \(time)")
+        }
+    } // End of enum dashboard
+
+    // MARK: - Dashboard Filters
+
+    /// Display names for file filter dropdown options.
+    enum filters {
+        static var all: String {
+            String(localized: "filter.all",
+                   defaultValue: "All")
+        }
+        static var localDrift: String {
+            String(localized: "filter.localDrift",
+                   defaultValue: "Local Drift")
+        }
+        static var remoteDrift: String {
+            String(localized: "filter.remoteDrift",
+                   defaultValue: "Remote Drift")
+        }
+        static var dualDrift: String {
+            String(localized: "filter.dualDrift",
+                   defaultValue: "Dual Drift")
+        }
+        static var error: String {
+            String(localized: "filter.error",
+                   defaultValue: "Error")
+        }
+        static var clean: String {
+            String(localized: "filter.clean",
+                   defaultValue: "Clean")
+        }
+    } // End of enum filters
+
+    // MARK: - Overview Cards
+
+    /// Labels used in the overview card row on the dashboard.
+    enum overviewCards {
+        static var localDrift: String {
+            String(localized: "overview.localDrift",
+                   defaultValue: "Local Drift")
+        }
+        static var remoteDrift: String {
+            String(localized: "overview.remoteDrift",
+                   defaultValue: "Remote Drift")
+        }
+        static var conflicts: String {
+            String(localized: "overview.conflicts",
+                   defaultValue: "Conflicts")
+        }
+        static var errors: String {
+            String(localized: "overview.errors",
+                   defaultValue: "Errors")
+        }
+    } // End of enum overviewCards
+
+    // MARK: - File Actions (short button labels)
+
+    /// Short button labels for file-level actions in the file list.
+    enum fileActions {
+        static var add: String {
+            String(localized: "fileAction.add",
+                   defaultValue: "Add")
+        }
+        static var apply: String {
+            String(localized: "fileAction.apply",
+                   defaultValue: "Apply")
+        }
+        static var diff: String {
+            String(localized: "fileAction.diff",
+                   defaultValue: "Diff")
+        }
+        static var edit: String {
+            String(localized: "fileAction.edit",
+                   defaultValue: "Edit")
+        }
+        static var merge: String {
+            String(localized: "fileAction.merge",
+                   defaultValue: "Merge")
+        }
+    } // End of enum fileActions
+
+    // MARK: - Activity Log
+
+    /// Strings for the collapsible activity log panel.
+    enum activityLog {
+        static var title: String {
+            String(localized: "activityLog.title",
+                   defaultValue: "Activity Log")
+        }
+        static var noActivity: String {
+            String(localized: "activityLog.noActivity",
+                   defaultValue: "No activity recorded yet.")
+        }
+    } // End of enum activityLog
+
+    // MARK: - Diff Viewer
+
+    /// Strings for the diff viewer sheet.
+    enum diffViewer {
+        /// Returns the localized diff header with an interpolated file path.
+        static func title(_ path: String) -> String {
+            String(localized: "diffViewer.title \(path)",
+                   defaultValue: "Diff: \(path)")
+        }
+    } // End of enum diffViewer
+
+    // MARK: - Menu Bar
+
+    /// Strings for the menu bar dropdown.
+    enum menu {
+        static var title: String {
+            String(localized: "menu.title",
+                   defaultValue: "Chezmoi Sync Monitor")
+        }
+        static var refreshing: String {
+            String(localized: "menu.refreshing",
+                   defaultValue: "Refreshing...")
+        }
+        static var never: String {
+            String(localized: "menu.never",
+                   defaultValue: "Never")
+        }
+        static var quit: String {
+            String(localized: "menu.quit",
+                   defaultValue: "Quit")
+        }
+        static var offline: String {
+            String(localized: "menu.offline",
+                   defaultValue: "Offline")
+        }
+        static func lastCheck(_ time: String) -> String {
+            String(localized: "menu.lastCheck \(time)",
+                   defaultValue: "Last check: \(time)")
+        }
+        /// Returns the localized last-refresh label.
+        static func lastRefresh(_ time: String) -> String {
+            String(localized: "menu.lastRefresh \(time)",
+                   defaultValue: "Last refresh: \(time)")
+        }
+        static var localChangeSingular: String {
+            String(localized: "menu.localChange",
+                   defaultValue: "local change")
+        }
+        static var localChangePlural: String {
+            String(localized: "menu.localChanges",
+                   defaultValue: "local changes")
+        }
+        static var remoteChangeSingular: String {
+            String(localized: "menu.remoteChange",
+                   defaultValue: "remote change")
+        }
+        static var remoteChangePlural: String {
+            String(localized: "menu.remoteChanges",
+                   defaultValue: "remote changes")
+        }
+        static var conflictSingular: String {
+            String(localized: "menu.conflict",
+                   defaultValue: "conflict")
+        }
+        static var conflictPlural: String {
+            String(localized: "menu.conflicts",
+                   defaultValue: "conflicts")
+        }
+        static var errorSingular: String {
+            String(localized: "menu.error",
+                   defaultValue: "error")
+        }
+        static var errorPlural: String {
+            String(localized: "menu.errors",
+                   defaultValue: "errors")
+        }
+        static var allClean: String {
+            String(localized: "menu.allClean",
+                   defaultValue: "All files in sync")
+        }
+        static var refreshNow: String {
+            String(localized: "menu.refreshNow",
+                   defaultValue: "Refresh Now")
+        }
+        static var addLocalChanges: String {
+            String(localized: "menu.addLocalChanges",
+                   defaultValue: "Add Local Changes")
+        }
+        static var commitAndPush: String {
+            String(localized: "menu.commitAndPush",
+                   defaultValue: "Commit & Push")
+        }
+        static var applySafeRemote: String {
+            String(localized: "menu.applySafeRemote",
+                   defaultValue: "Apply Safe Remote")
+        }
+        static var openDashboard: String {
+            String(localized: "menu.openDashboard",
+                   defaultValue: "Open Dashboard")
+        }
+        static var preferences: String {
+            String(localized: "menu.preferences",
+                   defaultValue: "Preferences...")
+        }
+    } // End of enum menu
+
+    // MARK: - Preferences
+
+    /// Strings for the preferences/settings window.
+    enum prefs {
+        // Tab labels
+        static var syncTab: String {
+            String(localized: "prefs.syncTab",
+                   defaultValue: "Sync")
+        }
+        static var toolsTab: String {
+            String(localized: "prefs.toolsTab",
+                   defaultValue: "Tools")
+        }
+        static var advancedTab: String {
+            String(localized: "prefs.advancedTab",
+                   defaultValue: "Advanced")
+        }
+
+        // Sync tab
+        static var polling: String {
+            String(localized: "prefs.polling",
+                   defaultValue: "Polling")
+        }
+        static var pollInterval: String {
+            String(localized: "prefs.pollInterval",
+                   defaultValue: "Poll interval:")
+        }
+        static var behavior: String {
+            String(localized: "prefs.behavior",
+                   defaultValue: "Behavior")
+        }
+        static var autoFetch: String {
+            String(localized: "prefs.autoFetch",
+                   defaultValue: "Auto-fetch on refresh")
+        }
+        static var batchSafeSync: String {
+            String(localized: "prefs.batchSafeSync",
+                   defaultValue: "Batch safe sync")
+        }
+        static var batchSafeSyncHelp: String {
+            String(localized: "prefs.batchSafeSyncHelp",
+                   defaultValue: "Enable \"Add All Safe\" to include batch operations")
+        }
+        static var notifications: String {
+            String(localized: "prefs.notifications",
+                   defaultValue: "Notifications")
+        }
+        static var enableNotifications: String {
+            String(localized: "prefs.enableNotifications",
+                   defaultValue: "Enable notifications")
+        }
+
+        // Tools tab
+        static var chezmoi: String {
+            String(localized: "prefs.chezmoi",
+                   defaultValue: "Chezmoi")
+        }
+        static var chezmoiPath: String {
+            String(localized: "prefs.chezmoiPath",
+                   defaultValue: "Chezmoi path:")
+        }
+        static var git: String {
+            String(localized: "prefs.git",
+                   defaultValue: "Git")
+        }
+        static var gitPath: String {
+            String(localized: "prefs.gitPath",
+                   defaultValue: "Git path:")
+        }
+        static var sourceRepository: String {
+            String(localized: "prefs.sourceRepository",
+                   defaultValue: "Source Repository")
+        }
+        static var sourceRepoPath: String {
+            String(localized: "prefs.sourceRepoPath",
+                   defaultValue: "Source repo path:")
+        }
+        static var autoDetect: String {
+            String(localized: "prefs.autoDetect",
+                   defaultValue: "Auto-detect")
+        }
+        /// Returns the localized "Detected: <path>" label.
+        static func detected(_ path: String) -> String {
+            String(localized: "prefs.detected \(path)",
+                   defaultValue: "Detected: \(path)")
+        }
+        static var notFound: String {
+            String(localized: "prefs.notFound",
+                   defaultValue: "Not found")
+        }
+        static var notFoundChezmoi: String {
+            String(localized: "prefs.notFoundChezmoi",
+                   defaultValue: "Not found — is chezmoi initialized?")
+        }
+        static var externalTools: String {
+            String(localized: "prefs.externalTools",
+                   defaultValue: "External Tools")
+        }
+        static var preferredEditor: String {
+            String(localized: "prefs.preferredEditor",
+                   defaultValue: "Preferred editor:")
+        }
+        static var preferredMergeTool: String {
+            String(localized: "prefs.preferredMergeTool",
+                   defaultValue: "Preferred merge tool:")
+        }
+
+        // Advanced tab
+        static var startup: String {
+            String(localized: "prefs.startup",
+                   defaultValue: "Startup")
+        }
+        static var launchAtLogin: String {
+            String(localized: "prefs.launchAtLogin",
+                   defaultValue: "Launch at login")
+        }
+        static var reset: String {
+            String(localized: "prefs.reset",
+                   defaultValue: "Reset")
+        }
+        static var resetAllSettings: String {
+            String(localized: "prefs.resetAllSettings",
+                   defaultValue: "Reset All Settings")
+        }
+        static var resetConfirmTitle: String {
+            String(localized: "prefs.resetConfirmTitle",
+                   defaultValue: "Reset all settings to defaults?")
+        }
+        static var resetConfirmMessage: String {
+            String(localized: "prefs.resetConfirmMessage",
+                   defaultValue: "This will restore all preferences to their default values. This action cannot be undone.")
+        }
+
+        // Login item status
+        static var loginItemEnabled: String {
+            String(localized: "prefs.loginItemEnabled",
+                   defaultValue: "Login item is enabled.")
+        }
+        static var loginItemDisabled: String {
+            String(localized: "prefs.loginItemDisabled",
+                   defaultValue: "Login item is disabled.")
+        }
+        static var loginItemApprovalRequired: String {
+            String(localized: "prefs.loginItemApprovalRequired",
+                   defaultValue: "Approval required in System Settings > General > Login Items.")
+        }
+        static var openLoginItems: String {
+            String(localized: "prefs.openLoginItems",
+                   defaultValue: "Open Login Items Settings")
+        }
+        static var loginItemNotFound: String {
+            String(localized: "prefs.loginItemNotFound",
+                   defaultValue: "Login item helper not found in this build.")
+        }
+        static var loginItemUnavailable: String {
+            String(localized: "prefs.loginItemUnavailable",
+                   defaultValue: "Login item status unavailable.")
+        }
+        /// Returns the localized startup error label.
+        static func startupError(_ message: String) -> String {
+            String(localized: "prefs.startupError \(message)",
+                   defaultValue: "Last startup toggle error: \(message)")
+        }
+
+        // Poll interval labels
+        static var manualOnly: String {
+            String(localized: "prefs.manualOnly",
+                   defaultValue: "Manual only")
+        }
+        /// Returns the localized poll interval label (e.g., "5 min").
+        static func pollMinutes(_ n: Int) -> String {
+            String(localized: "prefs.pollMinutes \(n)",
+                   defaultValue: "\(n) min")
+        }
+    } // End of enum prefs
+
+    // MARK: - External Tool Picker
+
+    /// Strings for the external tool picker component.
+    enum toolPicker {
+        static var command: String {
+            String(localized: "toolPicker.command",
+                   defaultValue: "Command...")
+        }
+        static var ok: String {
+            String(localized: "toolPicker.ok",
+                   defaultValue: "OK")
+        }
+        static var defaultOption: String {
+            String(localized: "toolPicker.default",
+                   defaultValue: "(default)")
+        }
+        static var custom: String {
+            String(localized: "toolPicker.custom",
+                   defaultValue: "Custom...")
+        }
+        static var browse: String {
+            String(localized: "toolPicker.browse",
+                   defaultValue: "Browse...")
+        }
+        /// Returns the localized "Path: <path>" label.
+        static func path(_ value: String) -> String {
+            String(localized: "toolPicker.path \(value)",
+                   defaultValue: "Path: \(value)")
+        }
+        static var notFoundOnSystem: String {
+            String(localized: "toolPicker.notFoundOnSystem",
+                   defaultValue: "Not found on this system")
+        }
+        static var selectTool: String {
+            String(localized: "toolPicker.selectTool",
+                   defaultValue: "Select tool")
+        }
+    } // End of enum toolPicker
+
+    // MARK: - Notifications
+
+    /// Strings for system notifications delivered via UNUserNotificationCenter.
+    enum notifications {
+        static var localChangesTitle: String {
+            String(localized: "notification.localChangesTitle",
+                   defaultValue: "Local Changes Detected")
+        }
+        /// Returns the notification body for local drift.
+        static func localChangesBody(_ count: Int) -> String {
+            String(localized: "notification.localChangesBody \(count)",
+                   defaultValue: "\(count) file(s) have local changes not synced to source")
+        }
+        static var remoteChangesTitle: String {
+            String(localized: "notification.remoteChangesTitle",
+                   defaultValue: "Remote Changes Available")
+        }
+        /// Returns the notification body for remote drift.
+        static func remoteChangesBody(_ count: Int) -> String {
+            String(localized: "notification.remoteChangesBody \(count)",
+                   defaultValue: "\(count) file(s) have remote changes available")
+        }
+        static var conflictsTitle: String {
+            String(localized: "notification.conflictsTitle",
+                   defaultValue: "Conflicting Changes")
+        }
+        /// Returns the notification body for conflicts.
+        static func conflictsBody(_ count: Int) -> String {
+            String(localized: "notification.conflictsBody \(count)",
+                   defaultValue: "\(count) file(s) have conflicting changes")
+        }
+    } // End of enum notifications
+
+    // MARK: - App-level
+
+    /// Strings used at the top-level app scope.
+    enum app {
+        static var accessibilityLabel: String {
+            String(localized: "app.accessibilityLabel",
+                   defaultValue: "Chezmoi Sync Monitor")
+        }
+    } // End of enum app
+} // End of enum Strings

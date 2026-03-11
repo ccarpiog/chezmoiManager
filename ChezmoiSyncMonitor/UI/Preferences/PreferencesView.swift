@@ -31,33 +31,31 @@ struct PreferencesView: View {
     /// Optional error message from the most recent login-item action.
     @State private var loginItemErrorMessage: String?
 
-    /// Common poll interval options for the Picker.
-    private static let pollIntervalOptions: [(label: String, value: Int)] = [
-        ("1 min", 1),
-        ("2 min", 2),
-        ("5 min", 5),
-        ("10 min", 10),
-        ("15 min", 15),
-        ("30 min", 30),
-        ("60 min", 60),
-        ("Manual only", 0)
-    ]
+    /// Common poll interval values for the Picker.
+    private static let pollIntervalValues: [Int] = [1, 2, 5, 10, 15, 30, 60, 0]
+
+    /// Returns the localized label for a poll interval value.
+    /// - Parameter value: The interval in minutes, or 0 for manual-only.
+    /// - Returns: The localized label string.
+    private static func pollIntervalLabel(for value: Int) -> String {
+        value == 0 ? Strings.prefs.manualOnly : Strings.prefs.pollMinutes(value)
+    } // End of static func pollIntervalLabel(for:)
 
     var body: some View {
         TabView {
             syncSettingsTab
                 .tabItem {
-                    Label("Sync", systemImage: "arrow.triangle.2.circlepath")
+                    Label(Strings.prefs.syncTab, systemImage: "arrow.triangle.2.circlepath")
                 }
 
             toolsTab
                 .tabItem {
-                    Label("Tools", systemImage: "wrench")
+                    Label(Strings.prefs.toolsTab, systemImage: "wrench")
                 }
 
             advancedTab
                 .tabItem {
-                    Label("Advanced", systemImage: "gearshape.2")
+                    Label(Strings.prefs.advancedTab, systemImage: "gearshape.2")
                 }
         }
         .frame(width: 480, height: 380)
@@ -75,23 +73,23 @@ struct PreferencesView: View {
     /// Tab for configuring polling, fetch, batch sync, and notification settings.
     private var syncSettingsTab: some View {
         Form {
-            Section("Polling") {
-                Picker("Poll interval:", selection: Binding(
+            Section(Strings.prefs.polling) {
+                Picker(Strings.prefs.pollInterval, selection: Binding(
                     get: { prefs.pollIntervalMinutes },
                     set: { newValue in
                         prefs.pollIntervalMinutes = newValue
                         savePreferences()
                     }
                 )) {
-                    ForEach(PreferencesView.pollIntervalOptions, id: \.value) { option in
-                        Text(option.label).tag(option.value)
+                    ForEach(PreferencesView.pollIntervalValues, id: \.self) { value in
+                        Text(PreferencesView.pollIntervalLabel(for: value)).tag(value)
                     } // End of ForEach poll interval options
                 }
                 .pickerStyle(.menu)
             }
 
-            Section("Behavior") {
-                Toggle("Auto-fetch on refresh", isOn: Binding(
+            Section(Strings.prefs.behavior) {
+                Toggle(Strings.prefs.autoFetch, isOn: Binding(
                     get: { prefs.autoFetchEnabled },
                     set: { newValue in
                         prefs.autoFetchEnabled = newValue
@@ -99,18 +97,18 @@ struct PreferencesView: View {
                     }
                 ))
 
-                Toggle("Batch safe sync", isOn: Binding(
+                Toggle(Strings.prefs.batchSafeSync, isOn: Binding(
                     get: { prefs.batchSafeSyncEnabled },
                     set: { newValue in
                         prefs.batchSafeSyncEnabled = newValue
                         savePreferences()
                     }
                 ))
-                .help("Enable \"Add All Safe\" to include batch operations")
+                .help(Strings.prefs.batchSafeSyncHelp)
             }
 
-            Section("Notifications") {
-                Toggle("Enable notifications", isOn: Binding(
+            Section(Strings.prefs.notifications) {
+                Toggle(Strings.prefs.enableNotifications, isOn: Binding(
                     get: { prefs.notificationsEnabled },
                     set: { newValue in
                         prefs.notificationsEnabled = newValue
@@ -128,9 +126,9 @@ struct PreferencesView: View {
     /// Tab for configuring tool paths (chezmoi, git, source repo, editor, merge tool).
     private var toolsTab: some View {
         Form {
-            Section("Chezmoi") {
+            Section(Strings.prefs.chezmoi) {
                 HStack {
-                    TextField("Chezmoi path:", text: Binding(
+                    TextField(Strings.prefs.chezmoiPath, text: Binding(
                         get: { prefs.chezmoiPathOverride ?? "" },
                         set: { newValue in
                             prefs.chezmoiPathOverride = newValue.isEmpty ? nil : newValue
@@ -139,7 +137,7 @@ struct PreferencesView: View {
                     ))
                     .textFieldStyle(.roundedBorder)
 
-                    Button("Auto-detect") {
+                    Button(Strings.prefs.autoDetect) {
                         let detected = PATHResolver.chezmoiPath()
                         detectedChezmoiPath = detected
                         prefs.chezmoiPathOverride = detected
@@ -148,19 +146,19 @@ struct PreferencesView: View {
                 }
 
                 if let path = detectedChezmoiPath {
-                    Text("Detected: \(path)")
+                    Text(Strings.prefs.detected(path))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else {
-                    Text("Not found")
+                    Text(Strings.prefs.notFound)
                         .font(.caption)
                         .foregroundStyle(.red)
                 }
             }
 
-            Section("Git") {
+            Section(Strings.prefs.git) {
                 HStack {
-                    TextField("Git path:", text: Binding(
+                    TextField(Strings.prefs.gitPath, text: Binding(
                         get: { prefs.gitPathOverride ?? "" },
                         set: { newValue in
                             prefs.gitPathOverride = newValue.isEmpty ? nil : newValue
@@ -169,7 +167,7 @@ struct PreferencesView: View {
                     ))
                     .textFieldStyle(.roundedBorder)
 
-                    Button("Auto-detect") {
+                    Button(Strings.prefs.autoDetect) {
                         let detected = PATHResolver.gitPath()
                         detectedGitPath = detected
                         prefs.gitPathOverride = detected
@@ -178,19 +176,19 @@ struct PreferencesView: View {
                 }
 
                 if let path = detectedGitPath {
-                    Text("Detected: \(path)")
+                    Text(Strings.prefs.detected(path))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else {
-                    Text("Not found")
+                    Text(Strings.prefs.notFound)
                         .font(.caption)
                         .foregroundStyle(.red)
                 }
             }
 
-            Section("Source Repository") {
+            Section(Strings.prefs.sourceRepository) {
                 HStack {
-                    TextField("Source repo path:", text: Binding(
+                    TextField(Strings.prefs.sourceRepoPath, text: Binding(
                         get: { prefs.sourceRepoPathOverride ?? "" },
                         set: { newValue in
                             prefs.sourceRepoPathOverride = newValue.isEmpty ? nil : newValue
@@ -199,7 +197,7 @@ struct PreferencesView: View {
                     ))
                     .textFieldStyle(.roundedBorder)
 
-                    Button("Auto-detect") {
+                    Button(Strings.prefs.autoDetect) {
                         detectSourceRepoPath()
                         prefs.sourceRepoPathOverride = detectedSourceRepoPath
                         savePreferences()
@@ -207,19 +205,19 @@ struct PreferencesView: View {
                 }
 
                 if let path = detectedSourceRepoPath {
-                    Text("Detected: \(path)")
+                    Text(Strings.prefs.detected(path))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else {
-                    Text("Not found — is chezmoi initialized?")
+                    Text(Strings.prefs.notFoundChezmoi)
                         .font(.caption)
                         .foregroundStyle(.red)
                 }
             }
 
-            Section("External Tools") {
+            Section(Strings.prefs.externalTools) {
                 ExternalToolPicker(
-                    label: "Preferred editor:",
+                    label: Strings.prefs.preferredEditor,
                     selection: Binding(
                         get: { prefs.preferredEditor ?? "" },
                         set: { newValue in
@@ -231,7 +229,7 @@ struct PreferencesView: View {
                 )
 
                 ExternalToolPicker(
-                    label: "Preferred merge tool:",
+                    label: Strings.prefs.preferredMergeTool,
                     selection: Binding(
                         get: { prefs.preferredMergeTool ?? "" },
                         set: { newValue in
@@ -252,8 +250,8 @@ struct PreferencesView: View {
     /// Tab for login at startup and reset settings.
     private var advancedTab: some View {
         Form {
-            Section("Startup") {
-                Toggle("Launch at login", isOn: Binding(
+            Section(Strings.prefs.startup) {
+                Toggle(Strings.prefs.launchAtLogin, isOn: Binding(
                     get: { prefs.launchAtLogin },
                     set: { newValue in
                         prefs.launchAtLogin = newValue
@@ -265,23 +263,23 @@ struct PreferencesView: View {
                 loginItemStatusView
             }
 
-            Section("Reset") {
-                Button("Reset All Settings", role: .destructive) {
+            Section(Strings.prefs.reset) {
+                Button(Strings.prefs.resetAllSettings, role: .destructive) {
                     showingResetConfirmation = true
                 }
                 .confirmationDialog(
-                    "Reset all settings to defaults?",
+                    Strings.prefs.resetConfirmTitle,
                     isPresented: $showingResetConfirmation,
                     titleVisibility: .visible
                 ) {
-                    Button("Reset", role: .destructive) {
+                    Button(Strings.prefs.reset, role: .destructive) {
                         appState.resetAllPreferences()
                         prefs = .defaults
                         updateLoginItem(enabled: false)
                     }
-                    Button("Cancel", role: .cancel) {}
+                    Button(Strings.navigation.cancel, role: .cancel) {}
                 } message: {
-                    Text("This will restore all preferences to their default values. This action cannot be undone.")
+                    Text(Strings.prefs.resetConfirmMessage)
                 }
             }
         }
@@ -301,35 +299,35 @@ struct PreferencesView: View {
     private var loginItemStatusView: some View {
         switch loginItemStatus {
         case .enabled:
-            Text("Login item is enabled.")
+            Text(Strings.prefs.loginItemEnabled)
                 .font(.caption)
                 .foregroundStyle(.secondary)
         case .notRegistered:
-            Text("Login item is disabled.")
+            Text(Strings.prefs.loginItemDisabled)
                 .font(.caption)
                 .foregroundStyle(.secondary)
         case .requiresApproval:
             VStack(alignment: .leading, spacing: 6) {
-                Text("Approval required in System Settings > General > Login Items.")
+                Text(Strings.prefs.loginItemApprovalRequired)
                     .font(.caption)
                     .foregroundStyle(.orange)
-                Button("Open Login Items Settings") {
+                Button(Strings.prefs.openLoginItems) {
                     openLoginItemsSettings()
                 }
                 .buttonStyle(.link)
             }
         case .notFound:
-            Text("Login item helper not found in this build.")
+            Text(Strings.prefs.loginItemNotFound)
                 .font(.caption)
                 .foregroundStyle(.red)
         @unknown default:
-            Text("Login item status unavailable.")
+            Text(Strings.prefs.loginItemUnavailable)
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
 
         if let errorMessage = loginItemErrorMessage {
-            Text("Last startup toggle error: \(errorMessage)")
+            Text(Strings.prefs.startupError(errorMessage))
                 .font(.caption)
                 .foregroundStyle(.red)
         }

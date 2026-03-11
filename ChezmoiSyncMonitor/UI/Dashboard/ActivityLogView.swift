@@ -32,7 +32,7 @@ struct ActivityLogView: View {
                         .foregroundStyle(.secondary)
                         .frame(width: 12)
 
-                    Text("Activity Log")
+                    Text(Strings.activityLog.title)
                         .font(.headline)
 
                     Text("(\(events.count))")
@@ -51,7 +51,7 @@ struct ActivityLogView: View {
                 Divider()
 
                 if events.isEmpty {
-                    Text("No activity recorded yet.")
+                    Text(Strings.activityLog.noActivity)
                         .foregroundStyle(.secondary)
                         .font(.callout)
                         .frame(maxWidth: .infinity)

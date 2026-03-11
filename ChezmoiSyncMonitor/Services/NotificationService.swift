@@ -68,8 +68,8 @@ final class NotificationService: NotificationServiceProtocol, @unchecked Sendabl
         // Local drift notification
         if localCount > 0 {
             let content = UNMutableNotificationContent()
-            content.title = "Local Changes Detected"
-            content.body = "\(localCount) file(s) have local changes not synced to source"
+            content.title = Strings.notifications.localChangesTitle
+            content.body = Strings.notifications.localChangesBody(localCount)
             content.categoryIdentifier = NotificationService.driftCategory
             content.sound = .default
 
@@ -86,8 +86,8 @@ final class NotificationService: NotificationServiceProtocol, @unchecked Sendabl
         // Remote drift notification
         if remoteCount > 0 {
             let content = UNMutableNotificationContent()
-            content.title = "Remote Changes Available"
-            content.body = "\(remoteCount) file(s) have remote changes available"
+            content.title = Strings.notifications.remoteChangesTitle
+            content.body = Strings.notifications.remoteChangesBody(remoteCount)
             content.categoryIdentifier = NotificationService.driftCategory
             content.sound = .default
 
@@ -104,8 +104,8 @@ final class NotificationService: NotificationServiceProtocol, @unchecked Sendabl
         // Conflict notification
         if conflictCount > 0 {
             let content = UNMutableNotificationContent()
-            content.title = "Conflicting Changes"
-            content.body = "\(conflictCount) file(s) have conflicting changes"
+            content.title = Strings.notifications.conflictsTitle
+            content.body = Strings.notifications.conflictsBody(conflictCount)
             content.categoryIdentifier = NotificationService.driftCategory
             content.sound = .default
 

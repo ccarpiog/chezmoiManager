@@ -63,7 +63,7 @@ struct FileListItemView: View {
     private var actionButtons: some View {
         HStack(spacing: 4) {
             if file.availableActions.contains(.syncLocal) {
-                Button("Add") {
+                Button(Strings.fileActions.add) {
                     onAdd(file.path)
                 }
                 .buttonStyle(.bordered)
@@ -71,7 +71,7 @@ struct FileListItemView: View {
             }
 
             if file.availableActions.contains(.applyRemote) {
-                Button("Apply") {
+                Button(Strings.fileActions.apply) {
                     onApply(file.path)
                 }
                 .buttonStyle(.bordered)
@@ -79,7 +79,7 @@ struct FileListItemView: View {
             }
 
             if file.availableActions.contains(.viewDiff) {
-                Button("Diff") {
+                Button(Strings.fileActions.diff) {
                     onDiff(file.path)
                 }
                 .buttonStyle(.bordered)
@@ -87,7 +87,7 @@ struct FileListItemView: View {
             }
 
             if file.availableActions.contains(.openEditor) {
-                Button("Edit") {
+                Button(Strings.fileActions.edit) {
                     onEdit(file.path)
                 }
                 .buttonStyle(.bordered)
@@ -95,7 +95,7 @@ struct FileListItemView: View {
             }
 
             if file.availableActions.contains(.openMergeTool) {
-                Button("Merge") {
+                Button(Strings.fileActions.merge) {
                     onMerge(file.path)
                 }
                 .buttonStyle(.bordered)

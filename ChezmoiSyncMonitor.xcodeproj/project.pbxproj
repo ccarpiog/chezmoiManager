@@ -44,6 +44,7 @@
 		C9A6CEBAE96AB6950295F013 /* ConfigFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7614ED9EFD60389C594962 /* ConfigFileStore.swift */; };
 		D3BC9A180CABF9454A4802AD /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCAFDDA98866AA395DBB35EC /* MenuBarView.swift */; };
 		DAFBFCE4CA966643779DCBB9 /* FileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9B1ED98510CC78F028491A /* FileStatus.swift */; };
+		DF827FA70067C581B49D2DDF /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7229038362E90448D1676721 /* Strings.swift */; };
 		E5B7DEB37B0E17F337B81547 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 45385C66D3443FF30CBE6B37 /* Localizable.strings */; };
 		E86FBF00C98112BB6763AB1E /* WatcherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33BD179B34ECE74D2FF262E /* WatcherService.swift */; };
 		EE8057719D77BCEB2E1D3E9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA5361D5620AFB23948A681F /* Assets.xcassets */; };
@@ -84,6 +85,7 @@
 		62BF142468D4F7AA9FE31E03 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
 		693493BEF19E7D4B317322E6 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		6D1AB8082A1BBC7BC6D4B8B4 /* GitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitService.swift; sourceTree = "<group>"; };
+		7229038362E90448D1676721 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		794862E9826A1580D348960F /* HardeningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardeningTests.swift; sourceTree = "<group>"; };
 		88B56C1D5D00407E3DA42F87 /* ChezmoiSyncMonitorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChezmoiSyncMonitorApp.swift; sourceTree = "<group>"; };
 		8BB1D941E8DE33E08014314C /* ChezmoiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChezmoiService.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				C715A3FDEB63092636BAC7F3 /* ChezmoiSyncMonitor.entitlements */,
 				28750EAF247273B768EE2A76 /* Info.plist */,
 				45385C66D3443FF30CBE6B37 /* Localizable.strings */,
+				7229038362E90448D1676721 /* Strings.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -413,6 +416,7 @@
 				4D7FC007AEA2A080419C7704 /* RefreshState.swift in Sources */,
 				53A908DA0B828827CF059A01 /* RelativeTimeFormatter.swift in Sources */,
 				9AE6693802A0653FDED3E687 /* StatusIconProvider.swift in Sources */,
+				DF827FA70067C581B49D2DDF /* Strings.swift in Sources */,
 				3FFA0F150545D0749C08F5CA /* SyncSnapshot.swift in Sources */,
 				E86FBF00C98112BB6763AB1E /* WatcherService.swift in Sources */,
 			);

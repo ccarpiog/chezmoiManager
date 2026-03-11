@@ -76,7 +76,7 @@ struct ChezmoiSyncMonitorApp: App {
             MenuBarView(appState: appState)
         } label: {
             Image(nsImage: statusIcon.image)
-                .accessibilityLabel(Text("Chezmoi Sync Monitor"))
+                .accessibilityLabel(Text(Strings.app.accessibilityLabel))
                 .task {
                     guard !servicesStarted else { return }
                     servicesStarted = true

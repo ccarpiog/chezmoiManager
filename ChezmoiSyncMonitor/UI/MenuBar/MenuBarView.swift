@@ -21,12 +21,10 @@ struct MenuBarView: View {
     /// The text to display for the last refresh timestamp.
     private var lastRefreshText: String {
         if isRefreshing {
-            return String(localized: "menu.refreshing",
-                          defaultValue: "Refreshing...")
+            return Strings.menu.refreshing
         }
         guard let date = appState.snapshot.lastRefreshAt else {
-            return String(localized: "menu.never",
-                          defaultValue: "Never")
+            return Strings.menu.never
         }
         return RelativeTimeFormatter.string(for: date)
     } // End of computed property lastRefreshText
@@ -83,7 +81,7 @@ struct MenuBarView: View {
 
             // MARK: - Quit
             menuButton(
-                String(localized: "menu.quit", defaultValue: "Quit"),
+                Strings.menu.quit,
                 icon: "power"
             ) {
                 NSApplication.shared.terminate(nil)
@@ -102,10 +100,9 @@ struct MenuBarView: View {
                 .foregroundStyle(statusIcon.color)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(String(localized: "menu.title",
-                            defaultValue: "Chezmoi Sync Monitor"))
+                Text(Strings.menu.title)
                     .fontWeight(.semibold)
-                Text("Last refresh: \(lastRefreshText)")
+                Text(Strings.menu.lastRefresh(lastRefreshText))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -122,16 +119,12 @@ struct MenuBarView: View {
             Image(systemName: "wifi.slash")
                 .foregroundStyle(.secondary)
             VStack(alignment: .leading, spacing: 1) {
-                Text(String(localized: "menu.offline",
-                            defaultValue: "Offline"))
+                Text(Strings.menu.offline)
                     .font(.callout)
                     .fontWeight(.medium)
                     .foregroundStyle(.secondary)
                 if let lastRefresh = appState.snapshot.lastRefreshAt {
-                    Text(String(
-                        localized: "menu.lastCheck",
-                        defaultValue: "Last check: \(RelativeTimeFormatter.string(for: lastRefresh))"
-                    ))
+                    Text(Strings.menu.lastCheck(RelativeTimeFormatter.string(for: lastRefresh)))
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
                 }
@@ -151,10 +144,8 @@ struct MenuBarView: View {
                     icon: FileSyncState.localDrift.iconName,
                     color: FileSyncState.localDrift.color,
                     count: appState.snapshot.localDriftCount,
-                    labelSingular: String(localized: "menu.localChange",
-                                          defaultValue: "local change"),
-                    labelPlural: String(localized: "menu.localChanges",
-                                        defaultValue: "local changes")
+                    labelSingular: Strings.menu.localChangeSingular,
+                    labelPlural: Strings.menu.localChangePlural
                 )
             }
 
@@ -163,10 +154,8 @@ struct MenuBarView: View {
                     icon: FileSyncState.remoteDrift.iconName,
                     color: FileSyncState.remoteDrift.color,
                     count: appState.snapshot.remoteDriftCount,
-                    labelSingular: String(localized: "menu.remoteChange",
-                                          defaultValue: "remote change"),
-                    labelPlural: String(localized: "menu.remoteChanges",
-                                        defaultValue: "remote changes")
+                    labelSingular: Strings.menu.remoteChangeSingular,
+                    labelPlural: Strings.menu.remoteChangePlural
                 )
             }
 
@@ -175,10 +164,8 @@ struct MenuBarView: View {
                     icon: FileSyncState.dualDrift.iconName,
                     color: FileSyncState.dualDrift.color,
                     count: appState.snapshot.conflictCount,
-                    labelSingular: String(localized: "menu.conflict",
-                                          defaultValue: "conflict"),
-                    labelPlural: String(localized: "menu.conflicts",
-                                        defaultValue: "conflicts")
+                    labelSingular: Strings.menu.conflictSingular,
+                    labelPlural: Strings.menu.conflictPlural
                 )
             }
 
@@ -187,10 +174,8 @@ struct MenuBarView: View {
                     icon: FileSyncState.error.iconName,
                     color: FileSyncState.error.color,
                     count: appState.snapshot.errorCount,
-                    labelSingular: String(localized: "menu.error",
-                                          defaultValue: "error"),
-                    labelPlural: String(localized: "menu.errors",
-                                        defaultValue: "errors")
+                    labelSingular: Strings.menu.errorSingular,
+                    labelPlural: Strings.menu.errorPlural
                 )
             }
 
@@ -199,8 +184,7 @@ struct MenuBarView: View {
                 HStack(spacing: 6) {
                     Image(systemName: "checkmark.circle")
                         .foregroundStyle(.green)
-                    Text(String(localized: "menu.allClean",
-                                defaultValue: "All files in sync"))
+                    Text(Strings.menu.allClean)
                         .foregroundStyle(.secondary)
                 }
                 .padding(.horizontal, 12)
@@ -216,8 +200,7 @@ struct MenuBarView: View {
     private var actionsSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             menuButton(
-                String(localized: "menu.refreshNow",
-                       defaultValue: "Refresh Now"),
+                Strings.menu.refreshNow,
                 icon: "arrow.clockwise",
                 disabled: isRefreshing
             ) {
@@ -225,8 +208,7 @@ struct MenuBarView: View {
             }
 
             menuButton(
-                String(localized: "menu.addLocalChanges",
-                       defaultValue: "Add Local Changes"),
+                Strings.menu.addLocalChanges,
                 icon: "plus.circle",
                 disabled: appState.snapshot.localDriftCount == 0 || isRefreshing
             ) {
@@ -234,8 +216,7 @@ struct MenuBarView: View {
             }
 
             menuButton(
-                String(localized: "menu.commitAndPush",
-                       defaultValue: "Commit & Push"),
+                Strings.menu.commitAndPush,
                 icon: "arrow.up.circle",
                 disabled: isRefreshing
             ) {
@@ -243,8 +224,7 @@ struct MenuBarView: View {
             }
 
             menuButton(
-                String(localized: "menu.applySafeRemote",
-                       defaultValue: "Apply Safe Remote"),
+                Strings.menu.applySafeRemote,
                 icon: "arrow.down.circle",
                 disabled: appState.snapshot.remoteDriftCount == 0 || isRefreshing
             ) {
@@ -259,8 +239,7 @@ struct MenuBarView: View {
     private var navigationSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             menuButton(
-                String(localized: "menu.openDashboard",
-                       defaultValue: "Open Dashboard"),
+                Strings.menu.openDashboard,
                 icon: "rectangle.grid.1x2"
             ) {
                 openWindow(id: "dashboard")
@@ -268,8 +247,7 @@ struct MenuBarView: View {
             }
 
             menuButton(
-                String(localized: "menu.preferences",
-                       defaultValue: "Preferences..."),
+                Strings.menu.preferences,
                 icon: "gearshape"
             ) {
                 openPreferences()

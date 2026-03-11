@@ -23,12 +23,12 @@ struct DiffViewerView: View {
                 Image(systemName: "doc.text.magnifyingglass")
                     .foregroundStyle(.secondary)
 
-                Text("Diff: \(filePath)")
+                Text(Strings.diffViewer.title(filePath))
                     .font(.headline)
 
                 Spacer()
 
-                Button("Close") {
+                Button(Strings.navigation.close) {
                     dismiss()
                 }
                 .keyboardShortcut(.escape, modifiers: [])

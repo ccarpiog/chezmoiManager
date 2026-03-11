@@ -1,22 +1,213 @@
 /* Localizable.strings — English (base) */
 
-/* File sync state display names */
+/* ============================================================
+   File sync state display names
+   ============================================================ */
 "state.clean" = "Clean";
 "state.localDrift" = "Local Drift";
 "state.remoteDrift" = "Remote Drift";
 "state.dualDrift" = "Dual Drift";
 "state.error" = "Error";
 
-/* File action labels */
+/* ============================================================
+   File action labels (long form, used in models)
+   ============================================================ */
 "action.syncLocal" = "Sync Local Changes";
 "action.applyRemote" = "Apply Remote Changes";
 "action.viewDiff" = "View Diff";
 "action.openEditor" = "Open in Editor";
 "action.openMergeTool" = "Open Merge Tool";
 
-/* Error messages */
+/* ============================================================
+   Error messages
+   ============================================================ */
 "error.cliFailure" = "Command '%@' failed with exit code %d: %@";
 "error.authError" = "Authentication error: %@";
 "error.repoUnreachable" = "Repository unreachable: %@";
 "error.parseFailure" = "Failed to parse output: %@";
 "error.unknown" = "Unknown error: %@";
+
+/* ============================================================
+   Onboarding
+   ============================================================ */
+"onboarding.welcome" = "Welcome to Chezmoi Sync Monitor";
+"onboarding.welcomeDescription" = "A lightweight menu bar utility that monitors your chezmoi-managed dotfiles for sync state across machines. It detects local drift, remote drift, and conflict risks, providing contextual actions to resolve them.";
+"onboarding.checkDependencies" = "Check Dependencies";
+"onboarding.dependenciesDescription" = "The app needs chezmoi and git to be installed on your system.";
+"onboarding.detect" = "Detect";
+"onboarding.redetect" = "Re-detect";
+"onboarding.notifications" = "Notifications";
+"onboarding.notificationsDescription" = "The app can notify you when drift or conflicts are detected in your dotfiles. This helps you stay aware of changes that need attention.";
+"onboarding.notificationsEnabled" = "Notifications enabled";
+"onboarding.enableNotifications" = "Enable Notifications";
+"onboarding.allSet" = "You're All Set";
+"onboarding.installInstructions" = "Install instructions";
+"onboarding.sourceRepoNotFound" = "Not found — run 'chezmoi init' first";
+"onboarding.notFound" = "Not found";
+"onboarding.enabled" = "Enabled";
+"onboarding.disabled" = "Disabled";
+"onboarding.sourceRepo" = "Source repo";
+
+/* ============================================================
+   Navigation (common buttons)
+   ============================================================ */
+"navigation.back" = "Back";
+"navigation.next" = "Next";
+"navigation.close" = "Close";
+"navigation.cancel" = "Cancel";
+"navigation.startMonitoring" = "Start Monitoring";
+
+/* ============================================================
+   Dashboard
+   ============================================================ */
+"dashboard.title" = "Chezmoi Sync Monitor";
+"dashboard.notRefreshedYet" = "Not refreshed yet";
+"dashboard.refreshing" = "Refreshing...";
+"dashboard.dataIsStale" = "Data is stale";
+"dashboard.filter" = "Filter:";
+"dashboard.search" = "Search:";
+"dashboard.filterByPath" = "Filter by path...";
+"dashboard.managedFiles" = "Managed Files";
+"dashboard.noManagedFiles" = "No managed files found.";
+"dashboard.clickRefresh" = "Click the refresh button to scan for changes.";
+"dashboard.noFilesMatchFilter" = "No files match the current filter.";
+"dashboard.clearFilters" = "Clear Filters";
+"dashboard.diffLoadError" = "Could not load diff. The file may be binary or not managed by chezmoi.";
+"dashboard.applyRemoteChanges" = "Apply Remote Changes";
+"dashboard.apply" = "Apply";
+"dashboard.applyWarning" = "This will overwrite your local file with the remote version. This action cannot be undone.";
+"dashboard.lastRefresh" = "Last refresh: %@";
+
+/* ============================================================
+   Dashboard filters
+   ============================================================ */
+"filter.all" = "All";
+"filter.localDrift" = "Local Drift";
+"filter.remoteDrift" = "Remote Drift";
+"filter.dualDrift" = "Dual Drift";
+"filter.error" = "Error";
+"filter.clean" = "Clean";
+
+/* ============================================================
+   Overview cards
+   ============================================================ */
+"overview.localDrift" = "Local Drift";
+"overview.remoteDrift" = "Remote Drift";
+"overview.conflicts" = "Conflicts";
+"overview.errors" = "Errors";
+
+/* ============================================================
+   File action buttons (short form)
+   ============================================================ */
+"fileAction.add" = "Add";
+"fileAction.apply" = "Apply";
+"fileAction.diff" = "Diff";
+"fileAction.edit" = "Edit";
+"fileAction.merge" = "Merge";
+
+/* ============================================================
+   Diff viewer
+   ============================================================ */
+"diffViewer.title" = "Diff: %@";
+
+/* ============================================================
+   Activity log
+   ============================================================ */
+"activityLog.title" = "Activity Log";
+"activityLog.noActivity" = "No activity recorded yet.";
+
+/* ============================================================
+   Menu bar
+   ============================================================ */
+"menu.title" = "Chezmoi Sync Monitor";
+"menu.refreshing" = "Refreshing...";
+"menu.never" = "Never";
+"menu.quit" = "Quit";
+"menu.offline" = "Offline";
+"menu.localChange" = "local change";
+"menu.localChanges" = "local changes";
+"menu.remoteChange" = "remote change";
+"menu.remoteChanges" = "remote changes";
+"menu.conflict" = "conflict";
+"menu.conflicts" = "conflicts";
+"menu.error" = "error";
+"menu.errors" = "errors";
+"menu.allClean" = "All files in sync";
+"menu.refreshNow" = "Refresh Now";
+"menu.addLocalChanges" = "Add Local Changes";
+"menu.commitAndPush" = "Commit & Push";
+"menu.applySafeRemote" = "Apply Safe Remote";
+"menu.openDashboard" = "Open Dashboard";
+"menu.preferences" = "Preferences...";
+"menu.lastCheck" = "Last check: %@";
+"menu.lastRefresh" = "Last refresh: %@";
+
+/* ============================================================
+   Preferences
+   ============================================================ */
+"prefs.syncTab" = "Sync";
+"prefs.toolsTab" = "Tools";
+"prefs.advancedTab" = "Advanced";
+"prefs.polling" = "Polling";
+"prefs.pollInterval" = "Poll interval:";
+"prefs.behavior" = "Behavior";
+"prefs.autoFetch" = "Auto-fetch on refresh";
+"prefs.batchSafeSync" = "Batch safe sync";
+"prefs.batchSafeSyncHelp" = "Enable \"Add All Safe\" to include batch operations";
+"prefs.notifications" = "Notifications";
+"prefs.enableNotifications" = "Enable notifications";
+"prefs.chezmoi" = "Chezmoi";
+"prefs.chezmoiPath" = "Chezmoi path:";
+"prefs.git" = "Git";
+"prefs.gitPath" = "Git path:";
+"prefs.sourceRepository" = "Source Repository";
+"prefs.sourceRepoPath" = "Source repo path:";
+"prefs.autoDetect" = "Auto-detect";
+"prefs.notFound" = "Not found";
+"prefs.notFoundChezmoi" = "Not found — is chezmoi initialized?";
+"prefs.externalTools" = "External Tools";
+"prefs.preferredEditor" = "Preferred editor:";
+"prefs.preferredMergeTool" = "Preferred merge tool:";
+"prefs.startup" = "Startup";
+"prefs.launchAtLogin" = "Launch at login";
+"prefs.reset" = "Reset";
+"prefs.resetAllSettings" = "Reset All Settings";
+"prefs.resetConfirmTitle" = "Reset all settings to defaults?";
+"prefs.resetConfirmMessage" = "This will restore all preferences to their default values. This action cannot be undone.";
+"prefs.loginItemEnabled" = "Login item is enabled.";
+"prefs.loginItemDisabled" = "Login item is disabled.";
+"prefs.loginItemApprovalRequired" = "Approval required in System Settings > General > Login Items.";
+"prefs.openLoginItems" = "Open Login Items Settings";
+"prefs.loginItemNotFound" = "Login item helper not found in this build.";
+"prefs.loginItemUnavailable" = "Login item status unavailable.";
+"prefs.manualOnly" = "Manual only";
+"prefs.pollMinutes" = "%d min";
+"prefs.detected" = "Detected: %@";
+"prefs.startupError" = "Last startup toggle error: %@";
+
+/* ============================================================
+   External tool picker
+   ============================================================ */
+"toolPicker.command" = "Command...";
+"toolPicker.ok" = "OK";
+"toolPicker.default" = "(default)";
+"toolPicker.custom" = "Custom...";
+"toolPicker.browse" = "Browse...";
+"toolPicker.notFoundOnSystem" = "Not found on this system";
+"toolPicker.selectTool" = "Select tool";
+"toolPicker.path" = "Path: %@";
+
+/* ============================================================
+   Notifications (system alerts)
+   ============================================================ */
+"notification.localChangesTitle" = "Local Changes Detected";
+"notification.remoteChangesTitle" = "Remote Changes Available";
+"notification.conflictsTitle" = "Conflicting Changes";
+"notification.localChangesBody" = "%d file(s) have local changes not synced to source";
+"notification.remoteChangesBody" = "%d file(s) have remote changes available";
+"notification.conflictsBody" = "%d file(s) have conflicting changes";
+
+/* ============================================================
+   App-level
+   ============================================================ */
+"app.accessibilityLabel" = "Chezmoi Sync Monitor";

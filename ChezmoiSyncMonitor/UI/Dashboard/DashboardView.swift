@@ -1,13 +1,25 @@
 import SwiftUI
 
 /// Represents the filter options available in the file list dropdown.
-private enum FileFilter: String, CaseIterable {
-    case all = "All"
-    case localDrift = "Local Drift"
-    case remoteDrift = "Remote Drift"
-    case dualDrift = "Dual Drift"
-    case error = "Error"
-    case clean = "Clean"
+private enum FileFilter: CaseIterable {
+    case all
+    case localDrift
+    case remoteDrift
+    case dualDrift
+    case error
+    case clean
+
+    /// The localized display name for the filter option.
+    var displayName: String {
+        switch self {
+        case .all: return Strings.filters.all
+        case .localDrift: return Strings.filters.localDrift
+        case .remoteDrift: return Strings.filters.remoteDrift
+        case .dualDrift: return Strings.filters.dualDrift
+        case .error: return Strings.filters.error
+        case .clean: return Strings.filters.clean
+        }
+    } // End of computed property displayName
 
     /// Maps the filter to the corresponding FileSyncState, if any.
     var syncState: FileSyncState? {
@@ -89,22 +101,22 @@ struct DashboardView: View {
                     Image(systemName: "doc.text.magnifyingglass")
                         .font(.largeTitle)
                         .foregroundStyle(.secondary)
-                    Text("Could not load diff. The file may be binary or not managed by chezmoi.")
+                    Text(Strings.dashboard.diffLoadError)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
-                    Button("Close") { showingDiff = false }
+                    Button(Strings.navigation.close) { showingDiff = false }
                         .keyboardShortcut(.escape, modifiers: [])
                 }
                 .frame(minWidth: 400, minHeight: 200)
             }
         }
         .confirmationDialog(
-            "Apply Remote Changes",
+            Strings.dashboard.applyRemoteChanges,
             isPresented: $showingApplyConfirmation,
             titleVisibility: .visible
         ) {
-            Button("Apply", role: .destructive) {
+            Button(Strings.dashboard.apply, role: .destructive) {
                 if let path = applyConfirmationPath {
                     Task {
                         await appState.updateSafe()
@@ -112,11 +124,11 @@ struct DashboardView: View {
                     }
                 }
             }
-            Button("Cancel", role: .cancel) {
+            Button(Strings.navigation.cancel, role: .cancel) {
                 applyConfirmationPath = nil
             }
         } message: {
-            Text("This will overwrite your local file with the remote version. This action cannot be undone.")
+            Text(Strings.dashboard.applyWarning)
         }
     } // End of body
 
@@ -125,7 +137,7 @@ struct DashboardView: View {
     /// The header showing the app title and refresh status indicator.
     private var headerSection: some View {
         HStack {
-            Text("Chezmoi Sync Monitor")
+            Text(Strings.dashboard.title)
                 .font(.title)
                 .fontWeight(.semibold)
 
@@ -151,19 +163,19 @@ struct DashboardView: View {
     private var refreshStateIndicator: some View {
         switch appState.refreshState {
         case .idle:
-            Text("Not refreshed yet")
+            Text(Strings.dashboard.notRefreshedYet)
                 .font(.callout)
                 .foregroundStyle(.secondary)
         case .running:
             HStack(spacing: 6) {
                 ProgressView()
                     .controlSize(.small)
-                Text("Refreshing...")
+                Text(Strings.dashboard.refreshing)
                     .font(.callout)
                     .foregroundStyle(.secondary)
             }
         case .success(let date):
-            Text("Last refresh: \(RelativeTimeFormatter.string(for: date))")
+            Text(Strings.dashboard.lastRefresh(RelativeTimeFormatter.string(for: date)))
                 .font(.callout)
                 .foregroundStyle(.secondary)
         case .error(let error):
@@ -180,7 +192,7 @@ struct DashboardView: View {
             HStack(spacing: 4) {
                 Image(systemName: "clock.badge.exclamationmark")
                     .foregroundStyle(.orange)
-                Text("Data is stale")
+                Text(Strings.dashboard.dataIsStale)
                     .font(.callout)
                     .foregroundStyle(.orange)
             }
@@ -201,7 +213,7 @@ struct DashboardView: View {
             OverviewCardView(
                 iconName: FileSyncState.localDrift.iconName,
                 count: appState.snapshot.localDriftCount,
-                label: "Local Drift",
+                label: Strings.overviewCards.localDrift,
                 color: FileSyncState.localDrift.color,
                 isSelected: selectedFilter == .localDrift,
                 action: { toggleFilter(.localDrift) }
@@ -210,7 +222,7 @@ struct DashboardView: View {
             OverviewCardView(
                 iconName: FileSyncState.remoteDrift.iconName,
                 count: appState.snapshot.remoteDriftCount,
-                label: "Remote Drift",
+                label: Strings.overviewCards.remoteDrift,
                 color: FileSyncState.remoteDrift.color,
                 isSelected: selectedFilter == .remoteDrift,
                 action: { toggleFilter(.remoteDrift) }
@@ -219,7 +231,7 @@ struct DashboardView: View {
             OverviewCardView(
                 iconName: FileSyncState.dualDrift.iconName,
                 count: appState.snapshot.conflictCount,
-                label: "Conflicts",
+                label: Strings.overviewCards.conflicts,
                 color: FileSyncState.dualDrift.color,
                 isSelected: selectedFilter == .dualDrift,
                 action: { toggleFilter(.dualDrift) }
@@ -228,7 +240,7 @@ struct DashboardView: View {
             OverviewCardView(
                 iconName: FileSyncState.error.iconName,
                 count: appState.snapshot.errorCount,
-                label: "Errors",
+                label: Strings.overviewCards.errors,
                 color: FileSyncState.error.color,
                 isSelected: selectedFilter == .error,
                 action: { toggleFilter(.error) }
@@ -252,13 +264,13 @@ struct DashboardView: View {
     private var filterBar: some View {
         HStack(spacing: 12) {
             HStack(spacing: 6) {
-                Text("Filter:")
+                Text(Strings.dashboard.filter)
                     .font(.callout)
                     .foregroundStyle(.secondary)
 
                 Picker("", selection: $selectedFilter) {
                     ForEach(FileFilter.allCases, id: \.self) { filter in
-                        Text(filter.rawValue).tag(filter)
+                        Text(filter.displayName).tag(filter)
                     }
                 } // End of Picker
                 .pickerStyle(.menu)
@@ -266,11 +278,11 @@ struct DashboardView: View {
             }
 
             HStack(spacing: 6) {
-                Text("Search:")
+                Text(Strings.dashboard.search)
                     .font(.callout)
                     .foregroundStyle(.secondary)
 
-                TextField("Filter by path...", text: $searchText)
+                TextField(Strings.dashboard.filterByPath, text: $searchText)
                     .textFieldStyle(.roundedBorder)
                     .frame(maxWidth: 250)
 
@@ -333,7 +345,7 @@ struct DashboardView: View {
             } // End of else (files not empty)
         } label: {
             HStack {
-                Text("Managed Files")
+                Text(Strings.dashboard.managedFiles)
                     .font(.headline)
 
                 Text("(\(filteredFiles.count))")
@@ -353,15 +365,15 @@ struct DashboardView: View {
                 .foregroundStyle(.secondary)
 
             if appState.snapshot.files.isEmpty {
-                Text("No managed files found.")
+                Text(Strings.dashboard.noManagedFiles)
                     .foregroundStyle(.secondary)
-                Text("Click the refresh button to scan for changes.")
+                Text(Strings.dashboard.clickRefresh)
                     .font(.caption)
                     .foregroundStyle(.tertiary)
             } else {
-                Text("No files match the current filter.")
+                Text(Strings.dashboard.noFilesMatchFilter)
                     .foregroundStyle(.secondary)
-                Button("Clear Filters") {
+                Button(Strings.dashboard.clearFilters) {
                     selectedFilter = .all
                     searchText = ""
                 }

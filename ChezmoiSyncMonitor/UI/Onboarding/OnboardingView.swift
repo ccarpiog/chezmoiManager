@@ -79,11 +79,11 @@ struct OnboardingView: View {
                 .font(.system(size: 64))
                 .foregroundStyle(.blue)
 
-            Text("Welcome to Chezmoi Sync Monitor")
+            Text(Strings.onboarding.welcome)
                 .font(.title)
                 .fontWeight(.bold)
 
-            Text("A lightweight menu bar utility that monitors your chezmoi-managed dotfiles for sync state across machines. It detects local drift, remote drift, and conflict risks, providing contextual actions to resolve them.")
+            Text(Strings.onboarding.welcomeDescription)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
                 .padding(.horizontal, 40)
@@ -100,11 +100,11 @@ struct OnboardingView: View {
         VStack(spacing: 20) {
             Spacer()
 
-            Text("Check Dependencies")
+            Text(Strings.onboarding.checkDependencies)
                 .font(.title2)
                 .fontWeight(.bold)
 
-            Text("The app needs chezmoi and git to be installed on your system.")
+            Text(Strings.onboarding.dependenciesDescription)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
@@ -131,12 +131,12 @@ struct OnboardingView: View {
             .padding(.horizontal, 40)
 
             if !hasDetected {
-                Button("Detect") {
+                Button(Strings.onboarding.detect) {
                     detectDependencies()
                 }
                 .buttonStyle(.borderedProminent)
             } else {
-                Button("Re-detect") {
+                Button(Strings.onboarding.redetect) {
                     detectDependencies()
                 }
                 .buttonStyle(.bordered)
@@ -163,20 +163,20 @@ struct OnboardingView: View {
                 .font(.system(size: 48))
                 .foregroundStyle(.orange)
 
-            Text("Notifications")
+            Text(Strings.onboarding.notifications)
                 .font(.title2)
                 .fontWeight(.bold)
 
-            Text("The app can notify you when drift or conflicts are detected in your dotfiles. This helps you stay aware of changes that need attention.")
+            Text(Strings.onboarding.notificationsDescription)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
                 .padding(.horizontal, 40)
 
             if notificationAuthorized {
-                Label("Notifications enabled", systemImage: "checkmark.circle.fill")
+                Label(Strings.onboarding.notificationsEnabled, systemImage: "checkmark.circle.fill")
                     .foregroundStyle(.green)
             } else {
-                Button("Enable Notifications") {
+                Button(Strings.onboarding.enableNotifications) {
                     Task {
                         await requestNotificationPermission()
                     }
@@ -200,15 +200,15 @@ struct OnboardingView: View {
                 .font(.system(size: 48))
                 .foregroundStyle(.green)
 
-            Text("You're All Set")
+            Text(Strings.onboarding.allSet)
                 .font(.title2)
                 .fontWeight(.bold)
 
             VStack(alignment: .leading, spacing: 8) {
-                summaryRow("chezmoi", value: detectedChezmoiPath ?? "Not found")
-                summaryRow("git", value: detectedGitPath ?? "Not found")
-                summaryRow("Source repo", value: detectedSourceRepoPath ?? "Not found")
-                summaryRow("Notifications", value: notificationAuthorized ? "Enabled" : "Disabled")
+                summaryRow("chezmoi", value: detectedChezmoiPath ?? Strings.onboarding.notFound)
+                summaryRow("git", value: detectedGitPath ?? Strings.onboarding.notFound)
+                summaryRow(Strings.onboarding.sourceRepo, value: detectedSourceRepoPath ?? Strings.onboarding.notFound)
+                summaryRow(Strings.onboarding.notifications, value: notificationAuthorized ? Strings.onboarding.enabled : Strings.onboarding.disabled)
             }
             .padding()
             .background(RoundedRectangle(cornerRadius: 8).fill(.quaternary))
@@ -236,7 +236,7 @@ struct OnboardingView: View {
     private var navigationButtons: some View {
         HStack(spacing: 12) {
             if currentStep > 0 {
-                Button("Back") {
+                Button(Strings.navigation.back) {
                     withAnimation {
                         currentStep -= 1
                     }
@@ -244,14 +244,14 @@ struct OnboardingView: View {
             }
 
             if currentStep < OnboardingView.totalSteps - 1 {
-                Button("Next") {
+                Button(Strings.navigation.next) {
                     withAnimation {
                         currentStep += 1
                     }
                 }
                 .buttonStyle(.borderedProminent)
             } else {
-                Button("Start Monitoring") {
+                Button(Strings.navigation.startMonitoring) {
                     appState.completeOnboarding()
                     onComplete()
                 }
@@ -287,10 +287,10 @@ struct OnboardingView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else if let urlString = installURL {
-                    Link("Install instructions", destination: URL(string: urlString)!)
+                    Link(Strings.onboarding.installInstructions, destination: URL(string: urlString)!)
                         .font(.caption)
                 } else {
-                    Text("Not found — run 'chezmoi init' first")
+                    Text(Strings.onboarding.sourceRepoNotFound)
                         .font(.caption)
                         .foregroundStyle(.red)
                 }

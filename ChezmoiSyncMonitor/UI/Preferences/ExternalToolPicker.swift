@@ -37,7 +37,7 @@ struct ExternalToolPicker: View {
 
                 if isCustom {
                     HStack(spacing: 4) {
-                        TextField("Command...", text: $customText)
+                        TextField(Strings.toolPicker.command, text: $customText)
                             .textFieldStyle(.roundedBorder)
                             .frame(width: 160)
                             .onSubmit {
@@ -47,7 +47,7 @@ struct ExternalToolPicker: View {
                                 selection = newValue
                             }
 
-                        Button("OK") {
+                        Button(Strings.toolPicker.ok) {
                             selection = customText
                             if customText.isEmpty {
                                 isCustom = false
@@ -67,7 +67,7 @@ struct ExternalToolPicker: View {
                     }
                 } else {
                     Picker("", selection: pickerBinding) {
-                        Text("(default)").tag("")
+                        Text(Strings.toolPicker.defaultOption).tag("")
 
                         Divider()
 
@@ -77,8 +77,8 @@ struct ExternalToolPicker: View {
 
                         Divider()
 
-                        Text("Custom...").tag(Self.customSentinel)
-                        Text("Browse...").tag(Self.browseSentinel)
+                        Text(Strings.toolPicker.custom).tag(Self.customSentinel)
+                        Text(Strings.toolPicker.browse).tag(Self.browseSentinel)
                     } // End of Picker
                     .frame(width: 200)
                 }
@@ -86,11 +86,11 @@ struct ExternalToolPicker: View {
 
             if !selection.isEmpty && !isCustom {
                 if let path = resolvedPath(for: selection) {
-                    Text("Path: \(path)")
+                    Text(Strings.toolPicker.path(path))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else {
-                    Text("Not found on this system")
+                    Text(Strings.toolPicker.notFoundOnSystem)
                         .font(.caption)
                         .foregroundStyle(.red)
                 }
@@ -141,7 +141,7 @@ struct ExternalToolPicker: View {
     /// Shows an NSOpenPanel for the user to locate an executable.
     private func browseForExecutable() {
         let panel = NSOpenPanel()
-        panel.title = "Select tool"
+        panel.title = Strings.toolPicker.selectTool
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false
