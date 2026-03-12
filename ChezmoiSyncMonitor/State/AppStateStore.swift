@@ -65,6 +65,28 @@ final class AppStateStore {
         }
     } // End of viewOnlyWarning
 
+    /// Human-readable app version string shown in the UI.
+    ///
+    /// Format: `<marketingVersion> (<buildNumber>)` when both are available.
+    var appVersionDisplay: String {
+        let info = Bundle.main.infoDictionary ?? [:]
+        let short = (info["CFBundleShortVersionString"] as? String)?
+            .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let build = (info["CFBundleVersion"] as? String)?
+            .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+
+        if short.isEmpty && build.isEmpty {
+            return Strings.app.unknownVersion
+        }
+        if build.isEmpty || short == build {
+            return short
+        }
+        if short.isEmpty {
+            return build
+        }
+        return "\(short) (\(build))"
+    } // End of appVersionDisplay
+
     // MARK: - Dependencies
 
     /// Service for interacting with the chezmoi CLI.
@@ -236,6 +258,7 @@ final class AppStateStore {
     /// No automatic retry is attempted; the next poll cycle will handle it.
     private func performRefresh() async {
         refreshState = .running
+        appendDebugRefreshEvent(Strings.diagnostics.refreshStart)
 
         let refreshTask = Task {
             try await self.executeRefreshPipeline()
@@ -278,46 +301,77 @@ final class AppStateStore {
     /// Separated from `performRefresh` to allow wrapping with a timeout task.
     /// - Throws: `AppError` if any CLI command fails, or `CancellationError` if timed out.
     private func executeRefreshPipeline() async throws {
+        appendDebugRefreshEvent(Strings.diagnostics.refreshValidateAutomation)
         await refreshMutationMode(logTransition: true)
 
         // Step 2: Git fetch if enabled
+        appendDebugRefreshEvent(Strings.diagnostics.refreshGitFetch)
         if preferences.autoFetchEnabled {
             _ = try await gitService.fetch()
+            appendDebugRefreshEvent(
+                Strings.diagnostics.refreshStepResult("git fetch completed")
+            )
+        } else {
+            appendDebugRefreshEvent(
+                Strings.diagnostics.refreshStepResult("git fetch skipped (auto-fetch disabled)")
+            )
         }
 
         try Task.checkCancellation()
 
         // Step 3: Get chezmoi status
+        appendDebugRefreshEvent(Strings.diagnostics.refreshChezmoiStatus)
         let localFiles = try await chezmoiService.status()
+        appendDebugRefreshEvent(
+            Strings.diagnostics.refreshStepResult("chezmoi status returned \(localFiles.count) drift file(s)")
+        )
 
         try Task.checkCancellation()
 
         // Step 3b: Get chezmoi tracked files (degrade gracefully on failure)
+        appendDebugRefreshEvent(Strings.diagnostics.refreshTrackedFiles)
         var trackedFiles: Set<String> = []
         do {
             trackedFiles = try await chezmoiService.trackedFiles()
+            appendDebugRefreshEvent(
+                Strings.diagnostics.refreshStepResult("tracked files loaded: \(trackedFiles.count)")
+            )
         } catch {
             appendEvent(ActivityEvent(
                 eventType: .refresh,
                 message: "Could not fetch tracked files, falling back to drift-only mode"
             ))
+            appendDebugRefreshEvent(
+                Strings.diagnostics.refreshStepResult("tracked files unavailable: \(error.localizedDescription)")
+            )
         }
 
         try Task.checkCancellation()
 
         // Step 4: Get git ahead/behind
+        appendDebugRefreshEvent(Strings.diagnostics.refreshAheadBehind)
         let (_, behind) = try await gitService.aheadBehind()
+        appendDebugRefreshEvent(
+            Strings.diagnostics.refreshStepResult("git behind count: \(behind)")
+        )
 
         try Task.checkCancellation()
 
         // Step 5: Get remote changed files if behind > 0
+        appendDebugRefreshEvent(Strings.diagnostics.refreshRemoteChanged)
         var remoteChanged: Set<String>
         if behind > 0 {
             remoteChanged = try await gitService.remoteChangedFiles()
             // Store fresh remote set so it survives the post-pull behind=0 window
             pendingRemoteFiles = remoteChanged
+            appendDebugRefreshEvent(
+                Strings.diagnostics.refreshStepResult("remote changed files loaded: \(remoteChanged.count)")
+            )
         } else {
             remoteChanged = []
+            appendDebugRefreshEvent(
+                Strings.diagnostics.refreshStepResult("remote changed files skipped (behind = 0)")
+            )
         }
 
         try Task.checkCancellation()
@@ -345,6 +399,7 @@ final class AppStateStore {
         }
 
         // Step 6: Classify files (includes clean tracked files when available)
+        appendDebugRefreshEvent(Strings.diagnostics.refreshClassify)
         let classifiedFiles = fileStateEngine.classify(
             localFiles: localFiles,
             remoteBehind: behind,
@@ -368,10 +423,27 @@ final class AppStateStore {
             eventType: .refresh,
             message: summary
         ))
+        appendDebugRefreshEvent(
+            Strings.diagnostics.refreshStepResult("snapshot files: \(classifiedFiles.count)")
+        )
 
         // Step 9b: Notify user of drift via system notifications
         await notificationService?.notifyDrift(snapshot: snapshot)
+        appendDebugRefreshEvent(Strings.diagnostics.refreshComplete)
     } // End of func executeRefreshPipeline()
+
+    /// Appends a verbose refresh diagnostic event in Debug builds only.
+    ///
+    /// This keeps Release activity logs clean while providing detailed
+    /// step-by-step traces for troubleshooting during development.
+    private func appendDebugRefreshEvent(_ message: String) {
+        #if DEBUG
+        appendEvent(ActivityEvent(
+            eventType: .refresh,
+            message: message
+        ))
+        #endif
+    } // End of func appendDebugRefreshEvent(_:)
 
     // MARK: - Mutation safety
 

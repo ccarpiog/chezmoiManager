@@ -112,6 +112,9 @@ struct MenuBarView: View {
                 Text(Strings.menu.lastRefresh(lastRefreshText))
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                Text(Strings.menu.version(appState.appVersionDisplay))
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
             }
         }
         .padding(.horizontal, 12)

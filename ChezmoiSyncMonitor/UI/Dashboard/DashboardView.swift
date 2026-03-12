@@ -242,9 +242,14 @@ struct DashboardView: View {
     /// The header showing the app title and refresh status indicator.
     private var headerSection: some View {
         HStack {
-            Text(Strings.dashboard.title)
-                .font(.title)
-                .fontWeight(.semibold)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(Strings.dashboard.title)
+                    .font(.title)
+                    .fontWeight(.semibold)
+                Text(Strings.dashboard.version(appState.appVersionDisplay))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
 
             Spacer()
 

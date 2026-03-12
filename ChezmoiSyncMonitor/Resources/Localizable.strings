@@ -79,6 +79,7 @@
 "dashboard.apply" = "Apply";
 "dashboard.applyWarning" = "This will overwrite your local file with the remote version. This action cannot be undone.";
 "dashboard.lastRefresh" = "Last refresh: %@";
+"dashboard.version" = "Version: %@";
 
 /* ============================================================
    Dashboard filters
@@ -179,6 +180,21 @@
 "menu.preferences" = "Preferences...";
 "menu.lastCheck" = "Last check: %@";
 "menu.lastRefresh" = "Last refresh: %@";
+"menu.version" = "Version: %@";
+
+/* ============================================================
+   Diagnostics (debug logging)
+   ============================================================ */
+"diagnostics.refreshStart" = "[debug] Refresh started";
+"diagnostics.refreshValidateAutomation" = "[debug] Step 1/7: validate git automation mode";
+"diagnostics.refreshGitFetch" = "[debug] Step 2/7: git fetch";
+"diagnostics.refreshChezmoiStatus" = "[debug] Step 3/7: chezmoi status";
+"diagnostics.refreshTrackedFiles" = "[debug] Step 4/7: tracked files";
+"diagnostics.refreshAheadBehind" = "[debug] Step 5/7: git ahead/behind";
+"diagnostics.refreshRemoteChanged" = "[debug] Step 6/7: remote changed files";
+"diagnostics.refreshClassify" = "[debug] Step 7/7: classify snapshot";
+"diagnostics.refreshComplete" = "[debug] Refresh pipeline completed";
+"diagnostics.refreshStepResult" = "[debug] %@";
 
 /* ============================================================
    Preferences
@@ -250,3 +266,4 @@
    App-level
    ============================================================ */
 "app.accessibilityLabel" = "Chezmoi Sync Monitor";
+"app.unknownVersion" = "unknown";

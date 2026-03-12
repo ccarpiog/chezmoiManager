@@ -181,6 +181,9 @@ enum Strings {
         static func lastRefresh(_ time: String) -> String {
             String(format: NSLocalizedString("dashboard.lastRefresh", value: "Last refresh: %@", comment: ""), time)
         }
+        static func version(_ value: String) -> String {
+            String(format: NSLocalizedString("dashboard.version", value: "Version: %@", comment: ""), value)
+        }
     } // End of enum dashboard
 
     // MARK: - Dashboard Filters
@@ -457,6 +460,9 @@ enum Strings {
         static func lastRefresh(_ time: String) -> String {
             String(format: NSLocalizedString("menu.lastRefresh", value: "Last refresh: %@", comment: ""), time)
         }
+        static func version(_ value: String) -> String {
+            String(format: NSLocalizedString("menu.version", value: "Version: %@", comment: ""), value)
+        }
         static var localChangeSingular: String {
             String(localized: "menu.localChange",
                    defaultValue: "local change")
@@ -518,6 +524,58 @@ enum Strings {
                    defaultValue: "Preferences...")
         }
     } // End of enum menu
+
+    // MARK: - Diagnostics
+
+    /// Strings for verbose debug diagnostics in Activity Log.
+    enum diagnostics {
+        static var refreshStart: String {
+            String(localized: "diagnostics.refreshStart",
+                   defaultValue: "[debug] Refresh started")
+        }
+        static var refreshValidateAutomation: String {
+            String(localized: "diagnostics.refreshValidateAutomation",
+                   defaultValue: "[debug] Step 1/7: validate git automation mode")
+        }
+        static var refreshGitFetch: String {
+            String(localized: "diagnostics.refreshGitFetch",
+                   defaultValue: "[debug] Step 2/7: git fetch")
+        }
+        static var refreshChezmoiStatus: String {
+            String(localized: "diagnostics.refreshChezmoiStatus",
+                   defaultValue: "[debug] Step 3/7: chezmoi status")
+        }
+        static var refreshTrackedFiles: String {
+            String(localized: "diagnostics.refreshTrackedFiles",
+                   defaultValue: "[debug] Step 4/7: tracked files")
+        }
+        static var refreshAheadBehind: String {
+            String(localized: "diagnostics.refreshAheadBehind",
+                   defaultValue: "[debug] Step 5/7: git ahead/behind")
+        }
+        static var refreshRemoteChanged: String {
+            String(localized: "diagnostics.refreshRemoteChanged",
+                   defaultValue: "[debug] Step 6/7: remote changed files")
+        }
+        static var refreshClassify: String {
+            String(localized: "diagnostics.refreshClassify",
+                   defaultValue: "[debug] Step 7/7: classify snapshot")
+        }
+        static var refreshComplete: String {
+            String(localized: "diagnostics.refreshComplete",
+                   defaultValue: "[debug] Refresh pipeline completed")
+        }
+        static func refreshStepResult(_ detail: String) -> String {
+            String(
+                format: NSLocalizedString(
+                    "diagnostics.refreshStepResult",
+                    value: "[debug] %@",
+                    comment: ""
+                ),
+                detail
+            )
+        }
+    } // End of enum diagnostics
 
     // MARK: - Preferences
 
@@ -772,6 +830,10 @@ enum Strings {
         static var accessibilityLabel: String {
             String(localized: "app.accessibilityLabel",
                    defaultValue: "Chezmoi Sync Monitor")
+        }
+        static var unknownVersion: String {
+            String(localized: "app.unknownVersion",
+                   defaultValue: "unknown")
         }
     } // End of enum app
 } // End of enum Strings
