@@ -22,9 +22,9 @@ Chezmoi Sync Monitor keeps this visible from the menu bar and gives you safe act
   - `Dual Drift`
   - `Error`
 - File actions:
-  - `Add` (save local changes to source state)
-  - `Apply` (apply tracked/remote state to local file)
-  - `Revert` (discard local changes and restore tracked version)
+  - `Keep Local` (`chezmoi add`) to save local changes to source state
+  - `Keep Remote` / `Apply` (`chezmoi apply`) to restore tracked/remote state locally
+  - `Revert Local` (discard local changes and restore tracked version)
   - `Forget` (stop tracking a file in chezmoi, with strong confirmation)
   - `Diff`, `Edit`, `Merge Tool`
 - Dashboard window with filtering, search, and activity log
@@ -33,6 +33,9 @@ Chezmoi Sync Monitor keeps this visible from the menu bar and gives you safe act
 - Background refresh triggers (launch, wake, connectivity change, polling)
 - Optional notifications for drift/conflicts
 - Preferences with auto-detect for chezmoi/git paths
+- Safety mode for mutating actions:
+  - Write actions are enabled only when `chezmoi` has `git.autocommit=true` and `git.autopush=true`
+- Runtime diagnostics toggle in Preferences > Advanced > Diagnostics
 - Preferred editor support:
   - GUI editors can be selected by command or `.app` path
   - Terminal editors (`nano`, `vim`, `nvim`, etc.) are launched in Terminal.app
@@ -44,6 +47,30 @@ Chezmoi Sync Monitor keeps this visible from the menu bar and gives you safe act
 - macOS 14+
 - `chezmoi` installed and initialized
 - `git` installed
+
+## Settings Sync Across Machines
+
+Chezmoi Sync Monitor supports syncing most app preferences through chezmoi itself.
+
+- Cross-machine settings are stored in:
+  - `~/.config/chezmoiSyncMonitor/config.json`
+- Machine-local settings stay in `UserDefaults` and are not synced.
+
+Cross-machine settings include poll interval, notifications, auto-fetch, batch mode, tool path overrides, source repo path override, and preferred editor/merge tool.
+
+Machine-local settings include:
+
+- `Launch at login`
+- Onboarding completion state
+- `Verbose diagnostics` toggle
+
+To sync cross-machine settings, ensure the config file is tracked and pushed in your chezmoi source repo:
+
+```bash
+chezmoi add ~/.config/chezmoiSyncMonitor/config.json
+chezmoi git -- commit -m "Track Chezmoi Sync Monitor config"
+chezmoi git -- push
+```
 
 ## About chezmoi
 
