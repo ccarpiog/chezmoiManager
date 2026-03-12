@@ -264,8 +264,23 @@ final class AppStateStoreTests: XCTestCase {
         let store = makeStore()
         await store.addSingle(path: ".bashrc")
 
+        XCTAssertEqual(mockChezmoi.pullSourceCallCount, 1, "Should pull source before add")
         XCTAssertTrue(mockChezmoi.addedPaths.contains(".bashrc"))
     } // End of func testAddSingleCallsChezmoiAdd()
+
+    /// Tests that addSingle aborts if pullSource fails.
+    @MainActor
+    func testAddSingleAbortsOnPullFailure() async {
+        mockChezmoi.pullSourceError = AppError.unknown("network error")
+        mockChezmoi.statusResult = []
+
+        let store = makeStore()
+        await store.addSingle(path: ".bashrc")
+
+        XCTAssertTrue(mockChezmoi.addedPaths.isEmpty, "Should not add when pull fails")
+        let errorEvents = store.activityLog.filter { $0.eventType == .error }
+        XCTAssertTrue(errorEvents.contains { $0.message.contains("pull source before adding") })
+    } // End of func testAddSingleAbortsOnPullFailure()
 
     /// Tests that addAllSafe only adds localDrift files and excludes dualDrift/error.
     @MainActor
@@ -287,6 +302,7 @@ final class AppStateStoreTests: XCTestCase {
         await store.addAllSafe()
 
         // Should only have added .bashrc and .gitconfig
+        XCTAssertEqual(mockChezmoi.pullSourceCallCount, 1, "Should pull source before batch add")
         XCTAssertEqual(mockChezmoi.addedPaths.sorted(), [".bashrc", ".gitconfig"])
     } // End of func testAddAllSafeOnlyAddsLocalDriftFiles()
 
@@ -575,6 +591,32 @@ final class AppStateStoreTests: XCTestCase {
         XCTAssertNotNil(store.viewOnlyWarning)
     } // End of func testAddSingleBlockedInViewOnlyMode()
 
+    /// commitAndPush pulls source first, then commits and pushes.
+    @MainActor
+    func testCommitAndPushPullsBeforeCommit() async {
+        mockChezmoi.statusResult = []
+
+        let store = makeStore()
+        await store.commitAndPush()
+
+        XCTAssertEqual(mockChezmoi.pullSourceCallCount, 1, "Should pull source before commit and push")
+        XCTAssertEqual(mockChezmoi.commitAndPushCallCount, 1, "Should commit and push after successful pull")
+    } // End of func testCommitAndPushPullsBeforeCommit()
+
+    /// commitAndPush aborts when pullSource fails.
+    @MainActor
+    func testCommitAndPushAbortsOnPullFailure() async {
+        mockChezmoi.pullSourceError = AppError.unknown("network error")
+        mockChezmoi.statusResult = []
+
+        let store = makeStore()
+        await store.commitAndPush()
+
+        XCTAssertEqual(mockChezmoi.commitAndPushCallCount, 0, "Should not commit and push when pull fails")
+        let errorEvents = store.activityLog.filter { $0.eventType == .error }
+        XCTAssertTrue(errorEvents.contains { $0.message.contains("pull source before commit & push") })
+    } // End of func testCommitAndPushAbortsOnPullFailure()
+
     // MARK: - Activity log bounds
 
     /// Tests that the activity log is bounded to 500 events.
@@ -668,6 +710,36 @@ final class RefreshCoordinatorTests: XCTestCase {
         let count = await counter.value
         XCTAssertEqual(count, 1, "Expected 1 execution due to debounce, got \(count)")
     } // End of func testDebounceRejectsRapidRequests()
+
+    /// Tests that a forced refresh requested during an active run is queued
+    /// and executes once immediately after the current run.
+    func testForcePerformQueuesLatestWorkWhileRunning() async {
+        let coordinator = RefreshCoordinator(debounceInterval: 5.0)
+        let firstCounter = Counter()
+        let secondCounter = Counter()
+        let firstStarted = expectation(description: "first force run started")
+
+        let firstTask = Task {
+            await coordinator.forcePerform {
+                await firstCounter.increment()
+                firstStarted.fulfill()
+                try? await Task.sleep(nanoseconds: 150_000_000) // 150ms
+            }
+        }
+
+        await fulfillment(of: [firstStarted], timeout: 1.0)
+
+        await coordinator.forcePerform {
+            await secondCounter.increment()
+        }
+
+        await firstTask.value
+
+        let firstCount = await firstCounter.value
+        let secondCount = await secondCounter.value
+        XCTAssertEqual(firstCount, 1)
+        XCTAssertEqual(secondCount, 1)
+    } // End of func testForcePerformQueuesLatestWorkWhileRunning()
 
     /// Tests that cancel() resets the running state.
     func testCancelResetsRunningState() async {

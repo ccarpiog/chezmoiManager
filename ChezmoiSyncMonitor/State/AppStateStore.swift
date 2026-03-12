@@ -524,6 +524,18 @@ final class AppStateStore {
         }
 
         do {
+            _ = try await chezmoiService.pullSource()
+        } catch {
+            appendEvent(ActivityEvent(
+                eventType: .error,
+                message: "Failed to pull source before adding \(path): \(error.localizedDescription)",
+                relatedFilePath: path
+            ))
+            await forceRefresh()
+            return
+        }
+
+        do {
             _ = try await chezmoiService.add(path: path)
             appendEvent(ActivityEvent(
                 eventType: .add,
@@ -537,6 +549,7 @@ final class AppStateStore {
                 message: "Failed to add \(path): \(error.localizedDescription)",
                 relatedFilePath: path
             ))
+            await forceRefresh()
         }
     } // End of func addSingle(path:)
 
@@ -551,6 +564,17 @@ final class AppStateStore {
         let safeFiles = snapshot.files.filter { $0.state == .localDrift }
 
         guard !safeFiles.isEmpty else { return }
+
+        do {
+            _ = try await chezmoiService.pullSource()
+        } catch {
+            appendEvent(ActivityEvent(
+                eventType: .error,
+                message: "Failed to pull source before batch add: \(error.localizedDescription)"
+            ))
+            await forceRefresh()
+            return
+        }
 
         var addedCount = 0
         for file in safeFiles {
@@ -820,6 +844,17 @@ final class AppStateStore {
     /// Uses `chezmoi git` under the hood. Logs success or failure as activity events.
     func commitAndPush() async {
         guard await ensureMutatingActionsAllowed(operation: "commit and push") else {
+            return
+        }
+
+        do {
+            _ = try await chezmoiService.pullSource()
+        } catch {
+            appendEvent(ActivityEvent(
+                eventType: .error,
+                message: "Failed to pull source before commit & push: \(error.localizedDescription)"
+            ))
+            await forceRefresh()
             return
         }
 
