@@ -99,33 +99,34 @@
 "overview.remoteDrift" = "Remote Drift";
 "overview.conflicts" = "Conflicts";
 "overview.errors" = "Errors";
+"overview.needsAttention" = "Needs Attention";
 
 /* ============================================================
    File action buttons (short form)
    ============================================================ */
-"fileAction.add" = "Add";
+"fileAction.add" = "Keep Local";
 "fileAction.apply" = "Apply";
 "fileAction.diff" = "Diff";
 "fileAction.edit" = "Edit";
 "fileAction.merge" = "Merge";
-"fileAction.revert" = "Revert";
+"fileAction.revert" = "Keep Remote";
 "fileAction.forget" = "Forget";
 
 /* Button tooltip hints */
-"fileAction.addHint" = "Save your local version as the tracked version in chezmoi";
+"fileAction.addHint" = "Keep the local version as the tracked version in chezmoi";
 "fileAction.applyHint" = "Overwrite local file with the remote tracked version";
 "fileAction.diffHint" = "Show differences between local file and tracked version";
 "fileAction.editHint" = "Open the local file in your preferred editor";
 "fileAction.mergeHint" = "Open both versions side-by-side in a merge tool";
-"fileAction.revertHint" = "Discard local changes and restore the tracked version";
+"fileAction.revertHint" = "Discard local changes and keep the tracked remote version";
 "fileAction.forgetHint" = "Stop tracking this file — affects all machines sharing this chezmoi repository";
 
 /* ============================================================
    Confirmation dialogs
    ============================================================ */
-"confirmation.revertTitle" = "Revert local changes?";
-"confirmation.revertMessage" = "This will overwrite your local file with the tracked version. This cannot be undone.";
-"confirmation.revertButton" = "Revert";
+"confirmation.revertTitle" = "Keep remote version?";
+"confirmation.revertMessage" = "This will overwrite your local file and keep the tracked remote version. This cannot be undone.";
+"confirmation.revertButton" = "Keep Remote";
 "confirmation.forgetTitle" = "Stop tracking this file?";
 "confirmation.forgetMessage" = "This removes the file from chezmoi tracking. Future sync operations will ignore it.";
 "confirmation.forgetContinue" = "Continue";

@@ -225,6 +225,10 @@ enum Strings {
 
     /// Labels used in the overview card row on the dashboard.
     enum overviewCards {
+        static var needsAttention: String {
+            String(localized: "overview.needsAttention",
+                   defaultValue: "Needs Attention")
+        }
         static var localDrift: String {
             String(localized: "overview.localDrift",
                    defaultValue: "Local Drift")
@@ -249,7 +253,7 @@ enum Strings {
     enum fileActions {
         static var add: String {
             String(localized: "fileAction.add",
-                   defaultValue: "Add")
+                   defaultValue: "Keep Local")
         }
         static var apply: String {
             String(localized: "fileAction.apply",
@@ -269,7 +273,7 @@ enum Strings {
         }
         static var revert: String {
             String(localized: "fileAction.revert",
-                   defaultValue: "Revert")
+                   defaultValue: "Keep Remote")
         }
         static var forget: String {
             String(localized: "fileAction.forget",
@@ -279,7 +283,7 @@ enum Strings {
         // Tooltip hints
         static var addHint: String {
             String(localized: "fileAction.addHint",
-                   defaultValue: "Save your local version as the tracked version in chezmoi")
+                   defaultValue: "Keep the local version as the tracked version in chezmoi")
         }
         static var applyHint: String {
             String(localized: "fileAction.applyHint",
@@ -299,7 +303,7 @@ enum Strings {
         }
         static var revertHint: String {
             String(localized: "fileAction.revertHint",
-                   defaultValue: "Discard local changes and restore the tracked version")
+                   defaultValue: "Discard local changes and keep the tracked remote version")
         }
         static var forgetHint: String {
             String(localized: "fileAction.forgetHint",
@@ -314,15 +318,15 @@ enum Strings {
         // Revert confirmation
         static var revertTitle: String {
             String(localized: "confirmation.revertTitle",
-                   defaultValue: "Revert local changes?")
+                   defaultValue: "Keep remote version?")
         }
         static var revertMessage: String {
             String(localized: "confirmation.revertMessage",
-                   defaultValue: "This will overwrite your local file with the tracked version. This cannot be undone.")
+                   defaultValue: "This will overwrite your local file and keep the tracked remote version. This cannot be undone.")
         }
         static var revertButton: String {
             String(localized: "confirmation.revertButton",
-                   defaultValue: "Revert")
+                   defaultValue: "Keep Remote")
         }
 
         // Forget confirmation - step 1

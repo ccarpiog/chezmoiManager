@@ -36,6 +36,11 @@ struct SyncSnapshot: Sendable {
         files.filter { $0.state == .clean }.count
     }
 
+    /// Number of files that currently require attention (non-clean).
+    var needsAttentionCount: Int {
+        files.filter { $0.state != .clean }.count
+    }
+
     /// The worst (highest-precedence) sync state across all files.
     ///
     /// Returns `.clean` if there are no files.
