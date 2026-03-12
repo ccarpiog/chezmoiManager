@@ -82,13 +82,13 @@ struct FileListItemView: View {
             }
 
             if file.availableActions.contains(.applyRemote) {
-                Button(Strings.fileActions.apply) {
+                Button(file.localMissing ? Strings.fileActions.createLocal : Strings.fileActions.apply) {
                     onApply(file.path)
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
                 .disabled(isViewOnlyMode)
-                .toolTip(Strings.fileActions.applyHint)
+                .toolTip(file.localMissing ? Strings.fileActions.createLocalHint : Strings.fileActions.applyHint)
             }
 
             if file.availableActions.contains(.viewDiff) {

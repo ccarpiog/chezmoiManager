@@ -208,6 +208,10 @@ enum Strings {
             String(localized: "dashboard.apply",
                    defaultValue: "Apply")
         }
+        static var createLocal: String {
+            String(localized: "dashboard.createLocal",
+                   defaultValue: "Create Local")
+        }
         static var applyWarning: String {
             String(localized: "dashboard.applyWarning",
                    defaultValue: "This will overwrite your local file with the remote version. This action cannot be undone.")
@@ -306,6 +310,10 @@ enum Strings {
             String(localized: "fileAction.apply",
                    defaultValue: "Apply")
         }
+        static var createLocal: String {
+            String(localized: "fileAction.createLocal",
+                   defaultValue: "Create Local")
+        }
         static var diff: String {
             String(localized: "fileAction.diff",
                    defaultValue: "Diff")
@@ -335,6 +343,10 @@ enum Strings {
         static var applyHint: String {
             String(localized: "fileAction.applyHint",
                    defaultValue: "Overwrite local file with the remote tracked version")
+        }
+        static var createLocalHint: String {
+            String(localized: "fileAction.createLocalHint",
+                   defaultValue: "Create the missing local file from the tracked remote version")
         }
         static var diffHint: String {
             String(localized: "fileAction.diffHint",

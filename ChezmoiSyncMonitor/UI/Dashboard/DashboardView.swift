@@ -193,7 +193,10 @@ struct DashboardView: View {
             isPresented: $showingApplyConfirmation,
             titleVisibility: .visible
         ) {
-            Button(Strings.dashboard.apply, role: isApplyCreation ? .none : .destructive) {
+            Button(
+                isApplyCreation ? Strings.dashboard.createLocal : Strings.dashboard.apply,
+                role: isApplyCreation ? .none : .destructive
+            ) {
                 if let path = applyConfirmationPath {
                     Task {
                         await appState.updateSingle(path: path)

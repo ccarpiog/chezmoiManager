@@ -84,6 +84,7 @@
 "dashboard.diffLoadError" = "Could not load diff. The file may be binary or not managed by chezmoi.";
 "dashboard.applyRemoteChanges" = "Apply Remote Changes";
 "dashboard.apply" = "Apply";
+"dashboard.createLocal" = "Create Local";
 "dashboard.applyWarning" = "This will overwrite your local file with the remote version. This action cannot be undone.";
 "dashboard.lastRefresh" = "Last refresh: %@";
 "dashboard.version" = "Version: %@";
@@ -116,6 +117,7 @@
    ============================================================ */
 "fileAction.add" = "Keep Local";
 "fileAction.apply" = "Apply";
+"fileAction.createLocal" = "Create Local";
 "fileAction.diff" = "Diff";
 "fileAction.edit" = "Edit";
 "fileAction.merge" = "Merge";
@@ -125,6 +127,7 @@
 /* Button tooltip hints */
 "fileAction.addHint" = "Keep the local version as the tracked version in chezmoi";
 "fileAction.applyHint" = "Overwrite local file with the remote tracked version";
+"fileAction.createLocalHint" = "Create the missing local file from the tracked remote version";
 "fileAction.diffHint" = "Show differences between local file and tracked version";
 "fileAction.editHint" = "Open the local file in your preferred editor";
 "fileAction.mergeHint" = "Open both versions side-by-side in a merge tool";
