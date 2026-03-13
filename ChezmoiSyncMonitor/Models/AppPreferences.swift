@@ -14,9 +14,6 @@ struct AppPreferences: Codable, Sendable, Equatable {
     /// Whether system notifications are enabled for drift detection.
     var notificationsEnabled: Bool
 
-    /// Whether the app automatically fetches from the remote repository.
-    var autoFetchEnabled: Bool
-
     /// Whether batch safe-sync mode is enabled (sync all clean drifts at once).
     var batchSafeSyncEnabled: Bool
 
@@ -55,7 +52,6 @@ struct AppPreferences: Codable, Sendable, Equatable {
         schemaVersion: 1,
         pollIntervalMinutes: 5,
         notificationsEnabled: true,
-        autoFetchEnabled: true,
         batchSafeSyncEnabled: false,
         launchAtLogin: false,
         preferredMergeTool: nil,

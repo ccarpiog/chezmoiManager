@@ -82,7 +82,7 @@ struct FileListItemView: View {
             }
 
             if file.availableActions.contains(.applyRemote) {
-                Button(file.localMissing ? Strings.fileActions.createLocal : Strings.fileActions.apply) {
+                Button(file.localMissing ? Strings.fileActions.createLocal : Strings.fileActions.revert) {
                     onApply(file.path)
                 }
                 .buttonStyle(.bordered)

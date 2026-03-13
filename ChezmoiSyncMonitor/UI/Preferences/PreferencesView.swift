@@ -98,14 +98,6 @@ struct PreferencesView: View {
             }
 
             Section(Strings.prefs.behavior) {
-                Toggle(Strings.prefs.autoFetch, isOn: Binding(
-                    get: { prefs.autoFetchEnabled },
-                    set: { newValue in
-                        prefs.autoFetchEnabled = newValue
-                        savePreferences()
-                    }
-                ))
-
                 Toggle(Strings.prefs.batchSafeSync, isOn: Binding(
                     get: { prefs.batchSafeSyncEnabled },
                     set: { newValue in

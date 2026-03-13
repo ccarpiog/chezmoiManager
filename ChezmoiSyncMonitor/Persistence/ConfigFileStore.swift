@@ -46,7 +46,6 @@ final class ConfigFileStore: Sendable {
         var schemaVersion: Int
         var pollIntervalMinutes: Int
         var notificationsEnabled: Bool
-        var autoFetchEnabled: Bool
         var batchSafeSyncEnabled: Bool
         var preferredMergeTool: String?
         var preferredEditor: String?
@@ -61,7 +60,6 @@ final class ConfigFileStore: Sendable {
             self.schemaVersion = prefs.schemaVersion
             self.pollIntervalMinutes = prefs.pollIntervalMinutes
             self.notificationsEnabled = prefs.notificationsEnabled
-            self.autoFetchEnabled = prefs.autoFetchEnabled
             self.batchSafeSyncEnabled = prefs.batchSafeSyncEnabled
             self.preferredMergeTool = prefs.preferredMergeTool
             self.preferredEditor = prefs.preferredEditor
@@ -149,7 +147,6 @@ final class ConfigFileStore: Sendable {
         merged.schemaVersion = config.schemaVersion
         merged.pollIntervalMinutes = config.pollIntervalMinutes
         merged.notificationsEnabled = config.notificationsEnabled
-        merged.autoFetchEnabled = config.autoFetchEnabled
         merged.batchSafeSyncEnabled = config.batchSafeSyncEnabled
         merged.preferredMergeTool = config.preferredMergeTool
         merged.preferredEditor = config.preferredEditor

@@ -50,7 +50,6 @@ struct PreferencesStore: Sendable {
         defaults.set(prefs.schemaVersion, forKey: key("schemaVersion"))
         defaults.set(prefs.pollIntervalMinutes, forKey: key("pollIntervalMinutes"))
         defaults.set(prefs.notificationsEnabled, forKey: key("notificationsEnabled"))
-        defaults.set(prefs.autoFetchEnabled, forKey: key("autoFetchEnabled"))
         defaults.set(prefs.batchSafeSyncEnabled, forKey: key("batchSafeSyncEnabled"))
         defaults.set(prefs.launchAtLogin, forKey: key("launchAtLogin"))
         defaults.set(prefs.preferredMergeTool, forKey: key("preferredMergeTool"))
@@ -104,7 +103,6 @@ struct PreferencesStore: Sendable {
                 schemaVersion: configFilePrefs.schemaVersion,
                 pollIntervalMinutes: configFilePrefs.pollIntervalMinutes,
                 notificationsEnabled: configFilePrefs.notificationsEnabled,
-                autoFetchEnabled: configFilePrefs.autoFetchEnabled,
                 batchSafeSyncEnabled: configFilePrefs.batchSafeSyncEnabled,
                 launchAtLogin: launchAtLogin,
                 preferredMergeTool: configFilePrefs.preferredMergeTool,
@@ -125,7 +123,6 @@ struct PreferencesStore: Sendable {
                 schemaVersion: AppPreferences.defaults.schemaVersion,
                 pollIntervalMinutes: AppPreferences.defaults.pollIntervalMinutes,
                 notificationsEnabled: AppPreferences.defaults.notificationsEnabled,
-                autoFetchEnabled: AppPreferences.defaults.autoFetchEnabled,
                 batchSafeSyncEnabled: AppPreferences.defaults.batchSafeSyncEnabled,
                 launchAtLogin: launchAtLogin,
                 preferredMergeTool: AppPreferences.defaults.preferredMergeTool,
@@ -142,7 +139,6 @@ struct PreferencesStore: Sendable {
             schemaVersion: defaults.integer(forKey: key("schemaVersion")),
             pollIntervalMinutes: defaults.integer(forKey: key("pollIntervalMinutes")),
             notificationsEnabled: defaults.bool(forKey: key("notificationsEnabled")),
-            autoFetchEnabled: defaults.bool(forKey: key("autoFetchEnabled")),
             batchSafeSyncEnabled: defaults.bool(forKey: key("batchSafeSyncEnabled")),
             launchAtLogin: launchAtLogin,
             preferredMergeTool: defaults.string(forKey: key("preferredMergeTool")),
@@ -172,7 +168,7 @@ struct PreferencesStore: Sendable {
     func resetAll() {
         let allKeys = [
             "schemaVersion", "pollIntervalMinutes", "notificationsEnabled",
-            "autoFetchEnabled", "batchSafeSyncEnabled", "launchAtLogin",
+            "batchSafeSyncEnabled", "launchAtLogin",
             "preferredMergeTool", "preferredEditor", "chezmoiPathOverride",
             "gitPathOverride", "sourceRepoPathOverride", "verboseDiagnosticsEnabled",
             "dashboardShortcut", "hasCompletedOnboarding"

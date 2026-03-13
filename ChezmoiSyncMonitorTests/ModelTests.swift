@@ -74,7 +74,6 @@ final class ModelTests: XCTestCase {
             schemaVersion: 1,
             pollIntervalMinutes: 10,
             notificationsEnabled: false,
-            autoFetchEnabled: true,
             batchSafeSyncEnabled: true,
             launchAtLogin: false,
             preferredMergeTool: "opendiff",
