@@ -163,9 +163,13 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
     /// Every failed merge or rebase is aborted before moving on so the repo is
     /// never left in a half-merged state.
     ///
-    /// - Returns: The `CommandResult` of the successful pull command.
-    /// - Throws: `AppError` if all strategies fail.
-    func pullSource() async throws -> CommandResult {
+    /// Returns `.conflict` (not a throw) when all strategies fail due to content
+    /// conflicts — callers decide per-operation whether to proceed or abort.
+    /// Throws only on fatal errors (network, auth, detached HEAD).
+    ///
+    /// - Returns: `.success` with the pull result, or `.conflict` with a description.
+    /// - Throws: `AppError` on fatal (non-conflict) failures.
+    func pullSource() async throws -> PullOutcome {
         try await ensureAttachedHeadForSourceRepo()
 
         // Use a longer timeout than the ProcessRunner default because network/auth
@@ -177,7 +181,7 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
         )
 
         if ffOnlyResult.exitCode == 0 {
-            return ffOnlyResult
+            return .success(ffOnlyResult)
         }
 
         // If a previous merge left unmerged files (e.g. interrupted session or
@@ -195,7 +199,7 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
                 throwOnFailure: false
             )
             if ffOnlyResult.exitCode == 0 {
-                return ffOnlyResult
+                return .success(ffOnlyResult)
             }
         } // End of unmerged files recovery
 
@@ -208,7 +212,7 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
                 throwOnFailure: false
             )
             if mergeResult.exitCode == 0 {
-                return mergeResult
+                return .success(mergeResult)
             }
 
             // Merge produced conflicts — abort to keep the repo clean, then
@@ -225,22 +229,20 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
                 throwOnFailure: false
             )
             if rebaseResult.exitCode == 0 {
-                return rebaseResult
+                return .success(rebaseResult)
             }
 
             // Rebase also failed — abort it so the repo stays clean.
+            // Return .conflict so callers can decide whether to proceed.
             _ = try await runSourceGit(
                 arguments: ["rebase", "--abort"],
                 throwOnFailure: false
             )
 
-            throw AppError.cliFailure(
-                command: rebaseResult.command,
-                exitCode: rebaseResult.exitCode,
-                stderr: rebaseResult.stderr
-            )
+            return .conflict(rebaseResult.stderr)
         } // End of diverged-branch recovery
 
+        // Non-divergence failure (network, auth, etc.) — truly fatal.
         throw AppError.cliFailure(
             command: ffOnlyResult.command,
             exitCode: ffOnlyResult.exitCode,

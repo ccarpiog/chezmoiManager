@@ -2,7 +2,7 @@
 
 ## 2.1.3
 
-- Fix pull failing when merge produces content conflicts (e.g. same file edited on two machines). The app now aborts the failed merge, tries a rebase strategy, and always cleans up so the source repo is never left in a half-merged state.
+- Fix pull conflicts in one file blocking all actions for all other files. `pullSource()` now returns a structured outcome: content conflicts are treated as recoverable (file-scoped actions proceed with a warning using local source state) while only `commitAndPush` hard-stops on unresolved conflicts. The source repo is always left in a clean state after failed merge/rebase attempts.
 
 ## 2.1.2
 

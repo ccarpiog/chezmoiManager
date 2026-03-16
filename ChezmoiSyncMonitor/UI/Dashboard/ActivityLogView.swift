@@ -102,6 +102,7 @@ struct ActivityLogView: View {
         case .refresh: return "↻"
         case .add: return "⊕"
         case .update: return "↓"
+        case .warning: return "⚠"
         case .error: return "⊘"
         case .notification: return "♪"
         }
@@ -118,6 +119,8 @@ struct ActivityLogView: View {
             return "plus.circle"
         case .update:
             return "arrow.down.circle"
+        case .warning:
+            return "exclamationmark.triangle"
         case .error:
             return "xmark.circle"
         case .notification:
@@ -136,6 +139,8 @@ struct ActivityLogView: View {
             return .green
         case .update:
             return .orange
+        case .warning:
+            return .yellow
         case .error:
             return .red
         case .notification:

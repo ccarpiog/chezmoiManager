@@ -1,5 +1,20 @@
 import Foundation
 
+/// Outcome of a `pullSource()` attempt.
+///
+/// Pull may succeed, encounter a recoverable sync conflict (repo left clean
+/// after aborting failed merge/rebase), or fail fatally (network, auth, etc.).
+/// Callers decide per-operation whether a `.conflict` is blocking.
+enum PullOutcome: Sendable {
+    /// Pull completed successfully.
+    case success(CommandResult)
+
+    /// All pull strategies failed due to content conflicts, but the repo was
+    /// left in a clean state (merge/rebase aborted). The associated string
+    /// describes what went wrong for logging.
+    case conflict(String)
+} // End of enum PullOutcome
+
 /// The state of chezmoi git automation settings used by mutating commands.
 struct GitAutomationConfig: Equatable, Sendable {
     /// Whether `chezmoi` is configured to auto-commit source changes.
@@ -42,10 +57,13 @@ protocol ChezmoiServiceProtocol: Sendable {
     func update() async throws -> CommandResult
 
     /// Pulls remote changes into the chezmoi source state without applying them.
-    /// Uses a fast-forward-only pull in the source repo.
-    /// - Returns: The result of the pull command.
-    /// - Throws: `AppError` if the chezmoi command fails.
-    func pullSource() async throws -> CommandResult
+    ///
+    /// Returns `.success` when pull completes, or `.conflict` when all
+    /// strategies failed due to content conflicts but the repo was cleaned up.
+    /// Throws only on fatal errors (network, auth, detached HEAD repair).
+    /// - Returns: A `PullOutcome` indicating success or recoverable conflict.
+    /// - Throws: `AppError` on fatal (non-conflict) failures.
+    func pullSource() async throws -> PullOutcome
 
     /// Applies the chezmoi source state for a single file to the local machine.
     /// Does NOT pull from remote — call `pullSource()` first if needed.

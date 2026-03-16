@@ -40,14 +40,14 @@ final class MockChezmoiService: ChezmoiServiceProtocol, @unchecked Sendable {
         return updateResult
     }
 
-    var pullSourceResult: CommandResult = CommandResult(exitCode: 0, stdout: "", stderr: "", duration: 0, command: "chezmoi update --apply=false")
+    var pullSourceOutcome: PullOutcome = .success(CommandResult(exitCode: 0, stdout: "", stderr: "", duration: 0, command: "chezmoi update --apply=false"))
     var pullSourceError: Error?
     var pullSourceCallCount = 0
 
-    func pullSource() async throws -> CommandResult {
+    func pullSource() async throws -> PullOutcome {
         pullSourceCallCount += 1
         if let error = pullSourceError { throw error }
-        return pullSourceResult
+        return pullSourceOutcome
     }
 
     var applyResult: CommandResult = CommandResult(exitCode: 0, stdout: "", stderr: "", duration: 0, command: "chezmoi apply")
@@ -611,9 +611,9 @@ final class AppStateStoreTests: XCTestCase {
         XCTAssertTrue(errorEvents.contains { $0.message.contains("Forget failed") })
     } // End of func testForgetSingleFailure()
 
-    /// forgetSingle aborts if pullSource fails.
+    /// forgetSingle proceeds even if pullSource fails (pull is non-fatal for forget).
     @MainActor
-    func testForgetSingleAbortsOnPullFailure() async {
+    func testForgetSingleProceedsOnPullFailure() async {
         mockChezmoi.pullSourceError = AppError.unknown("network error")
         mockChezmoi.statusResult = []
 
@@ -621,10 +621,10 @@ final class AppStateStoreTests: XCTestCase {
 
         await store.forgetSingle(path: ".bashrc")
 
-        XCTAssertTrue(mockChezmoi.forgottenPaths.isEmpty, "Should not forget when pull fails")
+        XCTAssertEqual(mockChezmoi.forgottenPaths, [".bashrc"], "Should still forget even when pull fails")
         let errorEvents = store.activityLog.filter { $0.eventType == .error }
-        XCTAssertTrue(errorEvents.contains { $0.message.contains("pull source before forgetting") })
-    } // End of func testForgetSingleAbortsOnPullFailure()
+        XCTAssertTrue(errorEvents.contains { $0.message.contains("Pull before forget failed") })
+    } // End of func testForgetSingleProceedsOnPullFailure()
 
     /// Mutating actions are blocked when git.autocommit/autopush are not both true.
     @MainActor

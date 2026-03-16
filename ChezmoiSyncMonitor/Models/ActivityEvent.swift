@@ -5,6 +5,7 @@ enum EventType: String, Codable, Sendable {
     case refresh
     case add
     case update
+    case warning
     case error
     case notification
 } // End of enum EventType

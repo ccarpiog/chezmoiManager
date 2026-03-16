@@ -472,7 +472,13 @@ final class AppStateStore {
                 ))
 
                 do {
-                    _ = try await chezmoiService.pullSource()
+                    let outcome = try await chezmoiService.pullSource()
+                    if case .conflict(let detail) = outcome {
+                        appendEvent(ActivityEvent(
+                            eventType: .warning,
+                            message: "Auto-apply: pull has sync conflicts (proceeding with local source state): \(detail)"
+                        ))
+                    }
                 } catch {
                     appendEvent(ActivityEvent(
                         eventType: .error,
@@ -1027,7 +1033,14 @@ final class AppStateStore {
         ))
 
         do {
-            _ = try await chezmoiService.pullSource()
+            let outcome = try await chezmoiService.pullSource()
+            if case .conflict(let detail) = outcome {
+                appendEvent(ActivityEvent(
+                    eventType: .warning,
+                    message: "Pull has sync conflicts (proceeding with local source state for \(path)): \(detail)",
+                    relatedFilePath: path
+                ))
+            }
         } catch {
             appendEvent(ActivityEvent(
                 eventType: .error,
@@ -1077,7 +1090,13 @@ final class AppStateStore {
 
         // Pull source repo first so apply sees latest remote state
         do {
-            _ = try await chezmoiService.pullSource()
+            let outcome = try await chezmoiService.pullSource()
+            if case .conflict(let detail) = outcome {
+                appendEvent(ActivityEvent(
+                    eventType: .warning,
+                    message: "Pull has sync conflicts (proceeding with local source state for batch apply): \(detail)"
+                ))
+            }
         } catch {
             appendEvent(ActivityEvent(
                 eventType: .error,
@@ -1156,7 +1175,14 @@ final class AppStateStore {
         ))
 
         do {
-            _ = try await chezmoiService.pullSource()
+            let outcome = try await chezmoiService.pullSource()
+            if case .conflict(let detail) = outcome {
+                appendEvent(ActivityEvent(
+                    eventType: .warning,
+                    message: "Pull has sync conflicts (proceeding with local source state for \(path)): \(detail)",
+                    relatedFilePath: path
+                ))
+            }
         } catch {
             appendEvent(ActivityEvent(
                 eventType: .error,
@@ -1203,7 +1229,14 @@ final class AppStateStore {
         ))
 
         do {
-            _ = try await chezmoiService.pullSource()
+            let outcome = try await chezmoiService.pullSource()
+            if case .conflict(let detail) = outcome {
+                appendEvent(ActivityEvent(
+                    eventType: .warning,
+                    message: "Pull has sync conflicts (proceeding with forget for \(path)): \(detail)",
+                    relatedFilePath: path
+                ))
+            }
         } catch {
             // Pull failure is non-fatal for forget — log a warning and proceed
             appendEvent(ActivityEvent(
@@ -1240,7 +1273,15 @@ final class AppStateStore {
         }
 
         do {
-            _ = try await chezmoiService.pullSource()
+            let outcome = try await chezmoiService.pullSource()
+            if case .conflict(let detail) = outcome {
+                appendEvent(ActivityEvent(
+                    eventType: .error,
+                    message: "Cannot commit & push: source repo has unresolved sync conflicts. Resolve manually with chezmoi git: \(detail)"
+                ))
+                await forceRefresh()
+                return
+            }
         } catch {
             appendEvent(ActivityEvent(
                 eventType: .error,
