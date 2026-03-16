@@ -172,16 +172,16 @@ final class FileStateEngineTests: XCTestCase {
         XCTAssertEqual(actions.count, 4)
     }
 
-    /// Dual drift actions: viewDiff, openEditor, openMergeTool, forgetFile (no syncLocal/applyRemote per PRD conflict-risk).
+    /// Dual drift actions: syncLocal, applyRemote, viewDiff, openEditor, openMergeTool, forgetFile.
     func testActionsForDualDrift() {
         let actions = FileStateEngine.actions(for: .dualDrift)
+        XCTAssertTrue(actions.contains(.syncLocal))
+        XCTAssertTrue(actions.contains(.applyRemote))
         XCTAssertTrue(actions.contains(.viewDiff))
         XCTAssertTrue(actions.contains(.openEditor))
         XCTAssertTrue(actions.contains(.openMergeTool))
         XCTAssertTrue(actions.contains(.forgetFile))
-        XCTAssertFalse(actions.contains(.syncLocal))
-        XCTAssertFalse(actions.contains(.applyRemote))
-        XCTAssertEqual(actions.count, 4)
+        XCTAssertEqual(actions.count, 6)
     } // End of func testActionsForDualDrift()
 
     /// Error state actions: viewDiff only.
@@ -207,10 +207,10 @@ final class FileStateEngineTests: XCTestCase {
         // .bashrc is localDrift
         XCTAssertEqual(byPath[".bashrc"]?.availableActions, [.syncLocal, .revertLocal, .viewDiff, .openEditor, .forgetFile])
 
-        // .vimrc is dualDrift (conflict-risk: no syncLocal/applyRemote per PRD)
+        // .vimrc is dualDrift
         XCTAssertEqual(
             byPath[".vimrc"]?.availableActions,
-            [.viewDiff, .openEditor, .openMergeTool, .forgetFile]
+            [.syncLocal, .applyRemote, .viewDiff, .openEditor, .openMergeTool, .forgetFile]
         )
 
         // .zshrc is remoteDrift (syncLocal = Keep Local, applyRemote = Keep Remote)

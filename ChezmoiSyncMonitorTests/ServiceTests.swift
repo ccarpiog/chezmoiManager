@@ -332,4 +332,27 @@ final class ServiceTests: XCTestCase {
             )
         )
     }
+
+    /// Verifies unmerged-files stderr is detected for merge-abort recovery.
+    func testIsUnmergedFilesPullError() {
+        XCTAssertTrue(
+            ChezmoiService.isUnmergedFilesPullError(
+                "error: Pulling is not possible because you have unmerged files."
+            )
+        )
+        XCTAssertTrue(
+            ChezmoiService.isUnmergedFilesPullError(
+                "error: You have unmerged files in your index."
+            )
+        )
+    }
+
+    /// Verifies unrelated stderr does not trigger unmerged-files recovery.
+    func testIsUnmergedFilesPullErrorFalse() {
+        XCTAssertFalse(
+            ChezmoiService.isUnmergedFilesPullError(
+                "fatal: could not read from remote repository"
+            )
+        )
+    }
 } // End of class ServiceTests

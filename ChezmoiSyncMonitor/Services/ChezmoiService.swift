@@ -155,6 +155,8 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
     /// Uses a fast-forward-only git pull in the chezmoi source repo by default.
     /// If branches have diverged, falls back to a non-rebase merge pull so the
     /// app can reconcile histories without forcing users into manual CLI steps.
+    /// If unmerged files are detected (stale merge from a prior session or another
+    /// machine), aborts the leftover merge and retries the pull.
     ///
     /// - Returns: The `CommandResult` of the pull command.
     /// - Throws: `AppError` if the chezmoi command fails.
@@ -163,7 +165,7 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
 
         // Use a longer timeout than the ProcessRunner default because network/auth
         // round-trips can exceed 30s on some machines.
-        let ffOnlyResult = try await runSourceGit(
+        var ffOnlyResult = try await runSourceGit(
             arguments: ["pull", "--no-rebase", "--ff-only", "--autostash"],
             timeout: 120,
             throwOnFailure: false
@@ -172,6 +174,25 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
         if ffOnlyResult.exitCode == 0 {
             return ffOnlyResult
         }
+
+        // If a previous merge left unmerged files (e.g. interrupted session or
+        // conflict on another machine), abort it and retry the pull. The retry
+        // result replaces the original so downstream checks (diverged-branch
+        // fallback) operate on the clean-state outcome.
+        if Self.isUnmergedFilesPullError(ffOnlyResult.stderr) {
+            _ = try await runSourceGit(
+                arguments: ["merge", "--abort"],
+                throwOnFailure: false
+            )
+            ffOnlyResult = try await runSourceGit(
+                arguments: ["pull", "--no-rebase", "--ff-only", "--autostash"],
+                timeout: 120,
+                throwOnFailure: false
+            )
+            if ffOnlyResult.exitCode == 0 {
+                return ffOnlyResult
+            }
+        } // End of unmerged files recovery
 
         // If histories diverged, fall back to merge pull (still non-rebase).
         // `--no-edit` prevents editor prompts in non-interactive app flows.
@@ -206,6 +227,16 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
         return normalized.contains("diverging branches can't be fast-forwarded") ||
             normalized.contains("not possible to fast-forward, aborting")
     } // End of static func isDivergedBranchPullError(_:)
+
+    /// Returns true if stderr indicates pull failed because the repo has
+    /// unmerged files left over from a previous incomplete merge.
+    ///
+    /// Exposed internally for unit tests.
+    static func isUnmergedFilesPullError(_ stderr: String) -> Bool {
+        let normalized = stderr.lowercased()
+        return normalized.contains("you have unmerged files") ||
+            normalized.contains("unmerged files in your index")
+    } // End of static func isUnmergedFilesPullError(_:)
 
     /// Ensures the chezmoi source repo is on an attached local branch.
     ///

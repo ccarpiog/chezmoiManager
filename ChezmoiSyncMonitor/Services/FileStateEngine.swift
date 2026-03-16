@@ -162,7 +162,7 @@ final class FileStateEngine: FileStateEngineProtocol, Sendable {
     /// - `clean`: `forgetFile`
     /// - `localDrift`: `syncLocal`, `revertLocal`, `viewDiff`, `openEditor`, `forgetFile`
     /// - `remoteDrift`: `syncLocal`, `applyRemote`, `viewDiff`, `forgetFile`
-    /// - `dualDrift`: `viewDiff`, `openEditor`, `openMergeTool`, `forgetFile`
+    /// - `dualDrift`: `syncLocal`, `applyRemote`, `viewDiff`, `openEditor`, `openMergeTool`, `forgetFile`
     /// - `error`: `viewDiff`
     ///
     /// - Parameter state: The file sync state.
@@ -194,7 +194,7 @@ final class FileStateEngine: FileStateEngineProtocol, Sendable {
         case .remoteDrift:
             base = [.syncLocal, .applyRemote, .viewDiff, .forgetFile]
         case .dualDrift:
-            base = [.viewDiff, .openEditor, .openMergeTool, .forgetFile]
+            base = [.syncLocal, .applyRemote, .viewDiff, .openEditor, .openMergeTool, .forgetFile]
         case .error:
             base = [.viewDiff]
         } // End of switch state

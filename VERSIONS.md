@@ -1,5 +1,13 @@
 # Version History
 
+## 2.1.2
+
+- Fix "Keep Remote" (and other pull-dependent actions) failing when the chezmoi source repo has unmerged files left over from a previous interrupted merge. The app now automatically aborts the stale merge and retries the pull.
+
+## 2.1.1
+
+- Add "Keep Local" and "Keep Remote" actions for dual drift files, allowing users to resolve conflicts by choosing one side without requiring the merge tool.
+
 ## 2.1.0
 
 - Multi-select mode for bulk bundle assignment: toggle via the checkbox button in the filter bar, select individual files with checkboxes, then assign all selected files to a bundle at once. Includes "Select All" and "Clear Selection" controls.

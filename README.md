@@ -30,6 +30,12 @@ Chezmoi Sync Monitor keeps this visible from the menu bar and gives you safe act
 - Dashboard window with filtering, search, and activity log
   - Default filter: `Needs Attention` (non-clean files)
   - `All` filter: shows all tracked files, including clean files
+- Bundles: group tracked files into named bundles for organization
+  - Create, rename, and delete bundles from the dashboard
+  - Assign files via context menu, multi-select bulk assignment, or drag-and-drop
+  - One file per bundle constraint (reassigning moves the file)
+  - Bundle state derived from member files (aggregate worst state, per-state counts)
+  - Syncs across machines via the cross-machine config file
 - Background refresh triggers (launch, wake, connectivity change, polling)
 - Optional notifications for drift/conflicts
 - Preferences with auto-detect for chezmoi/git paths
