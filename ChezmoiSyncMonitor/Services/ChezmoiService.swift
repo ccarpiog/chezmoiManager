@@ -152,14 +152,19 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
 
     /// Pulls remote changes into the chezmoi source state without applying them.
     ///
-    /// Uses a fast-forward-only git pull in the chezmoi source repo by default.
-    /// If branches have diverged, falls back to a non-rebase merge pull so the
-    /// app can reconcile histories without forcing users into manual CLI steps.
-    /// If unmerged files are detected (stale merge from a prior session or another
-    /// machine), aborts the leftover merge and retries the pull.
+    /// Pulls the chezmoi source repo, trying progressively more aggressive
+    /// strategies until one succeeds:
     ///
-    /// - Returns: The `CommandResult` of the pull command.
-    /// - Throws: `AppError` if the chezmoi command fails.
+    /// 1. Fast-forward-only (`--ff-only`).
+    /// 2. If stale unmerged files block the pull, abort them and retry step 1.
+    /// 3. If histories diverged, merge pull (`--no-rebase --no-edit`).
+    /// 4. If the merge produces conflicts, abort and try rebase (`--rebase`).
+    ///
+    /// Every failed merge or rebase is aborted before moving on so the repo is
+    /// never left in a half-merged state.
+    ///
+    /// - Returns: The `CommandResult` of the successful pull command.
+    /// - Throws: `AppError` if all strategies fail.
     func pullSource() async throws -> CommandResult {
         try await ensureAttachedHeadForSourceRepo()
 
@@ -205,12 +210,36 @@ final class ChezmoiService: ChezmoiServiceProtocol, Sendable {
             if mergeResult.exitCode == 0 {
                 return mergeResult
             }
-            throw AppError.cliFailure(
-                command: mergeResult.command,
-                exitCode: mergeResult.exitCode,
-                stderr: mergeResult.stderr
+
+            // Merge produced conflicts — abort to keep the repo clean, then
+            // try rebase which often succeeds for dotfile repos where both
+            // machines edited the same tracked file independently.
+            _ = try await runSourceGit(
+                arguments: ["merge", "--abort"],
+                throwOnFailure: false
             )
-        }
+
+            let rebaseResult = try await runSourceGit(
+                arguments: ["pull", "--rebase", "--autostash"],
+                timeout: 120,
+                throwOnFailure: false
+            )
+            if rebaseResult.exitCode == 0 {
+                return rebaseResult
+            }
+
+            // Rebase also failed — abort it so the repo stays clean.
+            _ = try await runSourceGit(
+                arguments: ["rebase", "--abort"],
+                throwOnFailure: false
+            )
+
+            throw AppError.cliFailure(
+                command: rebaseResult.command,
+                exitCode: rebaseResult.exitCode,
+                stderr: rebaseResult.stderr
+            )
+        } // End of diverged-branch recovery
 
         throw AppError.cliFailure(
             command: ffOnlyResult.command,

@@ -1,5 +1,9 @@
 # Version History
 
+## 2.1.3
+
+- Fix pull failing when merge produces content conflicts (e.g. same file edited on two machines). The app now aborts the failed merge, tries a rebase strategy, and always cleans up so the source repo is never left in a half-merged state.
+
 ## 2.1.2
 
 - Fix "Keep Remote" (and other pull-dependent actions) failing when the chezmoi source repo has unmerged files left over from a previous interrupted merge. The app now automatically aborts the stale merge and retries the pull.
